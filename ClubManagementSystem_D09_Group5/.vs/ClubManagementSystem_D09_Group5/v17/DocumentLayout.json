@@ -1,0 +1,71 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\FU\\PRN222\\Final Project\\PRN222-ClubManagementProject\\ClubManagementSystem_D09_Group5\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{DEF48FE8-53F4-4E69-9C2D-F411F28248DF}|BussinessObjects\\BussinessObjects.csproj|c:\\fu\\prn222\\final project\\prn222-clubmanagementproject\\clubmanagementsystem_d09_group5\\bussinessobjects\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{DEF48FE8-53F4-4E69-9C2D-F411F28248DF}|BussinessObjects\\BussinessObjects.csproj|solutionrelative:bussinessobjects\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DEF48FE8-53F4-4E69-9C2D-F411F28248DF}|BussinessObjects\\BussinessObjects.csproj|c:\\fu\\prn222\\final project\\prn222-clubmanagementproject\\clubmanagementsystem_d09_group5\\bussinessobjects\\fptclubscontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DEF48FE8-53F4-4E69-9C2D-F411F28248DF}|BussinessObjects\\BussinessObjects.csproj|solutionrelative:bussinessobjects\\fptclubscontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DEF48FE8-53F4-4E69-9C2D-F411F28248DF}|BussinessObjects\\BussinessObjects.csproj|c:\\fu\\prn222\\final project\\prn222-clubmanagementproject\\clubmanagementsystem_d09_group5\\bussinessobjects\\models\\notification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DEF48FE8-53F4-4E69-9C2D-F411F28248DF}|BussinessObjects\\BussinessObjects.csproj|solutionrelative:bussinessobjects\\models\\notification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\FU\\PRN222\\Final Project\\PRN222-ClubManagementProject\\ClubManagementSystem_D09_Group5\\BussinessObjects\\appsettings.json",
+              "RelativeDocumentMoniker": "BussinessObjects\\appsettings.json",
+              "ToolTip": "C:\\FU\\PRN222\\Final Project\\PRN222-ClubManagementProject\\ClubManagementSystem_D09_Group5\\BussinessObjects\\appsettings.json",
+              "RelativeToolTip": "BussinessObjects\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-02-27T09:48:03.374Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Notification.cs",
+              "DocumentMoniker": "C:\\FU\\PRN222\\Final Project\\PRN222-ClubManagementProject\\ClubManagementSystem_D09_Group5\\BussinessObjects\\Models\\Notification.cs",
+              "RelativeDocumentMoniker": "BussinessObjects\\Models\\Notification.cs",
+              "ToolTip": "C:\\FU\\PRN222\\Final Project\\PRN222-ClubManagementProject\\ClubManagementSystem_D09_Group5\\BussinessObjects\\Models\\Notification.cs",
+              "RelativeToolTip": "BussinessObjects\\Models\\Notification.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAA3wAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-27T09:45:11.025Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "FptclubsContext.cs",
+              "DocumentMoniker": "C:\\FU\\PRN222\\Final Project\\PRN222-ClubManagementProject\\ClubManagementSystem_D09_Group5\\BussinessObjects\\FptclubsContext.cs",
+              "RelativeDocumentMoniker": "BussinessObjects\\FptclubsContext.cs",
+              "ToolTip": "C:\\FU\\PRN222\\Final Project\\PRN222-ClubManagementProject\\ClubManagementSystem_D09_Group5\\BussinessObjects\\FptclubsContext.cs",
+              "RelativeToolTip": "BussinessObjects\\FptclubsContext.cs",
+              "ViewState": "AgIAAEEAAAAAAAAAAAAuwC8AAABRAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-27T09:45:10.51Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
