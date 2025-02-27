@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using ProjectDummy.Models;
 
-namespace BussinessObjects;
+namespace BussinessObjects.Models;
 
 public partial class FptclubsContext : DbContext
 {

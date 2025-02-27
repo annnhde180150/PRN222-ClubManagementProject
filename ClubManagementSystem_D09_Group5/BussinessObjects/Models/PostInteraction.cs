@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ProjectDummy.Models;
-
+namespace BussinessObjects.Models;
 public partial class PostInteraction
 {
     public int InteractionId { get; set; }
