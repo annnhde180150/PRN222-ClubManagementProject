@@ -63,6 +63,7 @@ Thumbs.db
 [Tt]est[Rr]esults
 *.suo
 *.user
+*.vs/
 *.[Cc]ache
 [Rr]esharper
 packages
