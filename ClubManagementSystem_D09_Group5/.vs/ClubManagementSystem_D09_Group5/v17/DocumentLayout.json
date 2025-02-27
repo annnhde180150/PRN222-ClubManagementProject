@@ -1,0 +1,173 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\FU\\PRN222\\Final Project\\PRN222-ClubManagementProject\\ClubManagementSystem_D09_Group5\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{DEF48FE8-53F4-4E69-9C2D-F411F28248DF}|BussinessObjects\\BussinessObjects.csproj|c:\\fu\\prn222\\final project\\prn222-clubmanagementproject\\clubmanagementsystem_d09_group5\\bussinessobjects\\fuclubdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DEF48FE8-53F4-4E69-9C2D-F411F28248DF}|BussinessObjects\\BussinessObjects.csproj|solutionrelative:bussinessobjects\\fuclubdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DEF48FE8-53F4-4E69-9C2D-F411F28248DF}|BussinessObjects\\BussinessObjects.csproj|c:\\fu\\prn222\\final project\\prn222-clubmanagementproject\\clubmanagementsystem_d09_group5\\bussinessobjects\\models\\clubrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DEF48FE8-53F4-4E69-9C2D-F411F28248DF}|BussinessObjects\\BussinessObjects.csproj|solutionrelative:bussinessobjects\\models\\clubrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DEF48FE8-53F4-4E69-9C2D-F411F28248DF}|BussinessObjects\\BussinessObjects.csproj|c:\\fu\\prn222\\final project\\prn222-clubmanagementproject\\clubmanagementsystem_d09_group5\\bussinessobjects\\models\\notifications.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DEF48FE8-53F4-4E69-9C2D-F411F28248DF}|BussinessObjects\\BussinessObjects.csproj|solutionrelative:bussinessobjects\\models\\notifications.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DEF48FE8-53F4-4E69-9C2D-F411F28248DF}|BussinessObjects\\BussinessObjects.csproj|c:\\fu\\prn222\\final project\\prn222-clubmanagementproject\\clubmanagementsystem_d09_group5\\bussinessobjects\\models\\taskassigment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DEF48FE8-53F4-4E69-9C2D-F411F28248DF}|BussinessObjects\\BussinessObjects.csproj|solutionrelative:bussinessobjects\\models\\taskassigment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DEF48FE8-53F4-4E69-9C2D-F411F28248DF}|BussinessObjects\\BussinessObjects.csproj|c:\\fu\\prn222\\final project\\prn222-clubmanagementproject\\clubmanagementsystem_d09_group5\\bussinessobjects\\models\\task.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DEF48FE8-53F4-4E69-9C2D-F411F28248DF}|BussinessObjects\\BussinessObjects.csproj|solutionrelative:bussinessobjects\\models\\task.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DEF48FE8-53F4-4E69-9C2D-F411F28248DF}|BussinessObjects\\BussinessObjects.csproj|c:\\fu\\prn222\\final project\\prn222-clubmanagementproject\\clubmanagementsystem_d09_group5\\bussinessobjects\\models\\event.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DEF48FE8-53F4-4E69-9C2D-F411F28248DF}|BussinessObjects\\BussinessObjects.csproj|solutionrelative:bussinessobjects\\models\\event.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DEF48FE8-53F4-4E69-9C2D-F411F28248DF}|BussinessObjects\\BussinessObjects.csproj|c:\\fu\\prn222\\final project\\prn222-clubmanagementproject\\clubmanagementsystem_d09_group5\\bussinessobjects\\models\\postinteraction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DEF48FE8-53F4-4E69-9C2D-F411F28248DF}|BussinessObjects\\BussinessObjects.csproj|solutionrelative:bussinessobjects\\models\\postinteraction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DEF48FE8-53F4-4E69-9C2D-F411F28248DF}|BussinessObjects\\BussinessObjects.csproj|c:\\fu\\prn222\\final project\\prn222-clubmanagementproject\\clubmanagementsystem_d09_group5\\bussinessobjects\\models\\post.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DEF48FE8-53F4-4E69-9C2D-F411F28248DF}|BussinessObjects\\BussinessObjects.csproj|solutionrelative:bussinessobjects\\models\\post.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DEF48FE8-53F4-4E69-9C2D-F411F28248DF}|BussinessObjects\\BussinessObjects.csproj|c:\\fu\\prn222\\final project\\prn222-clubmanagementproject\\clubmanagementsystem_d09_group5\\bussinessobjects\\models\\clubmember.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DEF48FE8-53F4-4E69-9C2D-F411F28248DF}|BussinessObjects\\BussinessObjects.csproj|solutionrelative:bussinessobjects\\models\\clubmember.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "FUClubDbContext.cs",
+              "DocumentMoniker": "C:\\FU\\PRN222\\Final Project\\PRN222-ClubManagementProject\\ClubManagementSystem_D09_Group5\\BussinessObjects\\FUClubDbContext.cs",
+              "RelativeDocumentMoniker": "BussinessObjects\\FUClubDbContext.cs",
+              "ToolTip": "C:\\FU\\PRN222\\Final Project\\PRN222-ClubManagementProject\\ClubManagementSystem_D09_Group5\\BussinessObjects\\FUClubDbContext.cs",
+              "RelativeToolTip": "BussinessObjects\\FUClubDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-27T08:55:08.475Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ClubRequest.cs",
+              "DocumentMoniker": "C:\\FU\\PRN222\\Final Project\\PRN222-ClubManagementProject\\ClubManagementSystem_D09_Group5\\BussinessObjects\\Models\\ClubRequest.cs",
+              "RelativeDocumentMoniker": "BussinessObjects\\Models\\ClubRequest.cs",
+              "ToolTip": "C:\\FU\\PRN222\\Final Project\\PRN222-ClubManagementProject\\ClubManagementSystem_D09_Group5\\BussinessObjects\\Models\\ClubRequest.cs",
+              "RelativeToolTip": "BussinessObjects\\Models\\ClubRequest.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAAwB4AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-27T08:54:11.883Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Notifications.cs",
+              "DocumentMoniker": "C:\\FU\\PRN222\\Final Project\\PRN222-ClubManagementProject\\ClubManagementSystem_D09_Group5\\BussinessObjects\\Models\\Notifications.cs",
+              "RelativeDocumentMoniker": "BussinessObjects\\Models\\Notifications.cs",
+              "ToolTip": "C:\\FU\\PRN222\\Final Project\\PRN222-ClubManagementProject\\ClubManagementSystem_D09_Group5\\BussinessObjects\\Models\\Notifications.cs",
+              "RelativeToolTip": "BussinessObjects\\Models\\Notifications.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABoAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-27T08:53:53.375Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "TaskAssigment.cs",
+              "DocumentMoniker": "C:\\FU\\PRN222\\Final Project\\PRN222-ClubManagementProject\\ClubManagementSystem_D09_Group5\\BussinessObjects\\Models\\TaskAssigment.cs",
+              "RelativeDocumentMoniker": "BussinessObjects\\Models\\TaskAssigment.cs",
+              "ToolTip": "C:\\FU\\PRN222\\Final Project\\PRN222-ClubManagementProject\\ClubManagementSystem_D09_Group5\\BussinessObjects\\Models\\TaskAssigment.cs",
+              "RelativeToolTip": "BussinessObjects\\Models\\TaskAssigment.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAAwBkAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-27T08:53:33.318Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Task.cs",
+              "DocumentMoniker": "C:\\FU\\PRN222\\Final Project\\PRN222-ClubManagementProject\\ClubManagementSystem_D09_Group5\\BussinessObjects\\Models\\Task.cs",
+              "RelativeDocumentMoniker": "BussinessObjects\\Models\\Task.cs",
+              "ToolTip": "C:\\FU\\PRN222\\Final Project\\PRN222-ClubManagementProject\\ClubManagementSystem_D09_Group5\\BussinessObjects\\Models\\Task.cs",
+              "RelativeToolTip": "BussinessObjects\\Models\\Task.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAB8AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-27T08:53:05.455Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Event.cs",
+              "DocumentMoniker": "C:\\FU\\PRN222\\Final Project\\PRN222-ClubManagementProject\\ClubManagementSystem_D09_Group5\\BussinessObjects\\Models\\Event.cs",
+              "RelativeDocumentMoniker": "BussinessObjects\\Models\\Event.cs",
+              "ToolTip": "C:\\FU\\PRN222\\Final Project\\PRN222-ClubManagementProject\\ClubManagementSystem_D09_Group5\\BussinessObjects\\Models\\Event.cs",
+              "RelativeToolTip": "BussinessObjects\\Models\\Event.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-27T08:52:48.612Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "PostInteraction.cs",
+              "DocumentMoniker": "C:\\FU\\PRN222\\Final Project\\PRN222-ClubManagementProject\\ClubManagementSystem_D09_Group5\\BussinessObjects\\Models\\PostInteraction.cs",
+              "RelativeDocumentMoniker": "BussinessObjects\\Models\\PostInteraction.cs",
+              "ToolTip": "C:\\FU\\PRN222\\Final Project\\PRN222-ClubManagementProject\\ClubManagementSystem_D09_Group5\\BussinessObjects\\Models\\PostInteraction.cs",
+              "RelativeToolTip": "BussinessObjects\\Models\\PostInteraction.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-27T08:52:31.905Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Post.cs",
+              "DocumentMoniker": "C:\\FU\\PRN222\\Final Project\\PRN222-ClubManagementProject\\ClubManagementSystem_D09_Group5\\BussinessObjects\\Models\\Post.cs",
+              "RelativeDocumentMoniker": "BussinessObjects\\Models\\Post.cs",
+              "ToolTip": "C:\\FU\\PRN222\\Final Project\\PRN222-ClubManagementProject\\ClubManagementSystem_D09_Group5\\BussinessObjects\\Models\\Post.cs",
+              "RelativeToolTip": "BussinessObjects\\Models\\Post.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAYwB8AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-27T08:51:55.465Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ClubMember.cs",
+              "DocumentMoniker": "C:\\FU\\PRN222\\Final Project\\PRN222-ClubManagementProject\\ClubManagementSystem_D09_Group5\\BussinessObjects\\Models\\ClubMember.cs",
+              "RelativeDocumentMoniker": "BussinessObjects\\Models\\ClubMember.cs",
+              "ToolTip": "C:\\FU\\PRN222\\Final Project\\PRN222-ClubManagementProject\\ClubManagementSystem_D09_Group5\\BussinessObjects\\Models\\ClubMember.cs",
+              "RelativeToolTip": "BussinessObjects\\Models\\ClubMember.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAgwCIAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-27T08:51:33.259Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

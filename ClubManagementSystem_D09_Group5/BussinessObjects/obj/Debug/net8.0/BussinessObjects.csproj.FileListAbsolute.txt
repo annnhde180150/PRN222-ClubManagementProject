@@ -1,0 +1,15 @@
+C:\FU\PRN222\Final Project\PRN222-ClubManagementProject\ClubManagementSystem_D09_Group5\BussinessObjects\bin\Debug\net8.0\BussinessObjects.deps.json
+C:\FU\PRN222\Final Project\PRN222-ClubManagementProject\ClubManagementSystem_D09_Group5\BussinessObjects\bin\Debug\net8.0\BussinessObjects.runtimeconfig.json
+C:\FU\PRN222\Final Project\PRN222-ClubManagementProject\ClubManagementSystem_D09_Group5\BussinessObjects\bin\Debug\net8.0\BussinessObjects.dll
+C:\FU\PRN222\Final Project\PRN222-ClubManagementProject\ClubManagementSystem_D09_Group5\BussinessObjects\bin\Debug\net8.0\BussinessObjects.pdb
+C:\FU\PRN222\Final Project\PRN222-ClubManagementProject\ClubManagementSystem_D09_Group5\BussinessObjects\obj\Debug\net8.0\BussinessObjects.csproj.AssemblyReference.cache
+C:\FU\PRN222\Final Project\PRN222-ClubManagementProject\ClubManagementSystem_D09_Group5\BussinessObjects\obj\Debug\net8.0\BussinessObjects.GeneratedMSBuildEditorConfig.editorconfig
+C:\FU\PRN222\Final Project\PRN222-ClubManagementProject\ClubManagementSystem_D09_Group5\BussinessObjects\obj\Debug\net8.0\BussinessObjects.AssemblyInfoInputs.cache
+C:\FU\PRN222\Final Project\PRN222-ClubManagementProject\ClubManagementSystem_D09_Group5\BussinessObjects\obj\Debug\net8.0\BussinessObjects.AssemblyInfo.cs
+C:\FU\PRN222\Final Project\PRN222-ClubManagementProject\ClubManagementSystem_D09_Group5\BussinessObjects\obj\Debug\net8.0\BussinessObjects.csproj.CoreCompileInputs.cache
+C:\FU\PRN222\Final Project\PRN222-ClubManagementProject\ClubManagementSystem_D09_Group5\BussinessObjects\obj\Debug\net8.0\BussinessObjects.sourcelink.json
+C:\FU\PRN222\Final Project\PRN222-ClubManagementProject\ClubManagementSystem_D09_Group5\BussinessObjects\obj\Debug\net8.0\BussinessObjects.dll
+C:\FU\PRN222\Final Project\PRN222-ClubManagementProject\ClubManagementSystem_D09_Group5\BussinessObjects\obj\Debug\net8.0\refint\BussinessObjects.dll
+C:\FU\PRN222\Final Project\PRN222-ClubManagementProject\ClubManagementSystem_D09_Group5\BussinessObjects\obj\Debug\net8.0\BussinessObjects.pdb
+C:\FU\PRN222\Final Project\PRN222-ClubManagementProject\ClubManagementSystem_D09_Group5\BussinessObjects\obj\Debug\net8.0\BussinessObjects.genruntimeconfig.cache
+C:\FU\PRN222\Final Project\PRN222-ClubManagementProject\ClubManagementSystem_D09_Group5\BussinessObjects\obj\Debug\net8.0\ref\BussinessObjects.dll
