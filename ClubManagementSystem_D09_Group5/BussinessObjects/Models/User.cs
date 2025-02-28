@@ -23,5 +23,7 @@ public partial class User
 
     public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
 
-    public virtual ICollection<PostInteraction> PostInteractions { get; set; } = new List<PostInteraction>();
+    public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
+
+    public virtual ICollection<PostReaction> Reactions { get; set; } = new List<PostReaction>();
 }

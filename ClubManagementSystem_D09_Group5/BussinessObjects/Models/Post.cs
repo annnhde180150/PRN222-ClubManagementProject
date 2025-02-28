@@ -19,5 +19,6 @@ public partial class Post
 
     public virtual ClubMember CreatedByNavigation { get; set; } = null!;
 
-    public virtual ICollection<PostInteraction> PostInteractions { get; set; } = new List<PostInteraction>();
+    public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
+    public virtual ICollection<PostReaction> Reactions { get; set; } = new List<PostReaction>();
 }
