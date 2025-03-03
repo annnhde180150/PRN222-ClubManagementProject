@@ -1,7 +1,8 @@
+GO
 CREATE DATABASE FPTClubs
-
+GO
 USE FPTClubs
-
+GO
 CREATE TABLE Users (
     user_id INT PRIMARY KEY IDENTITY(1,1),
     username NVARCHAR(50) UNIQUE NOT NULL,
@@ -10,19 +11,19 @@ CREATE TABLE Users (
     profile_picture NVARCHAR(255),
     created_at DATETIME DEFAULT GETDATE()
 );
-
+GO
 CREATE TABLE Clubs (
     club_id INT PRIMARY KEY IDENTITY(1,1),
     club_name NVARCHAR(100) NOT NULL,
     description TEXT,
     created_at DATETIME DEFAULT GETDATE(),
 );
-
+GO
 CREATE TABLE Roles (
     role_id INT PRIMARY KEY IDENTITY(1,1),
     role_name NVARCHAR(50) UNIQUE NOT NULL
 );
-
+GO
 CREATE TABLE ClubMembers (
     membership_id INT PRIMARY KEY IDENTITY(1,1),
     club_id INT NOT NULL,
@@ -33,7 +34,7 @@ CREATE TABLE ClubMembers (
     FOREIGN KEY (user_id) REFERENCES Users(user_id),
     FOREIGN KEY (role_id) REFERENCES Roles(role_id) ON DELETE CASCADE
 );
-
+GO
 CREATE TABLE Posts (
     post_id INT PRIMARY KEY IDENTITY(1,1),
     created_by INT NOT NULL,
@@ -43,7 +44,7 @@ CREATE TABLE Posts (
     status NVARCHAR(20) DEFAULT 'Pending',
     FOREIGN KEY (created_by) REFERENCES ClubMembers(membership_id)  
 );
-
+GO
 CREATE TABLE PostInteractions (
     interaction_id INT PRIMARY KEY IDENTITY(1,1),
     post_id INT NOT NULL,
@@ -54,7 +55,7 @@ CREATE TABLE PostInteractions (
     FOREIGN KEY (post_id) REFERENCES Posts(post_id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES Users(user_id) 
 );
-
+GO
 CREATE TABLE Events (
     event_id INT PRIMARY KEY IDENTITY(1,1),
     created_by INT NOT NULL,
@@ -65,7 +66,7 @@ CREATE TABLE Events (
     FOREIGN KEY (created_by) REFERENCES ClubMembers(membership_id)  
 );
 
-
+GO
 CREATE TABLE Tasks (
     task_id INT PRIMARY KEY IDENTITY(1,1),
     task_description TEXT NOT NULL,
@@ -75,7 +76,7 @@ CREATE TABLE Tasks (
 	created_by INT NOT NULL,
 	FOREIGN KEY (created_by) REFERENCES ClubMembers(membership_id)  
 );
-
+GO
 CREATE TABLE TaskAssignments (
     assignment_id INT PRIMARY KEY IDENTITY(1,1),
     task_id INT NOT NULL,
@@ -84,6 +85,7 @@ CREATE TABLE TaskAssignments (
     FOREIGN KEY (task_id) REFERENCES Tasks(task_id) ON DELETE CASCADE,
     FOREIGN KEY (membership_id) REFERENCES ClubMembers(membership_id) 
 );
+GO
 CREATE TABLE Notifications (
     notification_id INT PRIMARY KEY IDENTITY(1,1),
     user_id INT NOT NULL,
@@ -92,7 +94,7 @@ CREATE TABLE Notifications (
     created_at DATETIME DEFAULT GETDATE(),
     FOREIGN KEY (user_id) REFERENCES Users(user_id) 
 );
-
+GO
 CREATE TABLE ClubRequests (
     request_id INT PRIMARY KEY IDENTITY(1,1),
     user_id INT NOT NULL,
