@@ -1,3 +1,4 @@
+using System;
 using BussinessObjects.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -6,6 +7,10 @@ using Repositories;
 using Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddUserSecrets<Program>();
+string clientSecret = builder.Configuration["GoogleAuth:ClientSecret"];
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -38,7 +43,7 @@ builder.Services.AddAuthentication(options =>
 .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
 {
     options.ClientId = builder.Configuration.GetSection("GoogleKey:ClientId").Value;
-    options.ClientSecret = builder.Configuration.GetSection("GoogleKey:ClientSecret").Value;
+    options.ClientSecret = clientSecret;
 });
 
 var app = builder.Build();
