@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddUserSecrets<Program>();
 string clientSecret = builder.Configuration["GoogleAuth:ClientSecret"];
-
+string clientId = builder.Configuration["GoogleAuth:ClientId"];
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -42,7 +42,7 @@ builder.Services.AddAuthentication(options =>
 .AddCookie()
 .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
 {
-    options.ClientId = builder.Configuration.GetSection("GoogleKey:ClientId").Value;
+    options.ClientId = clientId;
     options.ClientSecret = clientSecret;
 });
 
