@@ -11,5 +11,7 @@ namespace Repositories
     {
         Task<User?> CheckLogin(string username, string password);
         Task<ClubMember?> CheckRole(int userId);
+        Task<User?> CheckEmailExist(string email);
+        Task<User?> AddGmailUser(User user);
     }
 }

@@ -24,5 +24,13 @@ namespace Services
         {
             return _accountRepository.CheckRole(userId);
         }
+        public Task<User?> CheckEmailExist(string email)
+        {
+            return _accountRepository.CheckEmailExist(email);
+        }
+        public Task<User> AddGmailUser (User user)
+        {
+            return _accountRepository.AddGmailUser(user);
+        }
     }
 }
