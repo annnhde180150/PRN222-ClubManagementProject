@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BussinessObjects.Models
 {
@@ -11,12 +8,25 @@ namespace BussinessObjects.Models
     {
         [Key]
         public int CommentID { get; set; }
+
+        [Required]
         public int PostID { get; set; }
+
+        [Required]
         public int UserID { get; set; }
-        public string CommentText { get; set; }
-        public DateTime CreatedAt { get; set; }
-        //navigation properties
-        public virtual Post Post { get; set; }
-        public virtual User User { get; set; }
+
+        [Required]
+        [StringLength(1000)]
+        public string CommentText { get; set; } = null!;
+
+        [DataType(DataType.DateTime)]
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        // Navigation properties
+        [ForeignKey("PostID")]
+        public virtual Post Post { get; set; } = null!;
+
+        [ForeignKey("UserID")]
+        public virtual User User { get; set; } = null!;
     }
 }

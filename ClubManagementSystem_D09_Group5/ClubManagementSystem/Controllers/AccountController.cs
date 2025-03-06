@@ -128,7 +128,7 @@ namespace ClubManagementSystem.Controllers
             {
                  Username = name,
                  Email = email,
-                 PasswordHash ="@123@",
+                 Password ="@123@",
                  ProfilePicture = avatar,
             };
             string roleCheck = "User";

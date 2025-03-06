@@ -300,7 +300,7 @@ public partial class FptclubsContext : DbContext
             entity.Property(e => e.Email)
                 .HasMaxLength(100)
                 .HasColumnName("email");
-            entity.Property(e => e.PasswordHash)
+            entity.Property(e => e.Password)
                 .HasMaxLength(255)
                 .HasColumnName("password_hash");
             entity.Property(e => e.ProfilePicture)
