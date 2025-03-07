@@ -19,7 +19,7 @@ public partial class User
     public string Email { get; set; } = null!;
 
     [Required]
-    public string Password { get; set; } = null!;
+    public string? Password { get; set; }
 
     [Url]
     public string? ProfilePicture { get; set; }

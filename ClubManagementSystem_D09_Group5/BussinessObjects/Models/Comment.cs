@@ -7,13 +7,13 @@ namespace BussinessObjects.Models
     public class Comment
     {
         [Key]
-        public int CommentID { get; set; }
+        public int CommentId { get; set; }
 
         [Required]
-        public int PostID { get; set; }
+        public int PostId { get; set; }
 
         [Required]
-        public int UserID { get; set; }
+        public int UserId { get; set; }
 
         [Required]
         [StringLength(1000)]
@@ -23,10 +23,10 @@ namespace BussinessObjects.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         // Navigation properties
-        [ForeignKey("PostID")]
+        [ForeignKey("PostId")]
         public virtual Post Post { get; set; } = null!;
 
-        [ForeignKey("UserID")]
+        [ForeignKey("UserId")]
         public virtual User User { get; set; } = null!;
     }
 }

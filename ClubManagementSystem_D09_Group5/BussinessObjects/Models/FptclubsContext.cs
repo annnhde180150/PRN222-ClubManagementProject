@@ -199,17 +199,17 @@ public partial class FptclubsContext : DbContext
         });
 
         modelBuilder.Entity<Comment>(entity => {
-            entity.HasKey(e => e.CommentID);
+            entity.HasKey(e => e.CommentId);
 
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
 
             entity.HasOne(d => d.Post).WithMany(p => p.Comments)
-                .HasForeignKey(d => d.PostID);
+                .HasForeignKey(d => d.PostId);
 
             entity.HasOne(d => d.User).WithMany(p => p.Comments)
-                .HasForeignKey(d => d.UserID);
+                .HasForeignKey(d => d.UserId);
         });
 
         modelBuilder.Entity<PostReaction>(entity => {
@@ -302,7 +302,8 @@ public partial class FptclubsContext : DbContext
                 .HasColumnName("email");
             entity.Property(e => e.Password)
                 .HasMaxLength(255)
-                .HasColumnName("password_hash");
+                .IsRequired(false) // Allow NULL values
+                .HasColumnName("password");
             entity.Property(e => e.ProfilePicture)
                 .HasMaxLength(255)
                 .HasColumnName("profile_picture");
