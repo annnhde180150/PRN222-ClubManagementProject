@@ -3,7 +3,8 @@ using BussinessObjects.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.EntityFrameworkCore;
-using Repositories;
+using Repositories.Implementation;
+using Repositories.Interface;
 using Services;
 
 var builder = WebApplication.CreateBuilder(args);

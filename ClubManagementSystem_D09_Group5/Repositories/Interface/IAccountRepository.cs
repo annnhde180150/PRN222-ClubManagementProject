@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BussinessObjects.Models;
 
-namespace Repositories
+namespace Repositories.Interface
 {
     public interface IAccountRepository
     {

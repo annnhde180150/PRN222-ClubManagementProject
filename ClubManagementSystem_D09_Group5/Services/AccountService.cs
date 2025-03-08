@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BussinessObjects.Models;
-using Repositories;
+using Repositories.Interface;
 
 namespace Services
 {
