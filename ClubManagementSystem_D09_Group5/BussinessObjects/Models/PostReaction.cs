@@ -1,18 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BussinessObjects.Models
+namespace BussinessObjects.Models;
+
+public class PostReaction
 {
-    public class PostReaction
-    {
-        public int ReactionId { get; set; }
-        public int PostId { get; set; }
-        public int UserId { get; set; }
-        //navigation properties
-        public virtual Post Post { get; set; }
-        public virtual User User { get; set; }
-    }
+    [Key]
+    public int ReactionId { get; set; }
+
+    [Required]
+    public int PostId { get; set; }
+
+    [Required]
+    public int UserId { get; set; }
+
+    // Navigation properties
+    [ForeignKey("PostId")]
+    public virtual Post Post { get; set; } = null!;
+
+    [ForeignKey("UserId")]
+    public virtual User User { get; set; } = null!;
 }

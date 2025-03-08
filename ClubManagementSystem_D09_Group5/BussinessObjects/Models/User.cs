@@ -1,20 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace BussinessObjects.Models;
 
 public partial class User
 {
+    [Key]
     public int UserId { get; set; }
 
+    [Required]
+    [StringLength(50)]
     public string Username { get; set; } = null!;
 
+    [Required]
+    [EmailAddress]
+    [StringLength(100)]
     public string Email { get; set; } = null!;
 
-    public string PasswordHash { get; set; } = null!;
+    [Required]
+    public string? Password { get; set; }
 
+    [Url]
     public string? ProfilePicture { get; set; }
 
+    [DataType(DataType.DateTime)]
     public DateTime? CreatedAt { get; set; }
 
     public virtual ICollection<ClubMember> ClubMembers { get; set; } = new List<ClubMember>();

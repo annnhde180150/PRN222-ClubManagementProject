@@ -26,6 +26,11 @@ namespace ClubManagementSystem.Controllers
         {
             return View();
         }
+        [AllowAnonymous]
+        public IActionResult SignUp()
+        {
+            return View();
+        }
 
         [HttpPost]
         [AllowAnonymous]
@@ -128,7 +133,7 @@ namespace ClubManagementSystem.Controllers
             {
                  Username = name,
                  Email = email,
-                 PasswordHash ="@123@",
+                 Password ="@123@",
                  ProfilePicture = avatar,
             };
             string roleCheck = "User";
