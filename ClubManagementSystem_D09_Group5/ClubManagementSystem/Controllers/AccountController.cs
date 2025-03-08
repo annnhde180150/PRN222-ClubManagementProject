@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Services;
+using Services.Implementation;
 
 namespace ClubManagementSystem.Controllers
 {
@@ -85,7 +85,7 @@ namespace ClubManagementSystem.Controllers
             await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme, new AuthenticationProperties
             {
                 RedirectUri = Url.Action("GoogleResponse")
-            });            
+            });
         }
 
         [AllowAnonymous]
@@ -128,13 +128,13 @@ namespace ClubManagementSystem.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
-            
+
             User newUser = new User
             {
-                 Username = name,
-                 Email = email,
-                 Password ="@123@",
-                 ProfilePicture = avatar,
+                Username = name,
+                Email = email,
+                Password = "@123@",
+                ProfilePicture = avatar,
             };
             string roleCheck = "User";
             await _accountService.AddGmailUser(newUser);
@@ -142,5 +142,38 @@ namespace ClubManagementSystem.Controllers
             HttpContext.Session.SetString("Role", roleCheck);
             return RedirectToAction("Index", "Home");
         }
+
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SignUp(User user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(user); // Return the view to show validation messages
+            }
+
+            var emailValid = await _accountService.CheckEmailExist(user.Email);
+            var usernameValid = await _accountService.CheckUsernameExist(user.Username);
+
+            if (emailValid != null)
+            {
+                TempData["ErrorMessage"] = "Email already exists!";
+                return RedirectToAction("SignUp", "Account");
+            } else if (usernameValid != null)
+            {
+                TempData["ErrorMessage"] = "Username already exists!";
+                return RedirectToAction("SignUp", "Account");
+            }
+                user.CreatedAt = DateTime.Now;
+
+            await _accountService.AddUser(user);
+
+            //TempData["SuccessMessage"] = "Sign up successfully!";
+            return RedirectToAction("Login", "Account");
+        }
     }
 }
+
+
