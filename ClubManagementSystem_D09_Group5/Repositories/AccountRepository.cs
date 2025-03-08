@@ -17,7 +17,7 @@ namespace Repositories
         }
         public async Task<User?> CheckLogin(string username, string password)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username && u.PasswordHash == password);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username && u.Password == password);
             if (user != null)
             {
                 return user;

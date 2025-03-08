@@ -26,6 +26,11 @@ namespace ClubManagementSystem.Controllers
         {
             return View();
         }
+        [AllowAnonymous]
+        public IActionResult SignUp()
+        {
+            return View();
+        }
 
         [HttpPost]
         [AllowAnonymous]
