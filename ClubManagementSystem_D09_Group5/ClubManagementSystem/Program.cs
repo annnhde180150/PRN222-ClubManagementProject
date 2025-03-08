@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.EntityFrameworkCore;
 using Repositories.Implementation;
 using Repositories.Interface;
-using Services;
+using Services.Implementation;
 
 var builder = WebApplication.CreateBuilder(args);
 
