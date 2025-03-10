@@ -101,7 +101,7 @@ namespace ClubManagementSystem.Controllers
             });
             var email = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
             var name = claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
-            var avatar = claims.FirstOrDefault(c => c.Type == "urn:google:picture")?.Value;
+            var avatar = result.Principal.FindFirst("urn:google:picture")?.Value;
             var user = await _accountService.CheckEmailExist(email);
             if (user != null)
             {

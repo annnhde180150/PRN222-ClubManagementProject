@@ -1,5 +1,6 @@
 using System;
 using BussinessObjects.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +46,7 @@ builder.Services.AddAuthentication(options =>
 {
     options.ClientId = clientId;
     options.ClientSecret = clientSecret;
+    options.ClaimActions.MapJsonKey("urn:google:picture","picture","url");
 });
 
 var app = builder.Build();
@@ -61,7 +63,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseSession();
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
