@@ -134,7 +134,7 @@ namespace ClubManagementSystem.Controllers
                 Username = name,
                 Email = email,
                 Password = "@123@",
-                ProfilePicture = avatar,
+                //ProfilePicture = avatar,
             };
             string roleCheck = "User";
             await _accountService.AddGmailUser(newUser);
