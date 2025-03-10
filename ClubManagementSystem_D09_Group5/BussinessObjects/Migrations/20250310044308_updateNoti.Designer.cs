@@ -4,6 +4,7 @@ using BussinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BussinessObjects.Migrations
 {
     [DbContext(typeof(FptclubsContext))]
-    partial class FptclubsContextModelSnapshot : ModelSnapshot
+    [Migration("20250310044308_updateNoti")]
+    partial class updateNoti
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,10 +40,6 @@ namespace BussinessObjects.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("club_name");
 
-                    b.Property<byte[]>("Cover")
-                        .HasColumnType("varbinary(max)")
-                        .HasColumnName("cover");
-
                     b.Property<DateTime?>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
@@ -48,13 +47,8 @@ namespace BussinessObjects.Migrations
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)")
+                        .HasColumnType("text")
                         .HasColumnName("description");
-
-                    b.Property<byte[]>("Logo")
-                        .HasColumnType("varbinary(max)")
-                        .HasColumnName("logo");
 
                     b.HasKey("ClubId")
                         .HasName("PK__Clubs__BCAD3DD9E76837C6");
@@ -123,7 +117,6 @@ namespace BussinessObjects.Migrations
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(500)
                         .HasColumnType("text")
                         .HasColumnName("description");
 
@@ -148,33 +141,32 @@ namespace BussinessObjects.Migrations
 
             modelBuilder.Entity("BussinessObjects.Models.Comment", b =>
                 {
-                    b.Property<int>("CommentId")
+                    b.Property<int>("CommentID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentID"));
 
                     b.Property<string>("CommentText")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
                         .HasDefaultValueSql("(getdate())");
 
-                    b.Property<int>("PostId")
+                    b.Property<int>("PostID")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("UserID")
                         .HasColumnType("int");
 
-                    b.HasKey("CommentId");
+                    b.HasKey("CommentID");
 
-                    b.HasIndex("PostId");
+                    b.HasIndex("PostID");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserID");
 
                     b.ToTable("Comments");
                 });
@@ -203,7 +195,6 @@ namespace BussinessObjects.Migrations
                         .HasColumnName("event_date");
 
                     b.Property<string>("EventDescription")
-                        .HasMaxLength(1000)
                         .HasColumnType("text")
                         .HasColumnName("event_description");
 
@@ -247,7 +238,6 @@ namespace BussinessObjects.Migrations
 
                     b.Property<string>("Message")
                         .IsRequired()
-                        .HasMaxLength(500)
                         .HasColumnType("text")
                         .HasColumnName("message");
 
@@ -274,8 +264,7 @@ namespace BussinessObjects.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnType("text")
                         .HasColumnName("content");
 
                     b.Property<DateTime?>("CreatedAt")
@@ -288,14 +277,15 @@ namespace BussinessObjects.Migrations
                         .HasColumnType("int")
                         .HasColumnName("created_by");
 
-                    b.Property<byte[]>("Image")
-                        .HasColumnType("varbinary(max)")
-                        .HasColumnName("image");
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("image_url");
 
                     b.Property<string>("Status")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
                         .HasDefaultValue("Pending")
                         .HasColumnName("status");
 
@@ -387,7 +377,6 @@ namespace BussinessObjects.Migrations
 
                     b.Property<string>("TaskDescription")
                         .IsRequired()
-                        .HasMaxLength(1000)
                         .HasColumnType("text")
                         .HasColumnName("task_description");
 
@@ -453,14 +442,15 @@ namespace BussinessObjects.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("email");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("password");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("password_hash");
 
-                    b.Property<byte[]>("ProfilePicture")
-                        .HasColumnType("varbinary(max)")
+                    b.Property<string>("ProfilePicture")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
                         .HasColumnName("profile_picture");
 
                     b.Property<string>("Username")
@@ -525,13 +515,13 @@ namespace BussinessObjects.Migrations
                 {
                     b.HasOne("BussinessObjects.Models.Post", "Post")
                         .WithMany("Comments")
-                        .HasForeignKey("PostId")
+                        .HasForeignKey("PostID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BussinessObjects.Models.User", "User")
                         .WithMany("Comments")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

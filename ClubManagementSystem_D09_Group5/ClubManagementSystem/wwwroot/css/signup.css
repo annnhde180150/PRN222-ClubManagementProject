@@ -54,7 +54,7 @@
 
 .SignupLabel {
     font-family: Poppins-Regular;
-    font-size: 14px;
+    font-size: 18px;
     color: #333333;
     line-height: 1.5;
     padding-left: 7px;
@@ -78,6 +78,7 @@
     position: relative;
     width: 100%;
     border-bottom: 2px solid #d9d9d9;
+    margin-bottom: 23px;
 }
 
 .ForgotPassword {
@@ -175,52 +176,6 @@
         transition: all 0.4s;
     }
 
-.GoogleLogintextContainer {
-    font-size: 14px;
-    line-height: 1.5;
-    color: #666666;
-    text-align: center !important;
-    padding-top: 20px;
-    padding-bottom: 20px;
-}
-
-.GoogleLoginContainer {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.GoogleLoginWrap {
-    width: 100%;
-    display: block;
-    position: relative;
-    z-index: 1;
-    border-radius: 25px;
-    overflow: hidden;
-    margin: 0 auto;
-}
-
-.google-login {
-    width: 103%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #ffffff;
-    color: rgb(12, 12, 12);
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-/* .google-login-btn:hover {
-  background-color: #773f3f;
-} */
-
-.google-logo {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
-}
 
 .ToLogin {
     padding-top: 25px;
@@ -237,13 +192,15 @@
   margin-bottom: 23px;
 }
 
-#Email, #UserName, #Password, #PasswordConfirm{
+#Email, #Username, #Password, #PasswordConfirm{
   background-color: white;
   border-radius: 5px;
 }
 
-.ConfirmPassword{
-  margin-top: 23px;
-  margin-bottom: 23px;
+.text-validation {
+    position: absolute;
+    font-size: 14px;
+    color: red;
+    bottom: -25px; /* Adjust to fit your design */
+    left: 5px;
 }
-

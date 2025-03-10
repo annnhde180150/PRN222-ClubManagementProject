@@ -16,9 +16,7 @@ public partial class Post
     [Required]
     [StringLength(2000)]
     public string Content { get; set; } = null!;
-
-    [Url]
-    public string? ImageUrl { get; set; }
+    public byte[]? Image { get; set; }
 
     [DataType(DataType.DateTime)]
     public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;

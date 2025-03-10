@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using BussinessObjects.Models;
 using Repositories.Interface;
 
-namespace Services
+namespace Services.Implementation
 {
     public class AccountService
     {
@@ -31,6 +31,15 @@ namespace Services
         public Task<User> AddGmailUser (User user)
         {
             return _accountRepository.AddGmailUser(user);
+        }
+        public Task<User> AddUser(User user)
+        {
+            return _accountRepository.AddUser(user);
+        }
+
+        public Task<User?> CheckUsernameExist(string username)
+        {
+            return _accountRepository.CheckUsernameExist(username);
         }
     }
 }

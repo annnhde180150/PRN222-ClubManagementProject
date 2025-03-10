@@ -9,6 +9,7 @@ namespace Services.Interface
 {
     public interface INotificationService
     {
+        Task<Notification> Notify(int userID, string mess, string location);
         Task<IEnumerable<Notification>> GetNotificationsAsync(int userId);
         Task<Notification> GetNotificationAsync(int notificationId);
         Task<Notification> AddNotificationAsync(Notification notification);

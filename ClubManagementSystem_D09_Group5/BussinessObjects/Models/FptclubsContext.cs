@@ -56,17 +56,26 @@ public partial class FptclubsContext : DbContext
             entity.HasKey(e => e.ClubId).HasName("PK__Clubs__BCAD3DD9E76837C6");
 
             entity.Property(e => e.ClubId).HasColumnName("club_id");
+
             entity.Property(e => e.ClubName)
                 .HasMaxLength(100)
+                .IsRequired()
                 .HasColumnName("club_name");
+            entity.Property(e => e.Logo)
+                .HasColumnType("varbinary(max)")
+                .HasColumnName("logo");
+            entity.Property(e => e.Cover)
+                .HasColumnType("varbinary(max)")
+                .HasColumnName("cover");
+            entity.Property(e => e.Description)
+                .HasMaxLength(500)
+                .HasColumnName("description");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
-            entity.Property(e => e.Description)
-                .HasColumnType("text")
-                .HasColumnName("description");
         });
+
 
         modelBuilder.Entity<ClubMember>(entity =>
         {
@@ -176,27 +185,31 @@ public partial class FptclubsContext : DbContext
             entity.HasKey(e => e.PostId).HasName("PK__Posts__3ED78766A395B13D");
 
             entity.Property(e => e.PostId).HasColumnName("post_id");
+            entity.Property(e => e.CreatedBy)
+                .IsRequired()
+                .HasColumnName("created_by");
             entity.Property(e => e.Content)
-                .HasColumnType("text")
+                .IsRequired()
+                .HasMaxLength(2000)
                 .HasColumnName("content");
+            entity.Property(e => e.Image)
+                .HasColumnType("varbinary(max)")
+                .HasColumnName("image");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
-            entity.Property(e => e.CreatedBy).HasColumnName("created_by");
-            entity.Property(e => e.ImageUrl)
-                .HasMaxLength(255)
-                .HasColumnName("image_url");
             entity.Property(e => e.Status)
-                .HasMaxLength(20)
+                .HasMaxLength(50)
                 .HasDefaultValue("Pending")
                 .HasColumnName("status");
-
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.Posts)
+            entity.HasOne(d => d.CreatedByNavigation)
+                .WithMany(p => p.Posts)
                 .HasForeignKey(d => d.CreatedBy)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Posts__created_b__49C3F6B7");
         });
+
 
         modelBuilder.Entity<Comment>(entity => {
             entity.HasKey(e => e.CommentId);
@@ -289,28 +302,31 @@ public partial class FptclubsContext : DbContext
             entity.HasKey(e => e.UserId).HasName("PK__Users__B9BE370F995A7F0D");
 
             entity.HasIndex(e => e.Email, "UQ__Users__AB6E6164897924D5").IsUnique();
-
             entity.HasIndex(e => e.Username, "UQ__Users__F3DBC57250E7F37C").IsUnique();
 
             entity.Property(e => e.UserId).HasColumnName("user_id");
+
+            entity.Property(e => e.Username)
+                .IsRequired()
+                .HasMaxLength(50)
+                .HasColumnName("username");
+            entity.Property(e => e.Email)
+                .IsRequired()
+                .HasMaxLength(100)
+                .HasColumnName("email");
+            entity.Property(e => e.Password)
+                .IsRequired()
+                .HasMaxLength(50)
+                .HasColumnName("password");
+            entity.Property(e => e.ProfilePicture)
+                .HasColumnType("varbinary(max)") // Store image as binary data
+                .HasColumnName("profile_picture");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
-            entity.Property(e => e.Email)
-                .HasMaxLength(100)
-                .HasColumnName("email");
-            entity.Property(e => e.Password)
-                .HasMaxLength(255)
-                .IsRequired(false) // Allow NULL values
-                .HasColumnName("password");
-            entity.Property(e => e.ProfilePicture)
-                .HasMaxLength(255)
-                .HasColumnName("profile_picture");
-            entity.Property(e => e.Username)
-                .HasMaxLength(50)
-                .HasColumnName("username");
         });
+
 
         OnModelCreatingPartial(modelBuilder);
     }

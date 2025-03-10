@@ -13,5 +13,7 @@ namespace Repositories.Interface
         Task<ClubMember?> CheckRole(int userId);
         Task<User?> CheckEmailExist(string email);
         Task<User?> AddGmailUser(User user);
+        Task<User?> AddUser(User user);
+        Task<User?> CheckUsernameExist(string username);
     }
 }

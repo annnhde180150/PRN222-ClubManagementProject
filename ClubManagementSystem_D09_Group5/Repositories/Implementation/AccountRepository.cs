@@ -51,5 +51,21 @@ namespace Repositories.Implementation
             await _context.SaveChangesAsync();
             return user;
         }
+        public async Task<User> AddUser(User user)
+        {
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+            return user;
+        }
+
+        public async Task<User?> CheckUsernameExist(string username)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(c => c.Username == username);
+            if (user != null)
+            {
+                return user;
+            }
+            return null;
+        }
     }
 }
