@@ -18,6 +18,7 @@ string clientId = builder.Configuration["GoogleAuth:ClientId"];
 builder.Services.AddControllersWithViews();
 
 //Add session
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(5);

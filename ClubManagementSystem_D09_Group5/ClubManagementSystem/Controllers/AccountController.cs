@@ -54,10 +54,16 @@ namespace ClubManagementSystem.Controllers
             if (user != null)
             {
                 var clubmember = await _accountService.CheckRole(user.UserId);
+                string? profilePicture="";
+                if (user.ProfilePicture != null)
+                {
+                    profilePicture = Encoding.UTF8.GetString(user.ProfilePicture);
+                }              
                 if (clubmember == null)
                 {
                     string role = "User";
                     HttpContext.Session.SetString("userId", user.UserId.ToString());
+                    HttpContext.Session.SetString("userPicture", profilePicture);
                     HttpContext.Session.SetString("Role", role);
                     return RedirectToAction("Index", "Home");
                 }
@@ -65,6 +71,7 @@ namespace ClubManagementSystem.Controllers
                 {
                     string role = "ClubAdmin";
                     HttpContext.Session.SetString("userId", user.UserId.ToString());
+                    HttpContext.Session.SetString("userPicture", profilePicture);
                     HttpContext.Session.SetString("Role", role);
                     return RedirectToAction("Index", "Home");
                 }
@@ -72,6 +79,7 @@ namespace ClubManagementSystem.Controllers
                 {
                     string role = "ClubMember";
                     HttpContext.Session.SetString("userId", user.UserId.ToString());
+                    HttpContext.Session.SetString("userPicture", profilePicture);
                     HttpContext.Session.SetString("Role", role);
                     return RedirectToAction("Index", "Home");
                 }
@@ -108,10 +116,12 @@ namespace ClubManagementSystem.Controllers
             if (user != null)
             {
                 var clubmember = await _accountService.CheckRole(user.UserId);
+                string profilePicture = Encoding.UTF8.GetString(user.ProfilePicture);
                 if (clubmember == null)
                 {
                     string role = "User";
                     HttpContext.Session.SetString("userId", user.UserId.ToString());
+                    HttpContext.Session.SetString("userPicture", profilePicture);
                     HttpContext.Session.SetString("Role", role);
                     return RedirectToAction("Index", "Home");
                 }
@@ -119,6 +129,7 @@ namespace ClubManagementSystem.Controllers
                 {
                     string role = "ClubAdmin";
                     HttpContext.Session.SetString("userId", user.UserId.ToString());
+                    HttpContext.Session.SetString("userPicture", profilePicture);
                     HttpContext.Session.SetString("Role", role);
                     return RedirectToAction("Index", "Home");
                 }
@@ -126,6 +137,7 @@ namespace ClubManagementSystem.Controllers
                 {
                     string role = "ClubMember";
                     HttpContext.Session.SetString("userId", user.UserId.ToString());
+                    HttpContext.Session.SetString("userPicture", profilePicture);
                     HttpContext.Session.SetString("Role", role);
                     return RedirectToAction("Index", "Home");
                 }
@@ -140,6 +152,7 @@ namespace ClubManagementSystem.Controllers
             string roleCheck = "User";
             await _accountService.AddGmailUser(newUser);
             HttpContext.Session.SetString("userId", newUser.UserId.ToString());
+            HttpContext.Session.SetString("userPicture", avatar);
             HttpContext.Session.SetString("Role", roleCheck);
             return RedirectToAction("Index", "Home");
         }
