@@ -12,6 +12,8 @@ public partial class Club
     [Required]
     [StringLength(100)]
     public string ClubName { get; set; } = null!;
+    public byte[]? Logo { get; set; }
+    public byte[]? Cover { get; set; }
 
     [StringLength(500)]
     public string? Description { get; set; }

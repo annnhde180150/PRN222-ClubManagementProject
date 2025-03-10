@@ -34,8 +34,7 @@ public partial class User
     [MinLength(6, ErrorMessage = "Password must be at least 6 characters long.")]
     public string ConfirmPassword { get; set; } = string.Empty!;
 
-    [Url]
-    public string? ProfilePicture { get; set; }
+    public byte[]? ProfilePicture { get; set; }
 
     [DataType(DataType.DateTime)]
     public DateTime? CreatedAt { get; set; }
