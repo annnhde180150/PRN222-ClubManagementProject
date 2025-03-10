@@ -1,6 +1,7 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@model IEnumerable<BussinessObjects.Models.Notification>
 @{
     ViewData["Title"] = "Notification";
 }
@@ -23,7 +24,7 @@
                 </a>
             </div>
 
-            <div class="container border border-secondary border-1" style="--bs-border-opacity : 0.5;">
+            <div class="container border border-secondary border-1 rounded" style="--bs-border-opacity : 0.5;">
                 <div id="gridHeader" class="row bg-beige py-2">
                     <div class="col-1">
                         
@@ -38,34 +39,39 @@
                         <p class="h6">Message</p>
                     </div>
                 </div>
-                <div id="gridHeader" class="row py-2 border-bottom">
-                    <div class="col-1">
-                        <input type="checkbox" class="mx-auto align-self-center">
-                    </div>
-                    <div class="col-3 text-center">
-                        <p class="h6">Created Time</p>
-                    </div>
-                    <div class="col-3">
-                        <p class="h6">Location</p>
-                    </div>
-                    <div class="col-5">
-                        <p class="h6">Message</p>
-                    </div>
-                </div>
-                <div id="gridHeader" class="row py-2 border-bottom bg-body-secondary viewNoti">
-                    <div class="col-1">
-                        <input type="checkbox" class="mx-auto align-self-center">
-                    </div>
-                    <div class="col-3 text-center">
-                        <p class="h6">Created Time</p>
-                    </div>
-                    <div class="col-3">
-                        <p class="h6">Location</p>
-                    </div>
-                    <div class="col-5">
-                        <p class="h6">Message</p>
-                    </div>
-                </div>
+                @foreach (var item in Model){
+                    @if(item.IsRead.Value){
+                        <div id="gridRow" class="row py-2 border-bottom bg-body-secondary viewNoti">
+                            <div class="col-1">
+                                <input type="checkbox" class="mx-auto align-self-center" value="@item.IsRead">
+                            </div>
+                            <div class="col-3 text-center">
+                                <p class="h6">@item.CreatedAt</p>
+                            </div>
+                            <div class="col-3">
+                                <p class="h6">@item.Location</p>
+                            </div>
+                            <div class="col-5">
+                                <p class="h6">@item.Message</p>
+                            </div>
+                        </div>
+                    }else{
+                        <div id="gridRow" class="row py-2 border-bottom">
+                            <div class="col-1">
+                                <input type="checkbox" class="mx-auto align-self-center" value="@item.IsRead">
+                            </div>
+                            <div class="col-3 text-center">
+                                <p class="h6">@item.CreatedAt</p>
+                            </div>
+                            <div class="col-3">
+                                <p class="h6">@item.Location</p>
+                            </div>
+                            <div class="col-5">
+                                <p class="h6">@item.Message</p>
+                            </div>
+                        </div>
+                    }
+                }
             </div>
         </div>
     </div>
@@ -89,7 +95,7 @@
         background-color: Beige;
     }
 
-        .btn-beige:hover {
-            background-color: #9F8C76;
-        }
+    .btn-beige:hover {
+        background-color: #9F8C76;
+    }
 </style>
