@@ -1,0 +1,95 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Notification";
+}
+
+<section>
+    <div class="container">
+        <div id="header" class="container border-bottom bottom-secondary border-2 py-4 d-flex">
+            <a href="#" class="h1 me-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-bar-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M12.5 15a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5M10 8a.5.5 0 0 1-.5.5H3.707l2.147 
+                    2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L3.707 7.5H9.5a.5.5 0 0 1 .5.5"/>
+                </svg>
+            </a>
+            <p class="h3">Notifications</p>
+        </div>
+        <div id="body" class="container mt-5">
+            <div class="container mb-4">
+                <a href="" class="btn btn-beige btn-lg rounded-pill">
+                    Dismiss All
+                </a>
+            </div>
+
+            <div class="container border border-secondary border-1" style="--bs-border-opacity : 0.5;">
+                <div id="gridHeader" class="row bg-beige py-2">
+                    <div class="col-1">
+                        
+                    </div>
+                    <div class="col-3 text-center">
+                        <p class="h6">Created Time</p>
+                    </div>
+                    <div class="col-3">
+                        <p class="h6">Location</p>
+                    </div>
+                    <div class="col-5">
+                        <p class="h6">Message</p>
+                    </div>
+                </div>
+                <div id="gridHeader" class="row py-2 border-bottom">
+                    <div class="col-1">
+                        <input type="checkbox" class="mx-auto align-self-center">
+                    </div>
+                    <div class="col-3 text-center">
+                        <p class="h6">Created Time</p>
+                    </div>
+                    <div class="col-3">
+                        <p class="h6">Location</p>
+                    </div>
+                    <div class="col-5">
+                        <p class="h6">Message</p>
+                    </div>
+                </div>
+                <div id="gridHeader" class="row py-2 border-bottom bg-body-secondary viewNoti">
+                    <div class="col-1">
+                        <input type="checkbox" class="mx-auto align-self-center">
+                    </div>
+                    <div class="col-3 text-center">
+                        <p class="h6">Created Time</p>
+                    </div>
+                    <div class="col-3">
+                        <p class="h6">Location</p>
+                    </div>
+                    <div class="col-5">
+                        <p class="h6">Message</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    input[type="checkbox"] {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    .viewNoti {
+        --bs-bg-opacity: 0.5;
+    }
+
+    .bg-beige {
+        background-color: Beige;
+    }
+
+    .btn-beige {
+        background-color: Beige;
+    }
+
+        .btn-beige:hover {
+            background-color: #9F8C76;
+        }
+</style>

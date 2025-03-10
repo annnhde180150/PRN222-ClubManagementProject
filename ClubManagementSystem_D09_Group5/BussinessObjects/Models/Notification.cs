@@ -11,7 +11,9 @@ public partial class Notification
 
     public string Message { get; set; } = null!;
 
-    public bool? IsRead { get; set; }
+    public bool? IsRead { get; set; } = false;
+
+    public string? Location { get; set; }
 
     public DateTime? CreatedAt { get; set; }
 

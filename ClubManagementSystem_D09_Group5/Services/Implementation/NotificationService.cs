@@ -21,6 +21,19 @@ namespace Services.Implementation
             _NR = new NotificationRepository();
         }
 
+        public async Task<Notification> Notify(int userID, string mess, string location)
+        {
+            Notification noti  = new Notification()
+            {
+                CreatedAt = DateTime.Now,
+                IsRead = false,
+                Location = location,
+                Message = mess,
+                UserId = userID
+            };
+            return await _NR.AddNotificationAsync(noti);
+        }
+
         public async Task<Notification> AddNotificationAsync(Notification notification)
         {
             return await _NR.AddNotificationAsync(notification);
