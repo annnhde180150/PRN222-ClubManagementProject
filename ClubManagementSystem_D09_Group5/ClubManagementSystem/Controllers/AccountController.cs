@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using System.Security.Claims;
+using System.Text;
 using BussinessObjects.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -101,8 +102,9 @@ namespace ClubManagementSystem.Controllers
             });
             var email = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
             var name = claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
-            var avatar = result.Principal.FindFirst("urn:google:picture")?.Value;
+            string avatar = result.Principal.FindFirst("urn:google:picture")?.Value;
             var user = await _accountService.CheckEmailExist(email);
+            byte[] avatarByte = Encoding.UTF8.GetBytes(avatar);
             if (user != null)
             {
                 var clubmember = await _accountService.CheckRole(user.UserId);
@@ -133,8 +135,7 @@ namespace ClubManagementSystem.Controllers
             {
                 Username = name,
                 Email = email,
-                Password = "@123@",
-                //ProfilePicture = avatar,
+                ProfilePicture = avatarByte,
             };
             string roleCheck = "User";
             await _accountService.AddGmailUser(newUser);
