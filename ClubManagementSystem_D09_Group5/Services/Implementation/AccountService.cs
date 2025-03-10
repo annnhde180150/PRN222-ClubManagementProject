@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using BussinessObjects.Models;
 using Repositories.Interface;
+using Services.Interface;
 
 namespace Services.Implementation
 {
-    public class AccountService
+    public class AccountService : IAccountService
     {
         private readonly IAccountRepository _accountRepository;
         public AccountService(IAccountRepository accountRepository)
@@ -40,6 +41,11 @@ namespace Services.Implementation
         public Task<User?> CheckUsernameExist(string username)
         {
             return _accountRepository.CheckUsernameExist(username);
+        }
+
+        public Task<User?> FindUserAsync(int id)
+        {
+            return _accountRepository.FindUserAsync(id);
         }
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Repositories.Implementation;
 using Repositories.Interface;
 using Services.Implementation;
+using Services.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +29,7 @@ builder.Services.AddSession(options =>
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 
 //Add Services
-builder.Services.AddScoped<AccountService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 // Add DbContext
 builder.Services.AddDbContext<FptclubsContext>(options =>

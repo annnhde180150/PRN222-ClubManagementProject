@@ -6,16 +6,17 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Services.Implementation;
+using Microsoft.EntityFrameworkCore;
+using Services.Interface;
 
 namespace ClubManagementSystem.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly AccountService _accountService;
+        private readonly IAccountService _accountService;
         private readonly IConfiguration _configuration;
 
-        public AccountController(IConfiguration configuration, AccountService accountService)
+        public AccountController(IConfiguration configuration, IAccountService accountService)
         {
             _accountService = accountService;
             _configuration = configuration;
@@ -30,6 +31,21 @@ namespace ClubManagementSystem.Controllers
         public IActionResult SignUp()
         {
             return View();
+        }
+        [AllowAnonymous]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _accountService.FindUserAsync(id.Value);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
         }
 
         [HttpPost]

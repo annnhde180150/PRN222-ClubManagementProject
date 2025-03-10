@@ -67,5 +67,10 @@ namespace Repositories.Implementation
             }
             return null;
         }
+
+        public async Task<User?> FindUserAsync(int userId)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+        }
     }
 }
