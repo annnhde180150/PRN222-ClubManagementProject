@@ -18,6 +18,8 @@ public partial class Notification
 
     public bool? IsRead { get; set; } = false;
 
+    public string? Location { get; set; }
+
     [DataType(DataType.DateTime)]
     public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
 
