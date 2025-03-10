@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using BussinessObjects.Models;
+using ClubManagementSystem.Controllers.Filter;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
@@ -155,6 +156,15 @@ namespace ClubManagementSystem.Controllers
             HttpContext.Session.SetString("userPicture", avatar);
             HttpContext.Session.SetString("Role", roleCheck);
             return RedirectToAction("Index", "Home");
+        }
+
+        //[SessionAuthorize("User,ClubMember,ClubAdmin")]
+        [AllowAnonymous]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            Console.WriteLine("Session"+HttpContext.Session.GetString("userId"));
+            return  RedirectToAction("Login", "Account");
         }
 
 
