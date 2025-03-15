@@ -211,10 +211,9 @@
     transition: background-color 0.3s;
 }
 
-/* .google-login-btn:hover {
-  background-color: #773f3f;
-} */
-
+.google-login:hover {
+    background-color: #fff;
+} 
 .google-logo {
     width: 20px;
     height: 20px;
