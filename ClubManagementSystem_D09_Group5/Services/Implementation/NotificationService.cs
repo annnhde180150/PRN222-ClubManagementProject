@@ -12,13 +12,11 @@ namespace Services.Implementation
 {
     public class NotificationService : INotificationService
     {
-        private FptclubsContext _context;
         private INotificationRepository _NR;
 
-        public NotificationService() 
+        public NotificationService(NotificationRepository repo) 
         {
-            _context = new FptclubsContext();
-            _NR = new NotificationRepository();
+            _NR = repo;
         }
 
         public async Task<Notification> Notify(int userID, string mess, string location)

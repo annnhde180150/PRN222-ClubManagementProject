@@ -48,4 +48,6 @@ public partial class User
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
     public virtual ICollection<PostReaction> Reactions { get; set; } = new List<PostReaction>();
+
+    public virtual ICollection<Connection> Connections { get; set; } = new List<Connection>();
 }
