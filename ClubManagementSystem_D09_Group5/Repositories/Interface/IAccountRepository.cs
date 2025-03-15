@@ -16,5 +16,6 @@ namespace Repositories.Interface
         Task<User?> AddUser(User user);
         Task<User?> CheckUsernameExist(string username);
         Task<User?> FindUserAsync(int userId);
+        Task<User?> UpdateUserAsync(User user);
     }
 }

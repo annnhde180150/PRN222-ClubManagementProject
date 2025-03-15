@@ -189,6 +189,45 @@ namespace ClubManagementSystem.Controllers
             //TempData["SuccessMessage"] = "Sign up successfully!";
             return RedirectToAction("Login", "Account");
         }
+
+
+        // POST: Save changes to profile
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(User model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _accountService.FindUserAsync(model.UserId);
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                // Update the user's details
+                user.Username = model.Username;
+                user.Email = model.Email;
+
+                // If a new password is provided, check if it matches the confirm password and update
+                if (!string.IsNullOrEmpty(model.Password) && model.Password == model.ConfirmPassword)
+                {
+                    user.Password = model.Password; // Save the password as plain text
+                }
+                else if (!string.IsNullOrEmpty(model.Password))
+                {
+                    ModelState.AddModelError("Password", "Passwords do not match.");
+                    return View(model); // Return the view if passwords do not match
+                }
+
+                await _accountService.UpdateUserAsync(user); // Assuming this method updates the user in the database
+
+                TempData["SuccessMessage"] = "Profile updated successfully!";
+                return View(model); // Or redirect to the profile page
+            }
+
+            return View(model); // Return the view with validation errors
+        }
     }
 }
 

@@ -47,5 +47,10 @@ namespace Services.Implementation
         {
             return _accountRepository.FindUserAsync(id);
         }
+
+        public Task<User?> UpdateUserAsync(User user)
+        {
+            return _accountRepository.UpdateUserAsync(user);
+        }
     }
 }
