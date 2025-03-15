@@ -10,15 +10,16 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.Implementation;
+using Services.Interface;
 
 namespace ClubManagementSystem.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly AccountService _accountService;
+        private readonly IAccountService _accountService;
         private readonly IConfiguration _configuration;
 
-        public AccountController(IConfiguration configuration, AccountService accountService)
+        public AccountController(IConfiguration configuration, IAccountService accountService)
         {
             _accountService = accountService;
             _configuration = configuration;
