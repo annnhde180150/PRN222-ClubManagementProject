@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Repositories.Implementation;
 using Repositories.Interface;
 using Services.Implementation;
@@ -45,7 +46,11 @@ builder.Services.AddAuthentication(options =>
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 })
-.AddCookie()
+.AddCookie(options =>
+{
+    options.LoginPath = "/Account/Login";  
+    options.AccessDeniedPath = "/Account/AccessDenied"; 
+})
 .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
 {
     options.ClientId = clientId;

@@ -1,6 +1,5 @@
 ﻿@inject IHttpContextAccessor HttpContextAccessor
 @{
-	string? sessionUser = HttpContextAccessor.HttpContext.Session.GetString("userId") as string;
 	string? sessionPicture = HttpContextAccessor.HttpContext.Session.GetString("userPicture") as string;
 }
 <!DOCTYPE html>
@@ -116,7 +115,7 @@
 				</div>
 
 				<div class="col-lg-2 col-md-4 col-6">
-					@if (sessionUser != null)
+					@if (User.Identity.IsAuthenticated)
 					{
 						@if (!string.IsNullOrEmpty(sessionPicture)){
 							<div class="header-socials-2 text-right d-none d-lg-block">
