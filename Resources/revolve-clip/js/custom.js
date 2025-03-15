@@ -5,6 +5,25 @@
  * GITHUB: https://github.com/themefisher/
  */
 
+	/* ----------------------------------------------------------- */
+	/*  NavBar Profile Menu
+	/* ----------------------------------------------------------- */
+document.addEventListener("DOMContentLoaded", function () {
+    const menuToggle = document.getElementById("menuToggle");
+    const submenu = document.getElementById("submenu");
+
+    menuToggle.addEventListener("click", function (event) {
+        event.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ <a>
+        submenu.style.display = (submenu.style.display === "block") ? "none" : "block";
+    });
+
+    // Đóng submenu nếu click ra ngoài
+    document.addEventListener("click", function (event) {
+        if (!menuToggle.contains(event.target) && !submenu.contains(event.target)) {
+            submenu.style.display = "none";
+        }
+    });
+});
 
 (function ($) { 
 	'use strict';
@@ -141,3 +160,5 @@
 	});
 
 })(jQuery);
+
+

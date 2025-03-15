@@ -1,8 +1,10 @@
 using System;
 using BussinessObjects.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Repositories.Implementation;
 using Repositories.Interface;
 using Services.Implementation;
@@ -18,6 +20,7 @@ string clientId = builder.Configuration["GoogleAuth:ClientId"];
 builder.Services.AddControllersWithViews();
 
 //Add session
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(5);
@@ -27,9 +30,11 @@ builder.Services.AddSession(options =>
 
 //Add Repositories
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 
 //Add Services
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 
 // Add DbContext
 builder.Services.AddDbContext<FptclubsContext>(options =>
@@ -41,11 +46,16 @@ builder.Services.AddAuthentication(options =>
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 })
-.AddCookie()
+.AddCookie(options =>
+{
+    options.LoginPath = "/Account/Login";  
+    options.AccessDeniedPath = "/Account/AccessDenied"; 
+})
 .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
 {
     options.ClientId = clientId;
     options.ClientSecret = clientSecret;
+    options.ClaimActions.MapJsonKey("urn:google:picture","picture","url");
 });
 
 var app = builder.Build();
@@ -62,7 +72,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseSession();
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

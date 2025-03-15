@@ -23,6 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\ResponseModel\" />
+    <Folder Include="Models\RequestModel\" />
     <Folder Include="Views\Popup\" />
   </ItemGroup>
 

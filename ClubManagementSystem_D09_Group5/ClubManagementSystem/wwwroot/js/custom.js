@@ -5,6 +5,26 @@
  * GITHUB: https://github.com/themefisher/
  */
 
+/*
+   Open dropdown profile menu
+*/
+document.addEventListener("DOMContentLoaded", function () {
+    const menuToggle = document.getElementById("menuToggle");
+    const submenu = document.getElementById("submenu");
+
+    if (menuToggle && submenu) {
+        menuToggle.addEventListener("click", function (event) {
+            event.preventDefault();
+            submenu.style.display = (submenu.style.display === "block") ? "none" : "block";
+        });
+
+        document.addEventListener("click", function (event) {
+            if (!menuToggle.contains(event.target) && !submenu.contains(event.target)) {
+                submenu.style.display = "none";
+            }
+        });
+    }
+});
 
 (function ($) { 
 	'use strict';
@@ -141,3 +161,4 @@
 	});
 
 })(jQuery);
+

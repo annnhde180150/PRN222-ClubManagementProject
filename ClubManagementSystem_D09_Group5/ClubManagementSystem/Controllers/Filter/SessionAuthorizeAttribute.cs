@@ -15,7 +15,7 @@ namespace ClubManagementSystem.Controllers.Filter
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var userRole = context.HttpContext.Session.GetString("UserRole");
+            var userRole = context.HttpContext.Session.GetString("role");
 
             var actionDescriptor = context.ActionDescriptor;
             var allowAnonymous = actionDescriptor.EndpointMetadata.Any(em => em is AllowAnonymousAttribute);
@@ -32,7 +32,7 @@ namespace ClubManagementSystem.Controllers.Filter
             {
                 context.Result = new RedirectToActionResult("Login", "Account", null);
             }
-            else if (!rolesToCheck.Contains(userRole) && userRole != "0")
+            else if (!rolesToCheck.Contains(userRole) && userRole != "Admin")
             {
                 context.Result = new RedirectToActionResult("AccessDenied", "Account", null);
             }

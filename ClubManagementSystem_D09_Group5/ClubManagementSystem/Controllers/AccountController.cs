@@ -1,12 +1,16 @@
 ﻿using System.Data;
 using System.Security.Claims;
+using System.Text;
 using BussinessObjects.Models;
+using ClubManagementSystem.Controllers.Filter;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Services.Implementation;
 using Services.Interface;
 
 namespace ClubManagementSystem.Controllers
@@ -54,40 +58,77 @@ namespace ClubManagementSystem.Controllers
         public async Task<IActionResult> CheckLogin(string userName, string password)
         {
             var user = await _accountService.CheckLogin(userName, password);
-            var adminUsername = _configuration["AdminAccount:Username"];
+            var adminGmail = _configuration["AdminAccount:Gmail"];
             var adminPassword = _configuration["AdminAccount:Password"];
-
-            if (userName == adminUsername && password == adminPassword)
+            string? profilePicture = "";
+            if (userName == adminGmail && password == adminPassword)
             {
                 string role = "SystemAdmin";
                 var accountAdminId = 0;
-                HttpContext.Session.SetString("userId", accountAdminId.ToString());
-                HttpContext.Session.SetString("username", adminUsername);
-                HttpContext.Session.SetString("Role", role);
+                var adminName = "Admin";
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.NameIdentifier, accountAdminId.ToString()),
+                    new Claim(ClaimTypes.Name, adminName),
+                    new Claim(ClaimTypes.Email, adminGmail),
+                    new Claim(ClaimTypes.Role, role),
+                };
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));               
+                HttpContext.Session.SetString("userPicture", profilePicture);
                 return RedirectToAction("Index", "Home");
             }
             if (user != null)
             {
                 var clubmember = await _accountService.CheckRole(user.UserId);
+                
+                if (user.ProfilePicture != null)
+                {
+                    profilePicture = Encoding.UTF8.GetString(user.ProfilePicture);
+                }              
                 if (clubmember == null)
                 {
                     string role = "User";
-                    HttpContext.Session.SetString("userId", user.UserId.ToString());
-                    HttpContext.Session.SetString("Role", role);
+                    var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Role, role),
+                };
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                    HttpContext.Session.SetString("userPicture", profilePicture);
                     return RedirectToAction("Index", "Home");
                 }
                 if (clubmember.Role.RoleName == "ClubAdmin")
                 {
                     string role = "ClubAdmin";
-                    HttpContext.Session.SetString("userId", user.UserId.ToString());
-                    HttpContext.Session.SetString("Role", role);
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                        new Claim(ClaimTypes.Name, user.Username),
+                        new Claim(ClaimTypes.Email, user.Email),
+                        new Claim(ClaimTypes.Role, role),
+                    };
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                    HttpContext.Session.SetString("userPicture", profilePicture);
                     return RedirectToAction("Index", "Home");
                 }
                 if (clubmember.Role.RoleName == "ClubMember")
                 {
                     string role = "ClubMember";
-                    HttpContext.Session.SetString("userId", user.UserId.ToString());
-                    HttpContext.Session.SetString("Role", role);
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                        new Claim(ClaimTypes.Name, user.Username),
+                        new Claim(ClaimTypes.Email, user.Email),
+                        new Claim(ClaimTypes.Role, role),
+                    };
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                    HttpContext.Session.SetString("userPicture", profilePicture);
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -108,39 +149,67 @@ namespace ClubManagementSystem.Controllers
         public async Task<IActionResult> GoogleResponse()
         {
             var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
-            var claims = result.Principal.Identities.FirstOrDefault().Claims.Select(claim => new
+            var GoogleClaims = result.Principal.Identities.FirstOrDefault().Claims.Select(claim => new
             {
                 claim.Issuer,
                 claim.OriginalIssuer,
                 claim.Type,
-                claim.Value
+                claim.Value,               
             });
-            var email = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-            var name = claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
-            var avatar = claims.FirstOrDefault(c => c.Type == "urn:google:picture")?.Value;
+            var email = GoogleClaims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var name = GoogleClaims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+            string avatar = result.Principal.FindFirst("urn:google:picture")?.Value;
             var user = await _accountService.CheckEmailExist(email);
+            byte[] avatarByte = Encoding.UTF8.GetBytes(avatar);
+            var claims = new List<Claim>();
+            string profilePicture = "";
+            ClaimsIdentity claimsIdentity;
             if (user != null)
             {
                 var clubmember = await _accountService.CheckRole(user.UserId);
+                profilePicture = Encoding.UTF8.GetString(user.ProfilePicture);
                 if (clubmember == null)
                 {
                     string role = "User";
-                    HttpContext.Session.SetString("userId", user.UserId.ToString());
-                    HttpContext.Session.SetString("Role", role);
+                    claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                        new Claim(ClaimTypes.Name, user.Username),
+                        new Claim(ClaimTypes.Email, user.Email),
+                        new Claim(ClaimTypes.Role, role),
+                    };
+                    claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                    HttpContext.Session.SetString("userPicture", profilePicture);
                     return RedirectToAction("Index", "Home");
                 }
                 if (clubmember.Role.RoleName == "ClubAdmin")
                 {
                     string role = "ClubAdmin";
-                    HttpContext.Session.SetString("userId", user.UserId.ToString());
-                    HttpContext.Session.SetString("Role", role);
+                    claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                        new Claim(ClaimTypes.Name, user.Username),
+                        new Claim(ClaimTypes.Email, user.Email),
+                        new Claim(ClaimTypes.Role, role),
+                    };
+                    claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
                     return RedirectToAction("Index", "Home");
                 }
                 if (clubmember.Role.RoleName == "ClubMember")
                 {
                     string role = "ClubMember";
-                    HttpContext.Session.SetString("userId", user.UserId.ToString());
-                    HttpContext.Session.SetString("Role", role);
+                    claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                        new Claim(ClaimTypes.Name, user.Username),
+                        new Claim(ClaimTypes.Email, user.Email),
+                        new Claim(ClaimTypes.Role, role),
+                    };
+                    claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                    HttpContext.Session.SetString("userPicture", profilePicture);
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -149,14 +218,32 @@ namespace ClubManagementSystem.Controllers
             {
                 Username = name,
                 Email = email,
-                Password = "@123@",
-                //ProfilePicture = avatar,
+                ProfilePicture = avatarByte,
+                Password = "@123@"
             };
             string roleCheck = "User";
-            await _accountService.AddGmailUser(newUser);
-            HttpContext.Session.SetString("userId", newUser.UserId.ToString());
-            HttpContext.Session.SetString("Role", roleCheck);
+            var newGmailUser = await _accountService.AddGmailUser(newUser);
+            profilePicture = Encoding.UTF8.GetString(newGmailUser.ProfilePicture);
+            claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, newGmailUser.UserId.ToString()),
+                new Claim(ClaimTypes.Name, newGmailUser.Username),
+                new Claim(ClaimTypes.Email, newGmailUser.Email),
+                new Claim(ClaimTypes.Role, roleCheck),
+            };
+            claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+            HttpContext.Session.SetString("userPicture", profilePicture);
             return RedirectToAction("Index", "Home");
+        }
+
+        //[SessionAuthorize("User,ClubMember,ClubAdmin")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Logout()
+        {
+            HttpContext.Session.Clear();
+            await HttpContext.SignOutAsync();
+            return  RedirectToAction("Login", "Account");
         }
 
 

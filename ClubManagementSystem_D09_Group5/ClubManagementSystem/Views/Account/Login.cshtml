@@ -19,14 +19,14 @@
                     <div class="InputUsername">
                         <label for="UserName" class="LoginLabel">UserName</label>
                         <input id="UserName" class="LoginInput" type="text" name="UserName"
-                               placeholder="Type your username">
+                               placeholder="Type your username" required>
                         <span class="LoginIcon" data-symbol="&#xf206;"></span>
                     </div>
 
                     <div class="InputPassword">
                         <label for="Password" class="LoginLabel">Password</label>
                         <input id="Password" class="LoginInput" type="password" name="Password"
-                               placeholder="Type your username">
+                               placeholder="Type your username" required>
                         <span class="LoginIcon" data-symbol="&#xf190;"></span>
                     </div>
                  
@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="ToSignUp">
-                    <span>You don't have account?</span> <a href="#">Sign Up</a>
+                    <span>You don't have account?</span> <a asp-action="SignUp" asp-controller="Account">Sign Up</a>
                 </div>
             </div>
         </div>
