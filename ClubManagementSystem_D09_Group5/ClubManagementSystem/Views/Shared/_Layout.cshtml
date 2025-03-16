@@ -29,7 +29,6 @@
 	<link rel="stylesheet" href="~/lib/magnific-popup/magnific-popup.css">
 	<!-- manin stylesheet -->
 	<link rel="stylesheet" href="~/css/style.css">
-	<link rel="stylesheet" href="~/css/signup.css">
 	<link rel="stylesheet" href="~/css/login.css">
 	<link rel="stylesheet" href="~/css/site.css" />
 	<!-- icon -->
@@ -118,7 +117,7 @@
 					@if (User.Identity.IsAuthenticated)
 					{
 						@if (!string.IsNullOrEmpty(sessionPicture)){
-							<div class="header-socials-2 text-right d-none d-lg-block">
+							<div class="header-socials-2 d-none d-lg-block text-right">
 								<ul class="Profile">
 									<li>
 										<div class="Profile-button" id="menuToggle">
@@ -133,7 +132,7 @@
 								</ul>
 							</div>
 						}else{
-							<div class="header-socials-2 text-right d-none d-lg-block">
+							<div class="header-socials-2 d-none d-lg-block text-right">
 								<ul class="Profile">
 									<li>
 										<div class="Profile-button" id="menuToggle">
