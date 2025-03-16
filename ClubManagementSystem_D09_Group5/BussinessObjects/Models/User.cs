@@ -26,14 +26,6 @@ public partial class User
     [MaxLength(50)]
     [MinLength(6, ErrorMessage = "Password must be at least 6 characters long.")]
     public string? Password { get; set; }
-
-    [NotMapped]
-    [Required(ErrorMessage = "Confirm Password is required")]
-    [Compare("Password", ErrorMessage = "Passwords do not match")]
-    [MaxLength(50)]
-    [MinLength(6, ErrorMessage = "Password must be at least 6 characters long.")]
-    public string ConfirmPassword { get; set; } = string.Empty!;
-
     public byte[]? ProfilePicture { get; set; }
 
     [DataType(DataType.DateTime)]
