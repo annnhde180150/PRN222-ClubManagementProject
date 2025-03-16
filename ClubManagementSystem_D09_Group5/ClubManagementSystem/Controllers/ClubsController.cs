@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BussinessObjects.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ClubManagementSystem.Controllers
 {
@@ -42,6 +43,7 @@ namespace ClubManagementSystem.Controllers
             return View(club);
         }
 
+        [Authorize]
         // GET: Clubs/Create
         public IActionResult Create()
         {
@@ -51,6 +53,7 @@ namespace ClubManagementSystem.Controllers
         // POST: Clubs/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ClubId,ClubName,Description,CreatedAt")] Club club)

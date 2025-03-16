@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="plugins/Icon/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="plugins/Icon/iconic/css/material-design-iconic-font.min.css">
 </head>
+
 <body>
     <section class="pt-5 padding-bottom">
         <div class="container">
@@ -41,55 +42,127 @@
                         <div class="col-lg-8">
 
                             <form id="contact-form" class="contact-form" action="create_club" method="post">
+                                <div class="card mb-4 mb-xl-0">
+                                    <div class="card-header">Logo Picture</div>
+                                    <div class="card-body text-center">
+                                        <!-- Profile picture display -->
+                                        <img src="~/defaultPicture.jpg" alt="Default Profile Picture"
+                                            id="LogoPictureId" style="width:150px; height:150px;">
+                                        <div class="small font-italic text-muted mb-4">JPG, JPEG or PNG, max 5MB</div>
+                                        <!-- Upload New Image Button -->
+                                        <div>
+                                            <button class="btn btn-primary" type="button" id="uploadButton">
+                                                <label class="fileImage">
+                                                    <input type="file" name="profilePicture"
+                                                        class="form-control-file mb-2" id="fileLogoImage"
+                                                        onchange="fileSelected(), previewLogoImage()"
+                                                        accept=".jpg, .jpeg, .png" hidden />
+                                                    Upload New Image
+                                                </label>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card mb-4 mb-xl-0">
+                                    <div class="card-header">Cover Picture</div>
+                                    <div class="card-body text-center">
+                                        <!-- Profile picture display -->
+                                        <img src="~/defaultPicture.jpg" alt="Default Profile Picture"
+                                            id="CoverPictureId" style="width:150px; height:150px;">
+                                        <div class="small font-italic text-muted mb-4">JPG, JPEG or PNG, max 5MB</div>
+                                        <!-- Upload New Image Button -->
+                                        <div>
+                                            <button class="btn btn-primary" type="button" id="uploadButton">
+                                                <label class="fileImage">
+                                                    <input type="file" name="profilePicture"
+                                                        class="form-control-file mb-2" id="fileCoverImage"
+                                                        onchange="fileSelected(), previewCoverImage()"
+                                                        accept=".jpg, .jpeg, .png" hidden />
+                                                    Upload New Image
+                                                </label>
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-12">
 
                                         <div class="form-group">
                                             <label class="lg-form" for="name">Club's Name</label>
-                                            <input class="form-control form-control-name" name="name" 
-                                                   type="text" required placeholder="Enter name">
-                                            <h5 style="color:red">${requestScope.errorNameLength}</h5>
-                                            <h5 style="color:red">${requestScope.errorName}</h5>    
-
-
+                                            <input class="form-control form-control-name" name="name" type="text" required
+                                                placeholder="Enter name">
                                         </div>
 
                                         <div class="form-group">
                                             <label class="lg-form" for="pass">Club's Description</label>
 
-                                            <textarea class="form-control form-control-message" name="description"
-                                                      id="message" rows="5" required></textarea>
+                                            <textarea class="form-control form-control-message" name="description" id="message"
+                                                rows="5" required></textarea>
                                         </div>
                                         <div class="form-group">
-                                            <label for="category" class="lg-form">Club's Category</label>
-                                            <select class="dropdown-item dropdown-choice" name="category" id="category">
-                                                <option value="1">Academic</option>
-                                                <option value="2">Music & Art</option>
-                                                <option value="3">Sport</option>
-                                                <option value="4">Social & Media</option>
-                                                <option value="5">Community</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="lg-form" for="email">Contact Email</label>
-
-                                            <input class="form-control form-control-email" name="email"
-                                                   type="email" placeholder="Enter email">
+                                            <label class="lg-form" for="fileImage">Upload Club Cover Image</label>
+                                            <label class="fileImage">
+                                                <input type="file" name="CoverImage" class="form-control-file mb-2"
+                                                    id="fileImage" onchange="fileSelected(), previewCoverImage()"
+                                                    accept=".jpg, .jpeg, .png" />
+                                            </label>
+                                            <div class="small font-italic text-muted mb-4">JPG, JPEG or PNG, max 5MB</div>
                                         </div>
 
-<!--                                        <div class="form-group">
-                                            <label class="lg-form">Upload Club's Logo</label>
-                                            <input type="file" name="fileImage" class="form-control-file" id="fileImage" accept="images/*">
-                                        </div>-->
                                         <button class="btn btn-primary solid blank mt-5" type="submit">Create</button>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-    </section>   
+        </div>
+    </section>
 </body>
+
 </html>
+<script>
+    function fileSelected() {
+        const fileInput = document.getElementById('fileImage');
+    }
+
+    // Preview the selected image
+    function previewLogoImage() {
+        const fileInput = document.getElementById('fileLogoImage');
+        const profilePicture = document.getElementById('LogoPictureId');
+
+        // Check if a file is selected
+        if (fileInput.files && fileInput.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                // Update the profile picture preview
+                profilePicture.src = e.target.result;
+            };
+
+            // Read the file as a data URL (base64)
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+    }
+
+    function previewCoverImage() {
+        const fileInput = document.getElementById('fileCoverImage');
+        const profilePicture = document.getElementById('CoverPictureId');
+
+        // Check if a file is selected
+        if (fileInput.files && fileInput.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                // Update the profile picture preview
+                profilePicture.src = e.target.result;
+            };
+
+            // Read the file as a data URL (base64)
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+    }
+</script>

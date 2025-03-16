@@ -229,7 +229,7 @@ namespace ClubManagementSystem.Controllers
         }
 
         //[SessionAuthorize("User,ClubMember,ClubAdmin")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             HttpContext.Session.Clear();
