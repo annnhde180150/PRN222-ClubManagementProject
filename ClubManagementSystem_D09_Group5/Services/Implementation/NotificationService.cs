@@ -12,11 +12,11 @@ namespace Services.Implementation
 {
     public class NotificationService : INotificationService
     {
-        private INotificationRepository _NR;
+        private readonly INotificationRepository _notificationRepository;
 
-        public NotificationService(NotificationRepository repo) 
+        public NotificationService(INotificationRepository notificationRepository) 
         {
-            _NR = repo;
+            _notificationRepository = notificationRepository;
         }
 
         public async Task<Notification> Notify(int userID, string mess, string location)
@@ -29,32 +29,32 @@ namespace Services.Implementation
                 Message = mess,
                 UserId = userID
             };
-            return await _NR.AddNotificationAsync(noti);
+            return await _notificationRepository.AddNotificationAsync(noti);
         }
 
         public async Task<Notification> AddNotificationAsync(Notification notification)
         {
-            return await _NR.AddNotificationAsync(notification);
+            return await _notificationRepository.AddNotificationAsync(notification);
         }
 
         public async Task<bool> DeleteNotificationAsync(int notificationId)
         {
-            return await _NR.DeleteNotificationAsync(notificationId);
+            return await _notificationRepository.DeleteNotificationAsync(notificationId);
         }
 
         public async Task<Notification> GetNotificationAsync(int notificationId)
         {
-            return await _NR.GetNotificationAsync(notificationId);
+            return await _notificationRepository.GetNotificationAsync(notificationId);
         }
 
         public async Task<IEnumerable<Notification>> GetNotificationsAsync(int userId)
         {
-            return await _NR.GetNotificationsAsync(userId);
+            return await _notificationRepository.GetNotificationsAsync(userId);
         }
 
         public async Task<bool> UpdateNotificationAsync(Notification notification)
         {
-            return await _NR.UpdateNotificationAsync(notification);
+            return await _notificationRepository.UpdateNotificationAsync(notification);
         }
     }
 }

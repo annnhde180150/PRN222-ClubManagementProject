@@ -9,11 +9,11 @@ connection.start().then(function () {
     //connection.invoke("GetServerTime").catch(function (err) { console.error(err.toString()); });
 }).catch(function (err) { console.log(err) });
 
-connection.on("notifyNews", function () {
+connection.on("notifyNews", function (notiID) {
     console.log("notifyNews");
-    LoadNotifications();
+    LoadNotifications(notiID);
 })
 
-LoadNotifications(){
+LoadNotifications(notiID){
     
 }

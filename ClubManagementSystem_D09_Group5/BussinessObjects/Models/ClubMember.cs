@@ -34,7 +34,7 @@ public partial class ClubMember
 
     public virtual ICollection<TaskAssignment> TaskAssignments { get; set; } = new List<TaskAssignment>();
 
-    public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();
+    public virtual ICollection<ClubTask> Tasks { get; set; } = new List<ClubTask>();
 
     [ForeignKey("UserId")]
     public virtual User User { get; set; } = null!;

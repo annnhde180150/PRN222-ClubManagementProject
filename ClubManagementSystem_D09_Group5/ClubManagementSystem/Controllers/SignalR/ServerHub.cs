@@ -2,6 +2,8 @@
 using Services.Interface;
 using Services.Implementation;
 using BussinessObjects.Models;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace ClubManagementSystem.Controllers.SignalR
 {
@@ -14,14 +16,24 @@ namespace ClubManagementSystem.Controllers.SignalR
             _connectionService = connectionService;
         }
 
-        public override System.Threading.Tasks.Task OnConnectedAsync()
+        public override async Task OnConnectedAsync()
         {
-            var con = new Connection
+            var userID = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var latest = await _connectionService.GetConnection(Int32.Parse(userID));
+            if (latest != null && latest.ConnectionId != Context.ConnectionId)
             {
-                ConnectionId = Context.ConnectionId,
-                //UserId = int.Parse(clam)
-            };
-            return base.OnConnectedAsync();
+                var con = new Connection
+                {
+                    ConnectionId = Context.ConnectionId,
+                    UserId = Int32.Parse(userID)
+                };
+                await _connectionService.AddConnection(con);
+            }
+        }
+
+        public override System.Threading.Tasks.Task OnDisconnectedAsync(System.Exception exception)
+        {
+            return base.OnDisconnectedAsync(exception);
         }
     }
 }
