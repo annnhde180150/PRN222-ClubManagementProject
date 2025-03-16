@@ -42,5 +42,15 @@ namespace Services.Implementation
         {
             return _accountRepository.CheckUsernameExist(username);
         }
+
+        public Task<User?> FindUserAsync(int id)
+        {
+            return _accountRepository.FindUserAsync(id);
+        }
+
+        public Task<User?> UpdateUserAsync(User user)
+        {
+            return _accountRepository.UpdateUserAsync(user);
+        }
     }
 }

@@ -67,5 +67,18 @@ namespace Repositories.Implementation
             }
             return null;
         }
+
+        public async Task<User?> FindUserAsync(int userId)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+        }
+
+        public async Task<User?> UpdateUserAsync(User user)
+        {
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+            return user;
+        }
+
     }
 }
