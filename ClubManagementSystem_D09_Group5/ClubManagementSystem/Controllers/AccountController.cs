@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using BussinessObjects.Models;
+using BussinessObjects.Models.Dtos;
 using ClubManagementSystem.Controllers.Filter;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -247,26 +248,26 @@ namespace ClubManagementSystem.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SignUp(User user)
+        public async Task<IActionResult> SignUp(SignUpUserDto newUser)
         {
             if (!ModelState.IsValid)
             {
-                return View(user); // Return the view to show validation messages
+                return View(newUser); // Return the view to show validation messages
             }
-
-            var emailValid = await _accountService.CheckEmailExist(user.Email);
-            var usernameValid = await _accountService.CheckUsernameExist(user.Username);
-
-            if (emailValid != null)
+            bool isUserExist = CheckExistUser(newUser.Email, newUser.Username);
+           
+            if (isUserExist == true)
             {
-                TempData["ErrorMessage"] = "Email already exists!";
-                return RedirectToAction("SignUp", "Account");
-            } else if (usernameValid != null)
-            {
-                TempData["ErrorMessage"] = "Username already exists!";
                 return RedirectToAction("SignUp", "Account");
             }
-                user.CreatedAt = DateTime.Now;
+
+            User user = new User
+            {
+                Username = newUser.Username,
+                Email = newUser.Email,
+                Password = newUser.Password,
+                CreatedAt = DateTime.Now
+            };
 
             await _accountService.AddUser(user);
 
@@ -275,58 +276,101 @@ namespace ClubManagementSystem.Controllers
         }
 
 
-        [AllowAnonymous]
-        public async Task<IActionResult> Edit(int? id)
+        //[Authorize(Roles = "SystemAdmin")]
+        //public async Task<IActionResult> Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var user = await _accountService.FindUserAsync(id.Value);
+        //    if (user == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(user);
+        //}
+
+        [Authorize] 
+        public async Task<IActionResult> Edit()
         {
-            if (id == null)
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
             {
-                return NotFound();
+                return Unauthorized();
             }
 
-            var user = await _accountService.FindUserAsync(id.Value);
+            var user = await _accountService.FindUserAsync(int.Parse(userId));
             if (user == null)
             {
                 return NotFound();
             }
-            return View(user);
+
+            var editUserDto = new EditUserDto
+            {
+                Username = user.Username,
+                CurrentPassword = user.Password,
+                Email = user.Email
+            };
+
+            return View(editUserDto);
         }
 
+
         // POST: Save changes to profile
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(User model)
+        public async Task<IActionResult> Edit(EditUserDto editUser)
         {
-            if (ModelState.IsValid)
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = await _accountService.FindUserAsync(int.Parse(userId));
+
+            if (user == null)
             {
-                var user = await _accountService.FindUserAsync(model.UserId);
-
-                if (user == null)
-                {
-                    return NotFound();
-                }
-
-                // Update the user's details
-                user.Username = model.Username;
-                user.Email = model.Email;
-
-                // If a new password is provided, check if it matches the confirm password and update
-                if (!string.IsNullOrEmpty(model.Password) && model.Password == model.ConfirmPassword)
-                {
-                    user.Password = model.Password; // Save the password as plain text
-                }
-                else if (!string.IsNullOrEmpty(model.Password))
-                {
-                    ModelState.AddModelError("Password", "Passwords do not match.");
-                    return View(model); // Return the view if passwords do not match
-                }
-
-                await _accountService.UpdateUserAsync(user); // Assuming this method updates the user in the database
-
-                TempData["SuccessMessage"] = "Profile updated successfully!";
-                return View(model); // Or redirect to the profile page
+                return NotFound();
             }
 
-            return View(model); // Return the view with validation errors
+            if (!string.IsNullOrEmpty(editUser.Username))
+            {
+                if (user.Username != editUser.Username)
+                {
+                    var usernameValid = await _accountService.CheckUsernameExist(editUser.Username);
+                    if (usernameValid != null)
+                    {
+                        TempData["ErrorMessage"] = "This username is already registered.";
+                        return View(editUser);
+                    }
+
+                    user.Username = editUser.Username;      //Update
+                }
+            } else
+            {
+                editUser.Username = user.Username;
+                return View(editUser);
+            }
+
+            if (!string.IsNullOrEmpty(editUser.NewPassword))
+            {
+                if (editUser.NewPassword == editUser.ConfirmNewPassword)
+                {
+                    user.Password = editUser.NewPassword;       //Update
+                    editUser.CurrentPassword = editUser.NewPassword;
+                    TempData["PasswordUpdated"] = "Password updated successfully";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Can not update password!";
+                    return View(editUser);
+                }
+            }
+
+            await _accountService.UpdateUserAsync(user); 
+
+            TempData["SuccessMessage"] = "Profile updated successfully";
+            return View(editUser); 
         }
 
 
@@ -336,14 +380,13 @@ namespace ClubManagementSystem.Controllers
         {
             if (profilePicture != null && profilePicture.Length > 0)
             {
-                // Validate file type (jpg, jpeg, png)
                 var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
                 var fileExtension = Path.GetExtension(profilePicture.FileName).ToLower();
 
                 if (!allowedExtensions.Contains(fileExtension))
                 {
                     ModelState.AddModelError("profilePicture", "Only .jpg, .jpeg, and .png files are allowed.");
-                    return View(); // Return the view with an error message
+                    return View(); 
                 }
 
                 // Convert image to byte array
@@ -354,23 +397,19 @@ namespace ClubManagementSystem.Controllers
                     profilePictureBytes = memoryStream.ToArray();
                 }
 
-                // Get the currently authenticated user (you can adjust this based on your authentication)
                 var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
                 if (userId != null)
                 {
-                    // Save the image to the database
                     var user = await _accountService.FindUserAsync(int.Parse(userId));
 
                     if (user != null)
                     {
-                        // Update the user's profile picture in the database
+                        // Update  database
                         user.ProfilePicture = profilePictureBytes;
                         await _accountService.UpdateUserAsync(user);
 
-                        // Optionally, update the session or return to the profile page with updated image
                         HttpContext.Session.SetString("userPicture", $"data:image/{fileExtension.TrimStart('.')};base64,{Convert.ToBase64String(profilePictureBytes)}");
-
 
                         return RedirectToAction("Edit", "Account");
                     }
@@ -379,10 +418,31 @@ namespace ClubManagementSystem.Controllers
             else
             {
                 ModelState.AddModelError("profilePicture", "No file selected.");
-                return View(); // Return the view with an error message
+                return View(); 
             }
 
             return View();
+        }
+
+        public bool CheckExistUser(string email, string username)
+        {
+            var emailValid = _accountService.CheckEmailExist(email);
+            var usernameValid = _accountService.CheckUsernameExist(username);
+
+            if (emailValid != null)
+            {
+                TempData["ErrorMessage"] = "Email already exists!";
+                //return RedirectToAction("SignUp", "Account");
+                return true;
+            }
+            else if (usernameValid != null)
+            {
+                TempData["ErrorMessage"] = "Username already exists!";
+                //return RedirectToAction("SignUp", "Account");
+                return true;
+            }
+
+            return false;
         }
     }
 }

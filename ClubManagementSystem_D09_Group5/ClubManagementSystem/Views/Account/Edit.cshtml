@@ -1,4 +1,4 @@
-﻿@model BussinessObjects.Models.User
+﻿@model BussinessObjects.Models.Dtos.EditUserDto
 @inject IHttpContextAccessor HttpContextAccessor
 @{
     ViewData["Title"] = "Edit Profile";
@@ -18,17 +18,14 @@
                         <div class="card-header">Profile Picture</div>
                         <div class="card-body text-center">
                             <!-- Profile picture display -->
-                            @* <img class="img-account-profile rounded-circle mb-2" id="profilePictureId" style="width: 150px; height: 150px;" *@
-                            @*      src="@(string.IsNullOrEmpty(sessionPicture) ? Url.Content("~/defaultPicture.jpg") : $"data:image/jpeg;base64,{sessionPicture}")" *@
-                            @*      alt="Profile Picture"> *@
 
                             @if (!string.IsNullOrEmpty(sessionPicture))
                             {
-                                <img src="@sessionPicture" alt="Profile Picture" style="width:150px; height:150px;">
+                                <img src="@sessionPicture" alt="Profile Picture" id="profilePictureId" class="img-account-profile rounded-circle mb-2">
                             }
                             else
                             {
-                                <img src="~/defaultPicture.jpg" alt="Default Profile Picture" style="width:150px; height:150px;">
+                                <img src="~/defaultPicture.jpg" alt="Default Profile Picture" id="profilePictureId" class="img-account-profile rounded-circle mb-2">
                             }
 
 
@@ -65,33 +62,55 @@
                         <div class="card-header">@Model.Username's Details</div>
                         <div class="card-body">
                             <form asp-action="Edit" method="post">
-                                <input type="hidden" asp-for="UserId" />
+                                @* <input type="hidden" asp-for="UserId" /> *@
+
+                                @if (TempData["SuccessMessage"] != null)
+                                {
+                                    <div class="text-success mb-2">
+                                        @TempData["SuccessMessage"]
+                                    </div>
+                                }
+                                @if (TempData["ErrorMessage"] != null)
+                                {
+                                    <div class="text-danger mb-2">
+                                        @TempData["ErrorMessage"]
+                                    </div>
+                                }
 
                                 <div class="mb-3">
                                     <label class="small mb-1">Username</label>
                                     <input asp-for="Username" class="form-control" readonly id="UsernameField" />
-                                    <button class="btn btn-secondary mt-3" type="button"
-                                            id="UsernameEditButton" onclick="toggleEditableField('Username')">
+                                    <span asp-validation-for="Username" class="text-danger"></span>
+                                    <div>
+                                        <button class="btn btn-secondary mt-3" type="button"
+                                                id="UsernameEditButton" onclick="toggleEditableField('Username')">
                                             Edit
-                                    </button>
+                                        </button>
+                                    </div>
+                                  
                                 </div>
 
                                 <!-- Password -->
                                 <div class="mb-3">
-                                    <label class="small mb-1">Password</label>
+                                    <label class="small mb-1">Current Password</label>
                                     <div class="input-group">
-                                        <input asp-for="Password" class="form-control" id="CurrentPasswordField" readonly />
+                                        <input asp-for="CurrentPassword" class="form-control" id="CurrentPasswordField" readonly />
                                         <button type="button" class="btn btn-outline-secondary" onclick="togglePassword()">👁️</button>
                                     </div>
                                 </div>
                                 <div class="mb-3" id="passwordFields" style="display:none;">
-                                    <label class="small mb-1">New Password</label>
-                                    <input asp-for="Password" class="form-control" type="password" placeholder="Enter new password" id="PasswordField" />
-                                    <span asp-validation-for="Password" class="text-danger"></span>
-
-                                    <label class="small mb-1">Confirm Password</label>
-                                    <input asp-for="ConfirmPassword" class="form-control" type="password" placeholder="Confirm new password" id="ConfirmPasswordField" />
-                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                    <div>
+                                        <label class="small mb-1">New Password</label>
+                                        <input asp-for="NewPassword" class="form-control" type="password" placeholder="Enter new password" id="PasswordField" />
+                                        <span asp-validation-for="NewPassword" class="text-danger"></span>
+                                    </div>
+                                  
+                                    <div>
+                                        <label class="small mb-1">Confirm Password</label>
+                                        <input asp-for="ConfirmNewPassword" class="form-control" type="password" placeholder="Confirm new password" id="ConfirmPasswordField" />
+                                        <span asp-validation-for="ConfirmNewPassword" class="text-danger"></span>
+                                    </div>
+                                   
                                 </div>
 
                                 <!-- Edit Password Button -->
@@ -108,7 +127,7 @@
                                     <span asp-validation-for="Email" class="text-danger"></span>
                                 </div>
 
-
+                              
                                 <!-- Save Changes Button -->
                                 <div class="form-group mt-4">
                                     <input type="submit" value="Save changes" class="btn btn-primary" />
@@ -202,4 +221,6 @@
             submitButton.style.display = 'inline-block'; // Show submit button
         }
     }
+
 </script>
+
