@@ -19,6 +19,8 @@ public partial class ClubRequest
 
     [StringLength(500)]
     public string? Description { get; set; }
+    public byte[]? Logo { get; set; }
+    public byte[]? Cover { get; set; }
 
     [StringLength(50)]
     public string? Status { get; set; }

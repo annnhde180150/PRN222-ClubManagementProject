@@ -125,6 +125,14 @@ public partial class FptclubsContext : DbContext
                 .HasColumnName("status");
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
+            entity.Property(e => e.Logo)
+                .HasColumnType("varbinary(max)")
+                .HasColumnName("logo"); 
+
+            entity.Property(e => e.Cover)
+                .HasColumnType("varbinary(max)")
+                .HasColumnName("cover"); 
+
             entity.HasOne(d => d.User).WithMany(p => p.ClubRequests)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)

@@ -17,9 +17,9 @@ namespace Services.Implementation
             _accountRepository = accountRepository;
         }
 
-        public Task<User?> CheckLogin(string username, string password)
+        public Task<User?> CheckLogin(string gmail, string password)
         {
-            return _accountRepository.CheckLogin(username, password);
+            return _accountRepository.CheckLogin(gmail, password);
         }
         public Task<ClubMember?> CheckRole(int userId)
         {

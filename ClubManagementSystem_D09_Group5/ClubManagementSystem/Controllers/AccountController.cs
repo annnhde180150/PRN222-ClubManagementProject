@@ -35,13 +35,13 @@ namespace ClubManagementSystem.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CheckLogin(string userName, string password)
+        public async Task<IActionResult> CheckLogin(string Gmail, string password)
         {
-            var user = await _accountService.CheckLogin(userName, password);
+            var user = await _accountService.CheckLogin(Gmail, password);
             var adminGmail = _configuration["AdminAccount:Gmail"];
             var adminPassword = _configuration["AdminAccount:Password"];
             string? profilePicture = "";
-            if (userName == adminGmail && password == adminPassword)
+            if (Gmail == adminGmail && password == adminPassword)
             {
                 string role = "SystemAdmin";
                 var accountAdminId = 0;

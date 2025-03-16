@@ -16,9 +16,9 @@ namespace Repositories.Implementation
         {
             _context = context;
         }
-        public async Task<User?> CheckLogin(string username, string password)
+        public async Task<User?> CheckLogin(string email, string password)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username && u.Password == password);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.Password == password);
             if (user != null)
             {
                 return user;
