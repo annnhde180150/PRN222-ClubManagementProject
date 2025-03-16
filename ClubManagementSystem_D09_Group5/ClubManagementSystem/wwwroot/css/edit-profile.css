@@ -3,6 +3,8 @@ body{
 }
 .img-account-profile {
     height: 10rem;
+    width: 150px;
+    height: 150px;
 }
 .rounded-circle {
     border-radius: 50% !important;
@@ -71,5 +73,5 @@ input::placeholder {
     opacity: 0.5 !important; 
 }
 
-    
+
 
