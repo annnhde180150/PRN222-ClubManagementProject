@@ -42,6 +42,11 @@ builder.Services.AddScoped<IClubRequestService, ClubRequestService>();
 builder.Services.AddScoped<IConnectionService, ConnectionService>();
 
 
+//signalR
+builder.Services.AddSignalR();
+builder.Services.AddScoped<SignalRSender>();
+
+
 // Add DbContext
 builder.Services.AddDbContext<FptclubsContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -63,8 +68,6 @@ builder.Services.AddAuthentication(options =>
     options.ClientSecret = clientSecret;
     options.ClaimActions.MapJsonKey("urn:google:picture","picture","url");
 });
-
-builder.Services.AddSignalR();
 
 var app = builder.Build();
 

@@ -9,11 +9,24 @@ connection.start().then(function () {
     //connection.invoke("GetServerTime").catch(function (err) { console.error(err.toString()); });
 }).catch(function (err) { console.log(err) });
 
-connection.on("notifyNews", function (notiID) {
+connection.on("notifyNews", function (noti) {
     console.log("notifyNews");
-    LoadNotifications(notiID);
+    LoadNotifications(noti);
+    LoadNotificationsIcon();
 })
 
-LoadNotifications(notiID){
-    
+function LoadNotificationsIcon(){
+    document.getElementById("notiDot").style.display = "block";
+};
+
+function LoadNotifications(noti) {
+    var newNoti = `<div id="gridRow-${noti.NotificationId}" class="row py-3 border-bottom notification-item unread-notification"">
+                        <div class="col-1 d-flex align-items-center justify-content-center">
+                            <input type="checkbox" class="form-check-input" value="${noti.isRead}">
+                        </div>
+                        <div class="col-3 text-center d-flex align-items-center"><span>${noti.CreatedAt}</span></div>
+                        <div class="col-3 d-flex align-items-center"><span>${noti.Location}</span></div>
+                        <div class="col-5 d-flex align-items-center"><span>${noti.Message}</span></div>
+                    </div>`;
+    document.getElementById("gridBody").insertAdjacentElement('afterbegin', newNoti);
 }

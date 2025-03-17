@@ -25,7 +25,7 @@ namespace Services.Implementation
 
         public async Task<Connection> GetConnection(int UserID)
         {
-            return (await _CR.GetConnections()).Where(c => c.UserId == UserID).OrderByDescending(c => c.connectAt).First();
+            return (await _CR.GetConnections()).Where(c => c.UserId == UserID).OrderByDescending(c => c.connectAt).FirstOrDefault();
         }
     }
 }

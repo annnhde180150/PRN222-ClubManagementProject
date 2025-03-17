@@ -27,11 +27,13 @@ namespace ClubManagementSystem.Controllers
             return View(notifications);
         }
 
-        public async Task<IActionResult> Notify(int notiID, int userID, string actionName, string controllerName)
+        public async Task<IActionResult> UpdateAsync(int NotiID) 
         {
-            var connection = await _CS.GetConnection(userID);
-            await _hubContext.Clients.Client(connection.ConnectionId).SendAsync("notifyNews", notiID);
-            return RedirectToAction(actionName,controllerName);
+            var notification = await _NS.GetNotificationAsync(NotiID);
+            notification.IsRead = true;
+            await _NS.UpdateNotificationAsync(notification);
+            return View("Index",notification);
         }
+
     }
 }

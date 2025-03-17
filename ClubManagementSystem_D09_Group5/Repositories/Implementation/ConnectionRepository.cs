@@ -1,4 +1,5 @@
 ﻿using BussinessObjects.Models;
+using Microsoft.EntityFrameworkCore;
 using Repositories.Interface;
 using System;
 using System.Collections.Generic;
@@ -10,16 +11,23 @@ namespace Repositories.Implementation
 {
     public class ConnectionRepository : IConnectionRepository
     {
+        private readonly FptclubsContext _context;
 
-
-        public Task<Connection> AddConnection(Connection entity)
+        public ConnectionRepository(FptclubsContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task<IEnumerable<Connection>> GetConnections()
+        public async Task<Connection> AddConnection(Connection entity)
         {
-            throw new NotImplementedException();
+            await _context.Connections.AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task<IEnumerable<Connection>> GetConnections()
+        {
+            return await _context.Connections.ToListAsync();
         }
     }
 }

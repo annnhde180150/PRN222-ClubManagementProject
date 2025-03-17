@@ -1645,4 +1645,19 @@ footer
 
 /*# sourceMappingURL=style.css.map */
 
+.notification-icon {
+    position: relative;
+    display: inline-block;
+}
 
+.notification-dot {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 10px; /* Size of the red dot */
+    height: 10px;
+    background-color: red;
+    border-radius: 50%; /* Makes it a circle */
+    border: 2px solid white; /* Optional: Adds a white border */
+    display: none;
+}
