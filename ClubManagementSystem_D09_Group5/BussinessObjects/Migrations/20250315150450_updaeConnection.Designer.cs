@@ -4,6 +4,7 @@ using BussinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BussinessObjects.Migrations
 {
     [DbContext(typeof(FptclubsContext))]
-    partial class FptclubsContextModelSnapshot : ModelSnapshot
+    [Migration("20250315150450_updaeConnection")]
+    partial class updaeConnection
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -116,10 +119,6 @@ namespace BussinessObjects.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("club_name");
 
-                    b.Property<byte[]>("Cover")
-                        .HasColumnType("varbinary(max)")
-                        .HasColumnName("cover");
-
                     b.Property<DateTime?>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
@@ -128,12 +127,8 @@ namespace BussinessObjects.Migrations
 
                     b.Property<string>("Description")
                         .HasMaxLength(500)
-                        .HasColumnType("nvarchar(MAX)")
+                        .HasColumnType("text")
                         .HasColumnName("description");
-
-                    b.Property<byte[]>("Logo")
-                        .HasColumnType("varbinary(max)")
-                        .HasColumnName("logo");
 
                     b.Property<string>("Status")
                         .ValueGeneratedOnAdd()
@@ -152,50 +147,6 @@ namespace BussinessObjects.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("ClubRequests");
-                });
-
-            modelBuilder.Entity("BussinessObjects.Models.ClubTask", b =>
-                {
-                    b.Property<int>("TaskId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("task_id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TaskId"));
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasColumnName("created_at")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int")
-                        .HasColumnName("created_by");
-
-                    b.Property<DateTime?>("DueDate")
-                        .HasColumnType("datetime")
-                        .HasColumnName("due_date");
-
-                    b.Property<string>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasDefaultValue("Pending")
-                        .HasColumnName("status");
-
-                    b.Property<string>("TaskDescription")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("text")
-                        .HasColumnName("task_description");
-
-                    b.HasKey("TaskId")
-                        .HasName("PK__Tasks__0492148DB46F1696");
-
-                    b.HasIndex("CreatedBy");
-
-                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("BussinessObjects.Models.Comment", b =>
@@ -246,14 +197,14 @@ namespace BussinessObjects.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("connectAt")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("connectAt")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Connections");
+                    b.ToTable("Connection");
                 });
 
             modelBuilder.Entity("BussinessObjects.Models.Event", b =>
@@ -432,6 +383,50 @@ namespace BussinessObjects.Migrations
                     b.ToTable("Roles");
                 });
 
+            modelBuilder.Entity("BussinessObjects.Models.Task", b =>
+                {
+                    b.Property<int>("TaskId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("task_id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TaskId"));
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int")
+                        .HasColumnName("created_by");
+
+                    b.Property<DateTime?>("DueDate")
+                        .HasColumnType("datetime")
+                        .HasColumnName("due_date");
+
+                    b.Property<string>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("Pending")
+                        .HasColumnName("status");
+
+                    b.Property<string>("TaskDescription")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("text")
+                        .HasColumnName("task_description");
+
+                    b.HasKey("TaskId")
+                        .HasName("PK__Tasks__0492148DB46F1696");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.ToTable("Tasks");
+                });
+
             modelBuilder.Entity("BussinessObjects.Models.TaskAssignment", b =>
                 {
                     b.Property<int>("AssignmentId")
@@ -554,17 +549,6 @@ namespace BussinessObjects.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BussinessObjects.Models.ClubTask", b =>
-                {
-                    b.HasOne("BussinessObjects.Models.ClubMember", "CreatedByNavigation")
-                        .WithMany("Tasks")
-                        .HasForeignKey("CreatedBy")
-                        .IsRequired()
-                        .HasConstraintName("FK__Tasks__created_b__571DF1D5");
-
-                    b.Navigation("CreatedByNavigation");
-                });
-
             modelBuilder.Entity("BussinessObjects.Models.Comment", b =>
                 {
                     b.HasOne("BussinessObjects.Models.Post", "Post")
@@ -647,6 +631,17 @@ namespace BussinessObjects.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("BussinessObjects.Models.Task", b =>
+                {
+                    b.HasOne("BussinessObjects.Models.ClubMember", "CreatedByNavigation")
+                        .WithMany("Tasks")
+                        .HasForeignKey("CreatedBy")
+                        .IsRequired()
+                        .HasConstraintName("FK__Tasks__created_b__571DF1D5");
+
+                    b.Navigation("CreatedByNavigation");
+                });
+
             modelBuilder.Entity("BussinessObjects.Models.TaskAssignment", b =>
                 {
                     b.HasOne("BussinessObjects.Models.ClubMember", "Membership")
@@ -655,7 +650,7 @@ namespace BussinessObjects.Migrations
                         .IsRequired()
                         .HasConstraintName("FK__TaskAssig__membe__5BE2A6F2");
 
-                    b.HasOne("BussinessObjects.Models.ClubTask", "Task")
+                    b.HasOne("BussinessObjects.Models.Task", "Task")
                         .WithMany("TaskAssignments")
                         .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -683,11 +678,6 @@ namespace BussinessObjects.Migrations
                     b.Navigation("Tasks");
                 });
 
-            modelBuilder.Entity("BussinessObjects.Models.ClubTask", b =>
-                {
-                    b.Navigation("TaskAssignments");
-                });
-
             modelBuilder.Entity("BussinessObjects.Models.Post", b =>
                 {
                     b.Navigation("Comments");
@@ -698,6 +688,11 @@ namespace BussinessObjects.Migrations
             modelBuilder.Entity("BussinessObjects.Models.Role", b =>
                 {
                     b.Navigation("ClubMembers");
+                });
+
+            modelBuilder.Entity("BussinessObjects.Models.Task", b =>
+                {
+                    b.Navigation("TaskAssignments");
                 });
 
             modelBuilder.Entity("BussinessObjects.Models.User", b =>

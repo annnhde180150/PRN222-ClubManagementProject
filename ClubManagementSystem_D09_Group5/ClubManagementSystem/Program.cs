@@ -1,5 +1,6 @@
 using System;
 using BussinessObjects.Models;
+using ClubManagementSystem.Controllers.SignalR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -32,12 +33,15 @@ builder.Services.AddSession(options =>
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<IClubRequestRepository, ClubRequestRepository>();
-
+builder.Services.AddScoped<IConnectionRepository, ConnectionRepository>();
 
 //Add Services
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IClubRequestService, ClubRequestService>();
+builder.Services.AddScoped<IConnectionService, ConnectionService>();
+
+
 // Add DbContext
 builder.Services.AddDbContext<FptclubsContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -60,6 +64,8 @@ builder.Services.AddAuthentication(options =>
     options.ClaimActions.MapJsonKey("urn:google:picture","picture","url");
 });
 
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -70,6 +76,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.MapHub<ServerHub>("/serverHub");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseSession();
