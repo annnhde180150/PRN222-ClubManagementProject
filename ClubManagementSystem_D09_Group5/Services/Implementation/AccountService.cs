@@ -52,5 +52,15 @@ namespace Services.Implementation
         {
             return _accountRepository.UpdateUserAsync(user);
         }
+
+        public string ConvertToBase64(byte[] imageBytes)
+        {
+            if (imageBytes == null || imageBytes.Length == 0)
+            {
+                return null;
+            }
+
+            return $"data:image/png;base64,{Convert.ToBase64String(imageBytes)}";
+        }
     }
 }

@@ -6,16 +6,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BussinessObjects.Models;
+using Services.Interface;
+using BussinessObjects.Models.Dtos;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace ClubManagementSystem.Controllers
 {
     public class ClubsController : Controller
     {
+        private readonly IAccountService _accountService;
         private readonly FptclubsContext _context;
 
-        public ClubsController(FptclubsContext context)
+        public ClubsController(FptclubsContext context, IAccountService accountService)
         {
             _context = context;
+            _accountService = accountService;
         }
 
         // GET: Clubs
@@ -33,13 +38,32 @@ namespace ClubManagementSystem.Controllers
             }
 
             var club = await _context.Clubs
+                .Include(c => c.ClubMembers)
+                    .ThenInclude(cm => cm.User)
                 .FirstOrDefaultAsync(m => m.ClubId == id);
             if (club == null)
             {
                 return NotFound();
             }
 
-            return View(club);
+            var clubMemberDtos = club.ClubMembers
+             .Select(member => new ClubMemberDto
+             {
+                 UserId = member.UserId,
+                 Username = member.User.Username,
+                 ProfilePictureBase64 = _accountService.ConvertToBase64(member.User.ProfilePicture)
+             }).ToList();
+
+            var viewModel = new ClubDetailsViewDto
+            {
+                ClubName = club.ClubName,
+                Logo = club.Logo,
+                Cover = club.Cover,
+                Description = club.Description,
+                ClubMembers = clubMemberDtos
+            };
+
+            return View(viewModel);
         }
 
         // GET: Clubs/Create

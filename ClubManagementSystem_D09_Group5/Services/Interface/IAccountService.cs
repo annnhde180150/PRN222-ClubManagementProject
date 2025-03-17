@@ -18,6 +18,8 @@ namespace Services.Interface
         Task<User?> FindUserAsync(int userId);
 
         Task<User?> UpdateUserAsync(User user);
+
+        string ConvertToBase64(byte[] imageBytes);
     }
 
 }
