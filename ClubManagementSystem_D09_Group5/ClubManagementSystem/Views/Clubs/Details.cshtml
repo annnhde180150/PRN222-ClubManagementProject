@@ -10,7 +10,8 @@
 		<div class="banner-img d-flex justify-content-center">
 			<a href="blog-single.html" class="d-flex justify-content-center">
 				<div>
-					<img src="~/img/cat/180313215_173099011412441_7795843820371964046_n.jpg" alt="" class="img-fluid" style="width: 1000px; height: 500px">
+					<img src="~/img/cat/180313215_173099011412441_7795843820371964046_n.jpg" alt="Cover picture" class="img-fluid" style="width: 1000px; height: 500px">
+					@* <img src="@Model.Cover" alt="Cover picture" class="img-fluid" style="width: 1000px; height: 500px"> *@
 				</div>
 			</a>
 		</div>
@@ -25,6 +26,7 @@
 						<h2>@Model.ClubName</h2>
 					</div>
 
+					@* Statistic here: Member, post, event count*@
 					<div class="post-meta footer-meta">
 						<ul class="list-inline">
 							<li class="post-like list-inline-item">
@@ -43,6 +45,7 @@
 							{
 								<div class="avatar">
 									<img src="@(member.ProfilePictureBase64)" alt="@member.Username">
+									<span class="username">@member.Username</span>
 								</div>
 							}
 						</div>
@@ -336,25 +339,24 @@
 							<div class="about-author">
 								<img src="~/img/author.jpg" alt="" class="img-fluid">
 							</div>
-							<h4 class="mb-0 mt-4">Liam Mason</h4>
-							<p>Travel Blogger</p>
+							<h4 class="mb-0 mt-4">@Model.ClubName</h4>
+							@* <p>Travel Blogger</p> *@
 							<p>
-								I'm Liam, last year I decided to quit my job and travel the world. You can follow my journey on this
-								blog!
+								@Model.Description
 							</p>
-							<img src="~/img/liammason.png" alt="" class="img-fluid">
+							@* <img src="~/img/liammason.png" alt="" class="img-fluid"> *@
 						</div>
 
-						<div class="sidebar-widget follow mb-5 text-center">
-							<h4 class="widget-title text-center">Follow Me</h4>
-							<div class="follow-socials">
-								<a href="#"><i class="ti-facebook"></i></a>
-								<a href="#"><i class="ti-twitter"></i></a>
-								<a href="#"><i class="ti-instagram"></i></a>
-								<a href="#"><i class="ti-youtube"></i></a>
-								<a href="#"><i class="ti-pinterest"></i></a>
-							</div>
-						</div>
+						@* <div class="sidebar-widget follow mb-5 text-center"> *@
+						@* 	<h4 class="widget-title text-center">Follow Me</h4> *@
+						@* 	<div class="follow-socials"> *@
+						@* 		<a href="#"><i class="ti-facebook"></i></a> *@
+						@* 		<a href="#"><i class="ti-twitter"></i></a> *@
+						@* 		<a href="#"><i class="ti-instagram"></i></a> *@
+						@* 		<a href="#"><i class="ti-youtube"></i></a> *@
+						@* 		<a href="#"><i class="ti-pinterest"></i></a> *@
+						@* 	</div> *@
+						@* </div> *@
 
 						<div class="sidebar-widget mb-5">
 							<h4 class="widget-title text-center">Trending Posts</h4>
@@ -386,7 +388,7 @@
 
 
 						<div class="sidebar-widget category mb-5">
-							<h4 class="widget-title text-center">Catgeories</h4>
+							<h4 class="widget-title text-center">Members</h4>
 							<ul class="list-unstyled">
 								<li class="align-items-center d-flex justify-content-between">
 									<a href="#">Innovation</a>

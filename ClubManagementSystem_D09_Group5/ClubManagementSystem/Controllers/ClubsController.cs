@@ -12,19 +12,23 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Repositories.Interface;
+using Services.Implementation;
 
 namespace ClubManagementSystem.Controllers
 {
     public class ClubsController : Controller
     {
         private readonly IAccountService _accountService;
-        private readonly FptclubsContext _context;
         private readonly IClubRequestService _clubRequestService;
+        private readonly IClubService _clubService;
+        private readonly FptclubsContext _context;
 
-        public ClubsController(FptclubsContext context , IClubRequestService clubRequestService)
+        public ClubsController(FptclubsContext context , IClubRequestService clubRequestService, IAccountService accountService, IClubService clubService)
         {
             _context = context;
             _clubRequestService = clubRequestService;
+            _accountService = accountService;
+            _clubService = clubService;
         }
 
         // GET: Clubs
@@ -41,31 +45,12 @@ namespace ClubManagementSystem.Controllers
                 return NotFound();
             }
 
-            var club = await _context.Clubs
-                .Include(c => c.ClubMembers)
-                    .ThenInclude(cm => cm.User)
-                .FirstOrDefaultAsync(m => m.ClubId == id);
-            if (club == null)
+            var viewModel = await _clubService.GetClubDetailsAsync(id.Value);
+
+            if (viewModel == null)
             {
                 return NotFound();
             }
-
-            var clubMemberDtos = club.ClubMembers
-             .Select(member => new ClubMemberDto
-             {
-                 UserId = member.UserId,
-                 Username = member.User.Username,
-                 ProfilePictureBase64 = _accountService.ConvertToBase64(member.User.ProfilePicture)
-             }).ToList();
-
-            var viewModel = new ClubDetailsViewDto
-            {
-                ClubName = club.ClubName,
-                Logo = club.Logo,
-                Cover = club.Cover,
-                Description = club.Description,
-                ClubMembers = clubMemberDtos
-            };
 
             return View(viewModel);
         }

@@ -32,12 +32,16 @@ builder.Services.AddSession(options =>
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<IClubRequestRepository, ClubRequestRepository>();
+builder.Services.AddScoped<IClubRepository, ClubRepository>();
 
 
 //Add Services
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IClubRequestService, ClubRequestService>();
+builder.Services.AddScoped<IClubService, ClubService>();
+builder.Services.AddScoped<IImageHelperService, IImageHelperService>();
+
 // Add DbContext
 builder.Services.AddDbContext<FptclubsContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

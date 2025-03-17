@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BussinessObjects.Models;
+using BussinessObjects.Models.Dtos;
 using Repositories.Interface;
 using Services.Interface;
 
@@ -52,15 +53,36 @@ namespace Services.Implementation
         {
             return _accountRepository.UpdateUserAsync(user);
         }
-
-        public string ConvertToBase64(byte[] imageBytes)
+        public async Task<(bool Success, string Message)> UpdateUserProfileAsync(int userId, EditUserDto editUser)
         {
-            if (imageBytes == null || imageBytes.Length == 0)
+            var user = await _accountRepository.FindUserAsync(userId);
+            if (user == null)
             {
-                return null;
+                return (false, "User not found.");
             }
 
-            return $"data:image/png;base64,{Convert.ToBase64String(imageBytes)}";
+            if (!string.IsNullOrEmpty(editUser.Username) && user.Username != editUser.Username)
+            {
+                var usernameValid = await CheckUsernameExist(editUser.Username);
+                if (usernameValid != null)
+                {
+                    return (false, "This username is already registered.");
+                }
+                user.Username = editUser.Username;
+            }
+
+            if (!string.IsNullOrEmpty(editUser.NewPassword))
+            {
+                if (editUser.NewPassword != editUser.ConfirmNewPassword)
+                {
+                    return (false, "Passwords do not match.");
+                }
+                user.Password = editUser.NewPassword; 
+            }
+
+            await _accountRepository.UpdateUserAsync(user);
+            return (true, "Profile updated successfully.");
         }
+
     }
 }

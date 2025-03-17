@@ -1,4 +1,5 @@
 ﻿using BussinessObjects.Models;
+using BussinessObjects.Models.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +17,9 @@ namespace Services.Interface
         Task<User> AddUser(User user);
         Task<User?> CheckUsernameExist(string username);
         Task<User?> FindUserAsync(int userId);
-
         Task<User?> UpdateUserAsync(User user);
+        Task<(bool Success, string Message)> UpdateUserProfileAsync(int userId, EditUserDto editUser);
 
-        string ConvertToBase64(byte[] imageBytes);
     }
 
 }

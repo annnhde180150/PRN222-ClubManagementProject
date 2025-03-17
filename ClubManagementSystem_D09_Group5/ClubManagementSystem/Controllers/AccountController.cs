@@ -20,11 +20,12 @@ namespace ClubManagementSystem.Controllers
     {
         private readonly IAccountService _accountService;
         private readonly IConfiguration _configuration;
-
-        public AccountController(IConfiguration configuration, IAccountService accountService)
+        private readonly IImageHelperService _imageService;
+        public AccountController(IConfiguration configuration, IAccountService accountService, IImageHelperService imageHelperService)
         {
             _accountService = accountService;
             _configuration = configuration;
+            _imageService = imageHelperService;
         }
 
         [AllowAnonymous]
@@ -66,7 +67,7 @@ namespace ClubManagementSystem.Controllers
                 if (user.ProfilePicture != null)
                 {
                     //profilePicture = Encoding.UTF8.GetString(user.ProfilePicture);
-                    profilePicture = _accountService.ConvertToBase64(user.ProfilePicture);
+                    profilePicture = _imageService.ConvertToBase64(user.ProfilePicture, "png");
 
                 }
                 if (clubmember == null)
@@ -160,7 +161,7 @@ namespace ClubManagementSystem.Controllers
                 //profilePicture = Encoding.UTF8.GetString(user.ProfilePicture);
                 //profilePicture = $"data:image/png;base64,{Convert.ToBase64String(user.ProfilePicture)}";
 
-                profilePicture = _accountService.ConvertToBase64(user.ProfilePicture);
+                profilePicture = _imageService.ConvertToBase64(user.ProfilePicture, "png");
                 if (clubmember == null)
                 {
                     string role = "User";
@@ -217,7 +218,7 @@ namespace ClubManagementSystem.Controllers
             string roleCheck = "User";
             var newGmailUser = await _accountService.AddGmailUser(newUser);
             //profilePicture = Encoding.UTF8.GetString(newGmailUser.ProfilePicture);
-            profilePicture = _accountService.ConvertToBase64(newGmailUser.ProfilePicture);
+            profilePicture = _imageService.ConvertToBase64(newGmailUser.ProfilePicture, "png");
             claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, newGmailUser.UserId.ToString()),
@@ -326,54 +327,13 @@ namespace ClubManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(EditUserDto editUser)
         {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var (success, message) = await _accountService.UpdateUserProfileAsync(userId, editUser);
 
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var user = await _accountService.FindUserAsync(int.Parse(userId));
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            if (!string.IsNullOrEmpty(editUser.Username))
-            {
-                if (user.Username != editUser.Username)
-                {
-                    var usernameValid = await _accountService.CheckUsernameExist(editUser.Username);
-                    if (usernameValid != null)
-                    {
-                        TempData["ErrorMessage"] = "This username is already registered.";
-                        return View(editUser);
-                    }
-
-                    user.Username = editUser.Username;      //Update
-                }
-            } else
-            {
-                editUser.Username = user.Username;
-                return View(editUser);
-            }
-
-            if (!string.IsNullOrEmpty(editUser.NewPassword))
-            {
-                if (editUser.NewPassword == editUser.ConfirmNewPassword)
-                {
-                    user.Password = editUser.NewPassword;       //Update
-                    editUser.CurrentPassword = editUser.NewPassword;
-                    TempData["PasswordUpdated"] = "Password updated successfully";
-                }
-                else
-                {
-                    TempData["ErrorMessage"] = "Can not update password!";
-                    return View(editUser);
-                }
-            }
-
-            await _accountService.UpdateUserAsync(user); 
-
-            TempData["SuccessMessage"] = "Profile updated successfully";
-            return View(editUser); 
+            TempData[success ? "SuccessMessage" : "ErrorMessage"] = message;
+            return View(editUser);
         }
+
 
 
         [HttpPost]
@@ -411,7 +371,8 @@ namespace ClubManagementSystem.Controllers
                         user.ProfilePicture = profilePictureBytes;
                         await _accountService.UpdateUserAsync(user);
 
-                        HttpContext.Session.SetString("userPicture", $"data:image/{fileExtension.TrimStart('.')};base64,{Convert.ToBase64String(profilePictureBytes)}");
+                        var profilePictureBase64 = _imageService.ConvertToBase64(profilePictureBytes, fileExtension);
+                        HttpContext.Session.SetString("userPicture", profilePictureBase64);
 
                         return RedirectToAction("Edit", "Account");
                     }
