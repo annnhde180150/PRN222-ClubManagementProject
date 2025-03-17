@@ -117,7 +117,7 @@ public partial class FptclubsContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
             entity.Property(e => e.Description)
-                .HasColumnType("text")
+                .HasColumnType("nvarchar(MAX)")
                 .HasColumnName("description");
             entity.Property(e => e.Status)
                 .HasMaxLength(20)
