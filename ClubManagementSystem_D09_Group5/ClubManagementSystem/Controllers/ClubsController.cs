@@ -9,6 +9,9 @@ using BussinessObjects.Models;
 using Services.Interface;
 using BussinessObjects.Models.Dtos;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Repositories.Interface;
 
 namespace ClubManagementSystem.Controllers
 {
@@ -16,11 +19,12 @@ namespace ClubManagementSystem.Controllers
     {
         private readonly IAccountService _accountService;
         private readonly FptclubsContext _context;
+        private readonly IClubRequestService _clubRequestService;
 
-        public ClubsController(FptclubsContext context, IAccountService accountService)
+        public ClubsController(FptclubsContext context , IClubRequestService clubRequestService)
         {
             _context = context;
-            _accountService = accountService;
+            _clubRequestService = clubRequestService;
         }
 
         // GET: Clubs
@@ -66,6 +70,7 @@ namespace ClubManagementSystem.Controllers
             return View(viewModel);
         }
 
+        [Authorize]
         // GET: Clubs/Create
         public IActionResult Create()
         {
@@ -75,17 +80,45 @@ namespace ClubManagementSystem.Controllers
         // POST: Clubs/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ClubId,ClubName,Description,CreatedAt")] Club club)
+        public async Task<IActionResult> Create(IFormFile logoPicture,string clubName, string description,IFormFile coverPicture)
         {
-            if (ModelState.IsValid)
+            if ((logoPicture != null && logoPicture.Length > 0) || (coverPicture != null && coverPicture.Length > 0))
             {
-                _context.Add(club);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                // Convert image to byte array
+                byte[] logoPictureBytes;
+                byte[] coverPictureBytes;
+                using (var logomemoryStream = new MemoryStream())
+                {
+                    await logoPicture.CopyToAsync(logomemoryStream);
+                    logoPictureBytes = logomemoryStream.ToArray();                   
+                }
+                using (var covermemoryStream = new MemoryStream())
+                {
+                    await coverPicture.CopyToAsync(covermemoryStream);
+                    coverPictureBytes = covermemoryStream.ToArray();
+                }
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (userId != null)
+                {
+                    var clubRequest = new ClubRequest
+                    {
+                        ClubName = clubName,
+                        Description = description,
+                        Logo = logoPictureBytes,
+                        Cover = coverPictureBytes,
+                        CreatedAt = DateTime.Now,
+                        UserId = int.Parse(userId),
+                        Status = "Pending"
+                    };
+                    await _clubRequestService.AddClubRequest(clubRequest);
+                    TempData["SuccessMessage"] = "Club created successfully!";
+                    return RedirectToAction("Index", "Home");
+                }                                  
             }
-            return View(club);
+            return View();
         }
 
         // GET: Clubs/Edit/5

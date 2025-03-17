@@ -117,13 +117,21 @@ public partial class FptclubsContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
             entity.Property(e => e.Description)
-                .HasColumnType("text")
+                .HasColumnType("nvarchar(MAX)")
                 .HasColumnName("description");
             entity.Property(e => e.Status)
                 .HasMaxLength(20)
                 .HasDefaultValue("Pending")
                 .HasColumnName("status");
             entity.Property(e => e.UserId).HasColumnName("user_id");
+
+            entity.Property(e => e.Logo)
+                .HasColumnType("varbinary(max)")
+                .HasColumnName("logo"); 
+
+            entity.Property(e => e.Cover)
+                .HasColumnType("varbinary(max)")
+                .HasColumnName("cover"); 
 
             entity.HasOne(d => d.User).WithMany(p => p.ClubRequests)
                 .HasForeignKey(d => d.UserId)

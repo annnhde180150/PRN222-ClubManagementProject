@@ -251,9 +251,9 @@ blockquote {
 }
 
 .btn-primary:hover {
-  background: #000;
-  color: #fff;
-  border-color: #000;
+    background: #ce8460;
+    color: #fff;
+    border-color: #ce8460;
 }
 
 .btn-dark {
@@ -1173,7 +1173,7 @@ overlay search
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid #007bff;
+    border: 2px solid ;
 }
 
     .Profile-button img {
