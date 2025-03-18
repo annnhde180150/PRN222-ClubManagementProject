@@ -103,6 +103,7 @@ namespace ClubManagementSystem.Controllers
                     return RedirectToAction("Index", "Home");
                 }                                  
             }
+            TempData["ErrorMessage"] = "Please fill logo picture and cover picture!";
             return View();
         }
 

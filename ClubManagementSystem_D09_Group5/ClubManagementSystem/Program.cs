@@ -1,5 +1,6 @@
 using System;
 using BussinessObjects.Models;
+using ClubManagementSystem.Controllers.SignalR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -33,6 +34,7 @@ builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<IClubRequestRepository, ClubRequestRepository>();
 builder.Services.AddScoped<IClubRepository, ClubRepository>();
+builder.Services.AddScoped<IConnectionRepository, ConnectionRepository>();
 
 
 //Add Services
@@ -41,6 +43,12 @@ builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IClubRequestService, ClubRequestService>();
 builder.Services.AddScoped<IClubService, ClubService>();
 builder.Services.AddScoped<IImageHelperService, IImageHelperService>();
+builder.Services.AddScoped<IConnectionService, ConnectionService>();
+
+//signalR
+builder.Services.AddSignalR();
+builder.Services.AddScoped<SignalRSender>();
+
 
 // Add DbContext
 builder.Services.AddDbContext<FptclubsContext>(options =>
@@ -74,6 +82,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.MapHub<ServerHub>("/serverHub");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseSession();

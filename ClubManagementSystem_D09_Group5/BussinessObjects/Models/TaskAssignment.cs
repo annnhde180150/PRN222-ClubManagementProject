@@ -22,5 +22,5 @@ public partial class TaskAssignment
     public virtual ClubMember Membership { get; set; } = null!;
 
     [ForeignKey("TaskId")]
-    public virtual Task Task { get; set; } = null!;
+    public virtual ClubTask Task { get; set; } = null!;
 }

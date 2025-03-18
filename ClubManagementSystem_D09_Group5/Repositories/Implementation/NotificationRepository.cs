@@ -13,12 +13,9 @@ namespace Repositories.Implementation
     {
         private FptclubsContext _context;
 
-        public NotificationRepository()
+        public NotificationRepository(FptclubsContext context)
         {
-            if (_context == null)
-            {
-                _context = new FptclubsContext();
-            }
+            _context = context;
         }
 
         public async Task<Notification> AddNotificationAsync(Notification notification)

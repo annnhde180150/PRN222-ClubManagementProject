@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BussinessObjects.Models;
 
-public partial class Task
+public partial class ClubTask
 {
     [Key]
     public int TaskId { get; set; }

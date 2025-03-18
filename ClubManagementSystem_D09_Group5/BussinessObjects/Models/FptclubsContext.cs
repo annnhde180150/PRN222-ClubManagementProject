@@ -16,6 +16,8 @@ public partial class FptclubsContext : DbContext
     {
     }
 
+    public virtual DbSet<Connection> Connections { get; set; }
+
     public virtual DbSet<Club> Clubs { get; set; }
 
     public virtual DbSet<ClubMember> ClubMembers { get; set; }
@@ -30,7 +32,7 @@ public partial class FptclubsContext : DbContext
 
     public virtual DbSet<Role> Roles { get; set; }
 
-    public virtual DbSet<Task> Tasks { get; set; }
+    public virtual DbSet<ClubTask> Tasks { get; set; }
 
     public virtual DbSet<TaskAssignment> TaskAssignments { get; set; }
 
@@ -256,7 +258,7 @@ public partial class FptclubsContext : DbContext
                 .HasColumnName("role_name");
         });
 
-        modelBuilder.Entity<Task>(entity =>
+        modelBuilder.Entity<ClubTask>(entity =>
         {
             entity.HasKey(e => e.TaskId).HasName("PK__Tasks__0492148DB46F1696");
 
