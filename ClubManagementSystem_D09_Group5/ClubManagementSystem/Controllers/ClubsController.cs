@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Repositories.Interface;
 using Services.Implementation;
+using Azure.Core;
 
 namespace ClubManagementSystem.Controllers
 {
@@ -21,14 +22,16 @@ namespace ClubManagementSystem.Controllers
         private readonly IAccountService _accountService;
         private readonly IClubRequestService _clubRequestService;
         private readonly IClubService _clubService;
+        private readonly IJoinRequestService _joinRequestService;
         private readonly FptclubsContext _context;
 
-        public ClubsController(FptclubsContext context , IClubRequestService clubRequestService, IAccountService accountService, IClubService clubService)
+        public ClubsController(FptclubsContext context , IClubRequestService clubRequestService, IAccountService accountService, IClubService clubService, IJoinRequestService joinRequestService)
         {
             _context = context;
             _clubRequestService = clubRequestService;
             _accountService = accountService;
             _clubService = clubService;
+            _joinRequestService = joinRequestService;
         }
 
         // GET: Clubs
@@ -39,7 +42,15 @@ namespace ClubManagementSystem.Controllers
             return View(clubRequest);
         }
 
-       
+        public async Task<IActionResult> Request(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var requests = _joinRequestService.GetJoinRequestsAsync(id.Value);
+            return View(requests);
+        }
 
         // GET: Clubs/Details/5
         public async Task<IActionResult> Details(int? id)
