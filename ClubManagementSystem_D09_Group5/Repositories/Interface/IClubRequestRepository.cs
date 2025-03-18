@@ -9,6 +9,7 @@ namespace Repositories.Interface
 {
     public interface IClubRequestRepository
     {
-        Task<ClubRequest?> AddClubRequest(ClubRequest clubRequest);
+        Task<ClubRequest?> AddClubRequestAsync(ClubRequest clubRequest);
+        Task<IEnumerable<ClubRequest?>> GetAllClubRequestPendingAsync();
     }
 }

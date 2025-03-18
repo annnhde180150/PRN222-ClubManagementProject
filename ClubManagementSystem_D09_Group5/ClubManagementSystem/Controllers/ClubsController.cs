@@ -32,10 +32,14 @@ namespace ClubManagementSystem.Controllers
         }
 
         // GET: Clubs
+        [Authorize("SystemAdmin")]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Clubs.ToListAsync());
+            var clubRequest = _clubRequestService.GetAllClubRequestPendingAsync();
+            return View(clubRequest);
         }
+
+       
 
         // GET: Clubs/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -98,7 +102,7 @@ namespace ClubManagementSystem.Controllers
                         UserId = int.Parse(userId),
                         Status = "Pending"
                     };
-                    await _clubRequestService.AddClubRequest(clubRequest);
+                    await _clubRequestService.AddClubRequestAsync(clubRequest);
                     TempData["SuccessMessage"] = "Club created successfully!";
                     return RedirectToAction("Index", "Home");
                 }                                  

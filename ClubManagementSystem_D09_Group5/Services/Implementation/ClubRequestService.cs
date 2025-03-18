@@ -16,9 +16,13 @@ namespace Services.Implementation
         {
             _clubRequestRepository = clubRequestRepository;
         }
-        public async Task<ClubRequest?> AddClubRequest(ClubRequest clubRequest)
+        public async Task<ClubRequest?> AddClubRequestAsync(ClubRequest clubRequest)
         {
-            return await _clubRequestRepository.AddClubRequest(clubRequest);
+            return await _clubRequestRepository.AddClubRequestAsync(clubRequest);
+        }
+        public async Task <IEnumerable<ClubRequest?>> GetAllClubRequestPendingAsync()
+        {
+            return await _clubRequestRepository.GetAllClubRequestPendingAsync();
         }
     }
 }
