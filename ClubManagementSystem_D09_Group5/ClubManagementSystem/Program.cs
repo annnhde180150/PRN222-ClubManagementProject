@@ -33,14 +33,17 @@ builder.Services.AddSession(options =>
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<IClubRequestRepository, ClubRequestRepository>();
+builder.Services.AddScoped<IClubRepository, ClubRepository>();
 builder.Services.AddScoped<IConnectionRepository, ConnectionRepository>();
+
 
 //Add Services
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IClubRequestService, ClubRequestService>();
+builder.Services.AddScoped<IClubService, ClubService>();
+builder.Services.AddScoped<IImageHelperService, IImageHelperService>();
 builder.Services.AddScoped<IConnectionService, ConnectionService>();
-
 
 //signalR
 builder.Services.AddSignalR();

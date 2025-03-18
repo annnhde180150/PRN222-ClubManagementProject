@@ -6,22 +6,29 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BussinessObjects.Models;
+using Services.Interface;
+using BussinessObjects.Models.Dtos;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Repositories.Interface;
-using Services.Interface;
+using Services.Implementation;
 
 namespace ClubManagementSystem.Controllers
 {
     public class ClubsController : Controller
     {
-        private readonly FptclubsContext _context;
+        private readonly IAccountService _accountService;
         private readonly IClubRequestService _clubRequestService;
+        private readonly IClubService _clubService;
+        private readonly FptclubsContext _context;
 
-        public ClubsController(FptclubsContext context , IClubRequestService clubRequestService)
+        public ClubsController(FptclubsContext context , IClubRequestService clubRequestService, IAccountService accountService, IClubService clubService)
         {
             _context = context;
             _clubRequestService = clubRequestService;
+            _accountService = accountService;
+            _clubService = clubService;
         }
 
         // GET: Clubs
@@ -38,14 +45,14 @@ namespace ClubManagementSystem.Controllers
                 return NotFound();
             }
 
-            var club = await _context.Clubs
-                .FirstOrDefaultAsync(m => m.ClubId == id);
-            if (club == null)
+            var viewModel = await _clubService.GetClubDetailsAsync(id.Value);
+
+            if (viewModel == null)
             {
                 return NotFound();
             }
 
-            return View(club);
+            return View(viewModel);
         }
 
         [Authorize]
