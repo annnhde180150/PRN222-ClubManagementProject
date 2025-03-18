@@ -18,7 +18,7 @@
 
                                     <div class="form-group">
                                         <label class="lg-form" for="name">Club's Name</label>
-                                        <input class="form-control form-control-name" name="clubName" type="text" required
+                                        <input class="form-control form-control-name" name="clubName" maxlength="90" type="text" required
                                                placeholder="Enter name">
                                     </div>
 
@@ -124,6 +124,22 @@
         }
     }
 </script>
+<!-- Popup for error message -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var errorMessage = '@TempData["ErrorMessage"]';
+        if (errorMessage) {
+            Swal.fire({
+                title: "Error!",
+                text: errorMessage,
+                icon: "error",
+                confirmButtonText: "OK"
+            });
+        }
+    });
+</script>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
