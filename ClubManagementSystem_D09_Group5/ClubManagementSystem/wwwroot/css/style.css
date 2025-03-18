@@ -205,15 +205,25 @@ a.read-more:hover {
 a:focus {
   outline: 0;
 }
+/* Body */
+.wrap {
+    min-height: 100vh; 
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1;
+}
 
 /* Input form */
 .form-control {
-  box-shadow: none;
-  border: 1px solid transparent;
-  padding: 12px 20px;
-  background: #f0f1f4;
-  font-size: 14px;
-  border-radius: 2px;
+    box-shadow: none;
+    border: 1px solid transparent;
+    padding: 12px 20px;
+    background: #f0f1f4;
+    font-size: 14px;
+    border-radius: 2px;
 }
 
 .form-control:focus {
@@ -1538,6 +1548,13 @@ footer
   padding-top: 20px;
 }
 
+/*.footer-2 {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000; 
+}*/
+
 .footer-socials li,
 .footer-socials-2 li {
   margin: 0px 25px;
@@ -1608,7 +1625,7 @@ footer
   vertical-align: middle;
   box-sizing: border-box;
   z-index: 100;
-  padding-right: 30px;
+  padding: 0px 30px 0px 30px;
 }
 
 @media (max-width: 575px) {

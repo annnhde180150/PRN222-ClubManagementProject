@@ -42,6 +42,7 @@ namespace ClubManagementSystem.Controllers
             var adminGmail = _configuration["AdminAccount:Gmail"];
             var adminPassword = _configuration["AdminAccount:Password"];
             string? profilePicture = "";
+            // login with admin role
             if (Gmail == adminGmail && password == adminPassword)
             {
                 string role = "SystemAdmin";
@@ -59,6 +60,8 @@ namespace ClubManagementSystem.Controllers
                 HttpContext.Session.SetString("userPicture", profilePicture);
                 return RedirectToAction("Index", "Home");
             }
+
+
             if (user != null)
             {
                 var clubmember = await _accountService.CheckRole(user.UserId);
@@ -69,6 +72,7 @@ namespace ClubManagementSystem.Controllers
                     profilePicture = $"data:image/png;base64,{Convert.ToBase64String(user.ProfilePicture)}";
 
                 }
+                // login with user role
                 if (clubmember == null)
                 {
                     string role = "User";
@@ -84,6 +88,8 @@ namespace ClubManagementSystem.Controllers
                     HttpContext.Session.SetString("userPicture", profilePicture);
                     return RedirectToAction("Index", "Home");
                 }
+
+                // login with ClubAdmin role
                 if (clubmember.Role.RoleName == "ClubAdmin")
                 {
                     string role = "ClubAdmin";
@@ -99,6 +105,8 @@ namespace ClubManagementSystem.Controllers
                     HttpContext.Session.SetString("userPicture", profilePicture);
                     return RedirectToAction("Index", "Home");
                 }
+
+                // login with ClubMember role
                 if (clubmember.Role.RoleName == "ClubMember")
                 {
                     string role = "ClubMember";
@@ -154,6 +162,8 @@ namespace ClubManagementSystem.Controllers
             var claims = new List<Claim>();
             string profilePicture = "";
             ClaimsIdentity claimsIdentity;
+
+            //Check if user exist in database
             if (user != null)
             {
                 var clubmember = await _accountService.CheckRole(user.UserId);
@@ -204,7 +214,7 @@ namespace ClubManagementSystem.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
-
+            // Add new user into database
             User newUser = new User
             {
                 Username = name,

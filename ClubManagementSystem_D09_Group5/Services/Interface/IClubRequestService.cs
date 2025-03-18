@@ -9,6 +9,7 @@ namespace Services.Interface
 {
     public interface IClubRequestService
     {
-        Task<ClubRequest?> AddClubRequest(ClubRequest clubRequest);
+        Task<ClubRequest?> AddClubRequestAsync(ClubRequest clubRequest);
+        Task <IEnumerable<ClubRequest?>> GetAllClubRequestPendingAsync();
     }
 }
