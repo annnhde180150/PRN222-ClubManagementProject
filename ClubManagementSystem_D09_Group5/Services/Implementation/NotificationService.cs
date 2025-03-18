@@ -56,5 +56,17 @@ namespace Services.Implementation
         {
             return await _notificationRepository.UpdateNotificationAsync(notification);
         }
+
+        public async Task<bool> UpdateAllNotificationsAsync(int userId)
+        {
+            var isUpdated = true;
+            var notis = await _notificationRepository.GetNotificationsAsync(userId);
+            foreach (var notification in notis)
+            {
+                notification.IsRead = true;
+                isUpdated = await _notificationRepository.UpdateNotificationAsync(notification)? isUpdated : false;
+            }
+            return isUpdated;
+        }
     }
 }

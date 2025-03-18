@@ -15,5 +15,6 @@ namespace Services.Interface
         Task<Notification> AddNotificationAsync(Notification notification);
         Task<Boolean> UpdateNotificationAsync(Notification notification);
         Task<Boolean> DeleteNotificationAsync(int notificationId);
+        Task<Boolean> UpdateAllNotificationsAsync(int userId);
     }
 }
