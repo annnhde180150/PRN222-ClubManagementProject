@@ -7,6 +7,7 @@ using ClubManagementSystem.Controllers.SignalR;
 
 namespace ClubManagementSystem.Controllers
 {
+    [Route("Notification")]
     public class NotificationController : Controller
     {
         private readonly INotificationService _NS;
@@ -27,13 +28,22 @@ namespace ClubManagementSystem.Controllers
             return View(notifications);
         }
 
-        public async Task<IActionResult> UpdateAsync(int NotiID) 
+        [HttpPost("UpdateAsync")]
+        public async Task<JsonResult> UpdateAsync(int NotiID) 
         {
             var notification = await _NS.GetNotificationAsync(NotiID);
             notification.IsRead = true;
             await _NS.UpdateNotificationAsync(notification);
-            return View("Index",notification);
+            return Json(notification);
         }
 
+        [HttpPost("UpdateAllAsync")]
+        public async Task<JsonResult> UpdateAllAsync()
+        {
+            var UserID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            await _NS.UpdateAllNotificationsAsync(Int32.Parse(UserID));
+            var notifications = await _NS.GetNotificationsAsync(Int32.Parse(UserID));
+            return Json(notifications);
+        }
     }
 }

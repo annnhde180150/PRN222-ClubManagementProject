@@ -18,15 +18,11 @@ namespace ClubManagementSystem.Controllers.SignalR
 
         public override async Task OnConnectedAsync()
         {
-            Console.WriteLine("Connected");
             var userID = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            Console.WriteLine(userID);
-            Console.WriteLine(Context.ConnectionId);
-            if(userID != null)
+            if (userID != null)
             {
-                Console.WriteLine("Connected");
                 var latest = await _connectionService.GetConnection(Int32.Parse(userID));
-                if (latest != null && latest.ConnectionId != Context.ConnectionId)
+                if (latest == null || latest.ConnectionId != Context.ConnectionId)
                 {
                     var con = new Connection
                     {
