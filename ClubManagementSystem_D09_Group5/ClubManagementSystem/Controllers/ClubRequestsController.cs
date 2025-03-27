@@ -11,6 +11,7 @@ using Services.Interface;
 using System.Security.Claims;
 using BussinessObjects.Models.Dtos;
 using System.ComponentModel;
+using ClubManagementSystem.Controllers.SignalR;
 
 namespace ClubManagementSystem.Controllers
 {
@@ -20,12 +21,14 @@ namespace ClubManagementSystem.Controllers
         private readonly IClubService _clubService;
         private readonly IClubRequestService _clubRequestService;
         private readonly IImageHelperService _imageService;
-        public ClubRequestsController(FptclubsContext context, IClubRequestService clubRequestService, IImageHelperService imageHelperService, IClubService clubService)
+        private readonly SignalRSender _signalRSender;
+        public ClubRequestsController(FptclubsContext context, IClubRequestService clubRequestService, IImageHelperService imageHelperService, IClubService clubService, SignalRSender signalRSender)
         {
             _context = context;
             _clubRequestService = clubRequestService;
             _imageService = imageHelperService;
             _clubService = clubService;
+            _signalRSender = signalRSender;
         }
 
         // GET: ClubRequests
@@ -81,7 +84,8 @@ namespace ClubManagementSystem.Controllers
         public async Task<IActionResult> ApproveOrReject(int id, string status)
         {
             var clubRequest = await _clubRequestService.GetClubRequestById(id);
-            if(clubRequest != null){
+            Notification notification;
+            if (clubRequest != null){
                 if (status.Equals("Accept"))
                 {
                     clubRequest.Status = "Accepted";
@@ -95,10 +99,27 @@ namespace ClubManagementSystem.Controllers
                         CreatedAt = DateTime.Now,
                     };
                     await _clubService.AddClubAsync(club);
+                    notification = new Notification
+                    {
+                        UserId = clubRequest.UserId,
+                        Message = "Your club request has been accepted",
+                        Location= "ClubRequest"
+                    };
+
+                    await _signalRSender.Notify(notification, notification.UserId);
                     return RedirectToAction(nameof(Index));
+
+                    
                 }
                 clubRequest.Status = "Rejected";
                 await _clubRequestService.UpdateClubRequestStatus(clubRequest);
+                notification = new Notification
+                {
+                    UserId = clubRequest.UserId,
+                    Message = "Your club request has been Rejected",
+                    Location = "ClubRequest"
+                };
+                await _signalRSender.Notify(notification, notification.UserId);
                 return RedirectToAction(nameof(Index));
             }
             return RedirectToAction(nameof(Index));
