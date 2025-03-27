@@ -25,7 +25,7 @@ namespace ClubManagementSystem.Controllers
             _joinRequestService = joinRequestService;
             _clubMemberService = clubMemberService;
             _roleService = roleService;
-            _sender = sender
+            _sender = sender;
         }
 
         // GET: JoinRequests

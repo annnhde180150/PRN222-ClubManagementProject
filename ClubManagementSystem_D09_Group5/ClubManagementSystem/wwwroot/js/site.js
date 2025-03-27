@@ -2,7 +2,9 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-var connection = new signalR.HubConnectionBuilder().withUrl("/serverHub").build();
+var connection = new signalR.HubConnectionBuilder()
+    .withUrl("/serverHub")
+    .build();
 
 connection.start().then(function () {
     //connection.invoke("GetServerTime").catch(function (err) { console.error(err.toString()); });

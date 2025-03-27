@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace BussinessObjects.Models;
 
@@ -24,5 +25,6 @@ public partial class Notification
     public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
 
     [ForeignKey("UserId")]
+    [JsonIgnore]
     public virtual User User { get; set; } = null!;
 }

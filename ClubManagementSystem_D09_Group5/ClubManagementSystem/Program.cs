@@ -54,6 +54,16 @@ builder.Services.AddScoped<IRoleService, RoleService>();
 //signalR
 builder.Services.AddSignalR();
 builder.Services.AddScoped<SignalRSender>();
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://yourfrontend.com") // Change to your frontend URL
+              .AllowAnyMethod()
+              .AllowAnyHeader()
+              .AllowCredentials();
+    });
+});
 
 
 // Add DbContext
@@ -88,6 +98,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseCors();
 app.MapHub<ServerHub>("/serverHub");
 app.UseHttpsRedirection();
 app.UseStaticFiles();

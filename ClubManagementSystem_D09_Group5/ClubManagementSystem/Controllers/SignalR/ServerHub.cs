@@ -36,6 +36,7 @@ namespace ClubManagementSystem.Controllers.SignalR
 
         public override System.Threading.Tasks.Task OnDisconnectedAsync(System.Exception exception)
         {
+            Console.WriteLine($"Client disconnected: {Context.ConnectionId}, Error: {exception?.Message}");
             return base.OnDisconnectedAsync(exception);
         }
     }
