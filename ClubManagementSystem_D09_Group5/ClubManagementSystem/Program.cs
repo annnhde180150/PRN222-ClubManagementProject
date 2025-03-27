@@ -35,6 +35,7 @@ builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<IClubRequestRepository, ClubRequestRepository>();
 builder.Services.AddScoped<IClubRepository, ClubRepository>();
 builder.Services.AddScoped<IConnectionRepository, ConnectionRepository>();
+builder.Services.AddScoped<IPostRepository, PostRepository>();
 
 
 //Add Services
@@ -44,6 +45,7 @@ builder.Services.AddScoped<IClubRequestService, ClubRequestService>();
 builder.Services.AddScoped<IClubService, ClubService>();
 builder.Services.AddScoped<IImageHelperService, ImageHelperService>();
 builder.Services.AddScoped<IConnectionService, ConnectionService>();
+builder.Services.AddScoped<IPostService, PostService>();
 
 //signalR
 builder.Services.AddSignalR();
