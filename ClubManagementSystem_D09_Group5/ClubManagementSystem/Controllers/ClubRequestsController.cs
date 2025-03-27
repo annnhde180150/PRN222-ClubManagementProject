@@ -20,7 +20,7 @@ namespace ClubManagementSystem.Controllers
         private readonly IClubService _clubService;
         private readonly IClubRequestService _clubRequestService;
         private readonly IImageHelperService _imageService;
-        public ClubRequestsController(FptclubsContext context, IClubRequestService clubRequestService, IImageHelperService imageHelperService,IClubService clubService)
+        public ClubRequestsController(FptclubsContext context, IClubRequestService clubRequestService, IImageHelperService imageHelperService, IClubService clubService)
         {
             _context = context;
             _clubRequestService = clubRequestService;
@@ -59,7 +59,7 @@ namespace ClubManagementSystem.Controllers
             {
                 return NotFound();
             }
-            string? logoPicture =_imageService.ConvertToBase64(clubRequest.Result.Logo, "png");
+            string? logoPicture = _imageService.ConvertToBase64(clubRequest.Result.Logo, "png");
             string? coverPicture = _imageService.ConvertToBase64(clubRequest.Result.Cover, "png");
             var clubrequestView = new ClubRequestDetailDto
             {
@@ -80,10 +80,9 @@ namespace ClubManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ApproveOrReject(int id, string status)
         {
-            if (status.Equals("Accept"))
-            {
-                var clubRequest = await _clubRequestService.GetClubRequestById(id);
-                if (clubRequest != null)
+            var clubRequest = await _clubRequestService.GetClubRequestById(id);
+            if(clubRequest != null){
+                if (status.Equals("Accept"))
                 {
                     clubRequest.Status = "Accepted";
                     await _clubRequestService.UpdateClubRequestStatus(clubRequest);
@@ -98,18 +97,11 @@ namespace ClubManagementSystem.Controllers
                     await _clubService.AddClubAsync(club);
                     return RedirectToAction(nameof(Index));
                 }
+                clubRequest.Status = "Rejected";
+                await _clubRequestService.UpdateClubRequestStatus(clubRequest);
+                return RedirectToAction(nameof(Index));
             }
-            else
-            {
-                var clubRequest = await _clubRequestService.GetClubRequestById(id);
-                if (clubRequest != null)
-                {
-                    clubRequest.Status = "Rejected";
-                    await _clubRequestService.UpdateClubRequestStatus(clubRequest);
-                    return RedirectToAction(nameof(Index));
-                }
-            }
-            return View();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: ClubRequests/Create
