@@ -124,8 +124,8 @@
 										<div class="Profile-button" id="menuToggle">
 											<img src="~/defaultPicture.jpg" alt="User Image">
 										</div>
-										<ul class="submenu" id="submenu">											
-											<li><a href="post-video.html">Video Formats</a></li>
+										<ul class="submenu" id="submenu">
+											<li><a asp-controller="Account" asp-action="Edit">Edit Profile</a></li>
 											<li><a href="post-video.html">Video Formats</a></li>
 											<li><a asp-controller="Account" asp-action="logout">Logout</a></li>
 										</ul>
@@ -148,7 +148,7 @@
 		</div>
 	</header>
 	<div class="wrap">
-		<div class="container content">
+		<div class="content container">
 			<main role="main" class="pb-3">
 				@RenderBody()
 			</main>
