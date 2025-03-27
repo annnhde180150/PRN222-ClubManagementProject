@@ -162,3 +162,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 })(jQuery);
 
+function readNoti() {
+    document.getElementById("notiDot").style.display = "none";
+}
+

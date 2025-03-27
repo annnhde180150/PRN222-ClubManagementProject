@@ -338,7 +338,6 @@ public partial class FptclubsContext : DbContext
                 .HasColumnName("created_at");
         });
 
-
         OnModelCreatingPartial(modelBuilder);
     }
 

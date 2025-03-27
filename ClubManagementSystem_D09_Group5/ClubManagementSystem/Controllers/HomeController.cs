@@ -1,6 +1,8 @@
 using System.Diagnostics;
+using ClubManagementSystem.Controllers.SignalR;
 using ClubManagementSystem.Models;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Protocol.Plugins;
 
 namespace ClubManagementSystem.Controllers
 {
@@ -8,7 +10,7 @@ namespace ClubManagementSystem.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, SignalRSender sender)
         {
             _logger = logger;
         }
