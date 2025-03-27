@@ -35,8 +35,8 @@ namespace ClubManagementSystem.Controllers
         [Authorize("SystemAdmin")]
         public async Task<IActionResult> Index()
         {
-            var clubRequest = _clubRequestService.GetAllClubRequestPendingAsync();
-            return View(clubRequest);
+            //var clubRequest = _clubRequestService.GetAllClubRequestPendingAsync();
+            return View();
         }
 
        

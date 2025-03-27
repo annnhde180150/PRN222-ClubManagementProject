@@ -1,4 +1,5 @@
-﻿using BussinessObjects.Models.Dtos;
+﻿using BussinessObjects.Models;
+using BussinessObjects.Models.Dtos;
 using Repositories.Interface;
 using Services.Interface;
 using System;
@@ -47,6 +48,10 @@ namespace Services.Implementation
             };
 
             return viewModel;
+        }
+        public async Task AddClubAsync(Club club)
+        {
+            await _clubRepository.AddClubAsync(club);
         }
     }
 

@@ -10,6 +10,9 @@ namespace Services.Interface
     public interface IClubRequestService
     {
         Task<ClubRequest?> AddClubRequestAsync(ClubRequest clubRequest);
-        Task <IEnumerable<ClubRequest?>> GetAllClubRequestPendingAsync();
+        Task <IEnumerable<ClubRequest?>> GetAllClubRequestAsync(string role, int userId);
+        Task<ClubRequest?> GetClubRequestById(int id);
+        Task UpdateClubRequestStatus(ClubRequest clubRequest);
+
     }
 }
