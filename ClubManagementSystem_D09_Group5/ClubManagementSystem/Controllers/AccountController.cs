@@ -169,7 +169,7 @@ namespace ClubManagementSystem.Controllers
             {
                 var clubmember = await _accountService.CheckRole(user.UserId);
                 //profilePicture = Encoding.UTF8.GetString(user.ProfilePicture);
-                //profilePicture = $"data:image/png;base64,{Convert.ToBase64String(user.ProfilePicture)}";
+                profilePicture = $"data:image/png;base64,{Convert.ToBase64String(user.ProfilePicture)}";
 
                 profilePicture = _imageService.ConvertToBase64(user.ProfilePicture, "png");
                 if (clubmember == null)
@@ -227,7 +227,7 @@ namespace ClubManagementSystem.Controllers
             };
             string roleCheck = "User";
             var newGmailUser = await _accountService.AddGmailUser(newUser);
-            //profilePicture = Encoding.UTF8.GetString(newGmailUser.ProfilePicture);
+            profilePicture = Encoding.UTF8.GetString(newGmailUser.ProfilePicture);
             profilePicture = _imageService.ConvertToBase64(newGmailUser.ProfilePicture, "png");
             claims = new List<Claim>
             {
