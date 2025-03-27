@@ -30,5 +30,26 @@ namespace Repositories.Implementation
                 .Where(c => c.Status == "Pending")
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<ClubRequest?>> GetAllClubRequestWithUserId(int userId)
+        {
+            return await _context.ClubRequests
+                .Include(c => c.User)
+                .Where(c => c.UserId == userId)
+                .ToListAsync();
+        }
+
+        public async Task<ClubRequest?> GetClubRequestById(int id)
+        {
+            return await _context.ClubRequests
+                .Include(c => c.User)
+                .FirstOrDefaultAsync(c => c.RequestId == id);
+        }
+
+        public async Task UpdateStatus (ClubRequest clubRequest)
+        {
+            _context.ClubRequests.Update(clubRequest);
+            await _context.SaveChangesAsync();
+        }
     }
 }

@@ -25,5 +25,11 @@ namespace Repositories.Implementation
                     .ThenInclude(cm => cm.User)
                 .FirstOrDefaultAsync(c => c.ClubId == clubId);
         }
+
+        public async Task AddClubAsync(Club club)
+        {
+            _context.Clubs.Add(club);
+            await _context.SaveChangesAsync();
+        }
     }
 }

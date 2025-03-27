@@ -20,9 +20,23 @@ namespace Services.Implementation
         {
             return await _clubRequestRepository.AddClubRequestAsync(clubRequest);
         }
-        public async Task <IEnumerable<ClubRequest?>> GetAllClubRequestPendingAsync()
+        public async Task <IEnumerable<ClubRequest?>> GetAllClubRequestAsync(string role,int userId)
         {
-            return await _clubRequestRepository.GetAllClubRequestPendingAsync();
+            if (role.Equals("SystemAdmin"))
+            {
+                return await _clubRequestRepository.GetAllClubRequestPendingAsync();
+            }
+            return await _clubRequestRepository.GetAllClubRequestWithUserId(userId);
+        }
+
+        public async Task<ClubRequest?> GetClubRequestById(int id)
+        {
+            return await _clubRequestRepository.GetClubRequestById(id);
+        }
+
+        public async Task UpdateClubRequestStatus(ClubRequest clubRequest)
+        {
+            await _clubRequestRepository.UpdateStatus(clubRequest);
         }
     }
 }

@@ -11,5 +11,9 @@ namespace Repositories.Interface
     {
         Task<ClubRequest?> AddClubRequestAsync(ClubRequest clubRequest);
         Task<IEnumerable<ClubRequest?>> GetAllClubRequestPendingAsync();
+
+        Task<IEnumerable<ClubRequest?>> GetAllClubRequestWithUserId(int userId);
+        Task<ClubRequest?> GetClubRequestById(int id);
+        Task UpdateStatus(ClubRequest clubRequest);
     }
 }

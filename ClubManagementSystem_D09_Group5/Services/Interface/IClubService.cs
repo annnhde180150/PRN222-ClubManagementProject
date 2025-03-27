@@ -1,4 +1,5 @@
-﻿using BussinessObjects.Models.Dtos;
+﻿using BussinessObjects.Models;
+using BussinessObjects.Models.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace Services.Interface
     public interface IClubService
     {
         Task<ClubDetailsViewDto> GetClubDetailsAsync(int clubId);
+        Task AddClubAsync(Club club);
     }
 }
