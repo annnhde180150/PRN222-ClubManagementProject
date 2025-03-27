@@ -42,7 +42,7 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IClubRequestService, ClubRequestService>();
 builder.Services.AddScoped<IClubService, ClubService>();
-builder.Services.AddScoped<IImageHelperService, IImageHelperService>();
+builder.Services.AddScoped<IImageHelperService, ImageHelperService>();
 builder.Services.AddScoped<IConnectionService, ConnectionService>();
 
 //signalR
