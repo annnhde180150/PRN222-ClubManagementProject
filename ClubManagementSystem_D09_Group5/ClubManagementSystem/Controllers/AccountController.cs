@@ -33,7 +33,7 @@ namespace ClubManagementSystem.Controllers
         {
             return View();
         }
-      
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -43,30 +43,31 @@ namespace ClubManagementSystem.Controllers
             var adminGmail = _configuration["AdminAccount:Gmail"];
             var adminPassword = _configuration["AdminAccount:Password"];
             string? profilePicture = "";
-            // login with admin role
-            if (Gmail == adminGmail && password == adminPassword)
+            if (user != null)
             {
-                string role = "SystemAdmin";
-                var accountAdminId = 0;
-                var adminName = "Admin";
-                var claims = new List<Claim>
+                // login with admin role
+                if (user.Email == adminGmail && user.Password == adminPassword)
+                {
+                    string role = "SystemAdmin";
+                    var accountAdminId = user.UserId;
+                    var adminName = "Admin";
+                    var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.NameIdentifier, accountAdminId.ToString()),
                     new Claim(ClaimTypes.Name, adminName),
                     new Claim(ClaimTypes.Email, adminGmail),
                     new Claim(ClaimTypes.Role, role),
                 };
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));               
-                HttpContext.Session.SetString("userPicture", profilePicture);
-                return RedirectToAction("Index", "Home");
-            }
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                    HttpContext.Session.SetString("userPicture", profilePicture);
+                    return RedirectToAction("Index", "Home");
+                }
 
 
-            if (user != null)
-            {
+
                 var clubmember = await _accountService.CheckRole(user.UserId);
-                
+
                 if (user.ProfilePicture != null)
                 {
                     //profilePicture = Encoding.UTF8.GetString(user.ProfilePicture);
@@ -146,7 +147,7 @@ namespace ClubManagementSystem.Controllers
                 claim.Issuer,
                 claim.OriginalIssuer,
                 claim.Type,
-                claim.Value,               
+                claim.Value,
             });
             var email = GoogleClaims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
             var name = GoogleClaims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
@@ -248,7 +249,7 @@ namespace ClubManagementSystem.Controllers
         {
             HttpContext.Session.Clear();
             await HttpContext.SignOutAsync();
-            return  RedirectToAction("Login", "Account");
+            return RedirectToAction("Login", "Account");
         }
 
         [AllowAnonymous]
@@ -256,7 +257,7 @@ namespace ClubManagementSystem.Controllers
         {
             return View();
         }
-       
+
 
         [HttpPost]
         [AllowAnonymous]
@@ -268,7 +269,7 @@ namespace ClubManagementSystem.Controllers
                 return View(newUser); // Return the view to show validation messages
             }
             bool isUserExist = CheckExistUser(newUser.Email, newUser.Username);
-           
+
             if (isUserExist == true)
             {
                 return RedirectToAction("SignUp", "Account");
@@ -305,7 +306,7 @@ namespace ClubManagementSystem.Controllers
         //    return View(user);
         //}
 
-        [Authorize] 
+        [Authorize]
         public async Task<IActionResult> Edit()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -358,7 +359,7 @@ namespace ClubManagementSystem.Controllers
                 if (!allowedExtensions.Contains(fileExtension))
                 {
                     ModelState.AddModelError("profilePicture", "Only .jpg, .jpeg, and .png files are allowed.");
-                    return View(); 
+                    return View();
                 }
 
                 // Convert image to byte array
@@ -391,7 +392,7 @@ namespace ClubManagementSystem.Controllers
             else
             {
                 ModelState.AddModelError("profilePicture", "No file selected.");
-                return View(); 
+                return View();
             }
 
             return View();
