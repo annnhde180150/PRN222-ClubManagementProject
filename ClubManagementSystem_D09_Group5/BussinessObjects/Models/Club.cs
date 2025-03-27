@@ -22,4 +22,5 @@ public partial class Club
     public DateTime? CreatedAt { get; set; }
 
     public virtual ICollection<ClubMember> ClubMembers { get; set; } = new List<ClubMember>();
+    public virtual ICollection<JoinRequest> JoinRequests { get; set; } = new List<JoinRequest>();
 }

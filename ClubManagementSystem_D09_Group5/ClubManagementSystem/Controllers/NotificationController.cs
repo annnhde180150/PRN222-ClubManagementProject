@@ -14,7 +14,7 @@ namespace ClubManagementSystem.Controllers
         private readonly IConnectionService _CS;
         private readonly IHubContext<ServerHub> _hubContext;
 
-        public NotificationController(INotificationService NS, IConnectionService CS, IHubContext<ServerHub> hubContext)
+        public NotificationController(INotificationService NS, IConnectionService CS, IHubContext<ServerHub> hubContext, SignalRSender sender)
         {
             _NS = NS;
             _CS = CS;

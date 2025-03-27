@@ -42,4 +42,6 @@ public partial class User
     public virtual ICollection<PostReaction> Reactions { get; set; } = new List<PostReaction>();
 
     public virtual ICollection<Connection> Connections { get; set; } = new List<Connection>();
+
+    public virtual ICollection<JoinRequest> JoinRequests { get; set; } = new List<JoinRequest>();
 }

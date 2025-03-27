@@ -4,6 +4,7 @@ using BussinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BussinessObjects.Migrations
 {
     [DbContext(typeof(FptclubsContext))]
-    partial class FptclubsContextModelSnapshot : ModelSnapshot
+    [Migration("20250327144710_updateRole")]
+    partial class updateRole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -447,6 +450,9 @@ namespace BussinessObjects.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleId"));
 
+                    b.Property<int>("ClubId")
+                        .HasColumnType("int");
+
                     b.Property<string>("RoleName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -455,6 +461,8 @@ namespace BussinessObjects.Migrations
 
                     b.HasKey("RoleId")
                         .HasName("PK__Roles__760965CC319BD705");
+
+                    b.HasIndex("ClubId");
 
                     b.HasIndex(new[] { "RoleName" }, "UQ__Roles__783254B1D499B73A")
                         .IsUnique();
@@ -696,6 +704,17 @@ namespace BussinessObjects.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("BussinessObjects.Models.Role", b =>
+                {
+                    b.HasOne("BussinessObjects.Models.Club", "Club")
+                        .WithMany("Roles")
+                        .HasForeignKey("ClubId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Club");
+                });
+
             modelBuilder.Entity("BussinessObjects.Models.TaskAssignment", b =>
                 {
                     b.HasOne("BussinessObjects.Models.ClubMember", "Membership")
@@ -721,6 +740,8 @@ namespace BussinessObjects.Migrations
                     b.Navigation("ClubMembers");
 
                     b.Navigation("JoinRequests");
+
+                    b.Navigation("Roles");
                 });
 
             modelBuilder.Entity("BussinessObjects.Models.ClubMember", b =>

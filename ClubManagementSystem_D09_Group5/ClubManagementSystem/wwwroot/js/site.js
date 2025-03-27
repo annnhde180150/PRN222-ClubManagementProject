@@ -27,5 +27,8 @@ function LoadNotifications(noti) {
                         <div class="col-3 d-flex align-items-center"><span>${noti.location}</span></div>
                         <div class="col-5 d-flex align-items-center"><span>${noti.message}</span></div>
                     </div>`;
-    document.getElementById("gridBody").insertAdjacentHTML('afterbegin', newNoti);
+    var div = document.getElementById("gridBody");
+    if (div != null) {
+        div.insertAdjacentHTML('afterbegin', newNoti);
+    }
 }
