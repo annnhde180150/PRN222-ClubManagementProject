@@ -48,6 +48,7 @@ namespace Services.Implementation
             var postDtos = posts.Select(post => new PostDto
             {
                 PostId = post.PostId,
+                Title = post.Title,
                 Content = post.Content,
                 ImageBase64 = _imageHelperService.ConvertToBase64(post.Image, "png"),
                 CreatedAt = post.CreatedAt,
