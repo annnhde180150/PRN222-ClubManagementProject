@@ -24,7 +24,7 @@ namespace Services.Implementation
 
         public async Task<ClubDetailsViewDto> GetClubDetailsAsync(int clubId)
         {
-            var club = await _clubRepository.GetClubByIdWithMembersAsync(clubId);
+            var club = await _clubRepository.GetClubByIdWithMembersPostsAsync(clubId);
 
             if (club == null) return null;
 
@@ -37,6 +37,21 @@ namespace Services.Implementation
                 })
                 .ToList();
 
+            var postDtos = club.ClubMembers
+            .SelectMany(member => member.Posts)  
+            .Select(post => new PostDto
+            {
+                PostId = post.PostId,
+                Title = post.Title,
+                Content = post.Content,
+                ImageBase64 = _imageHelperService.ConvertToBase64(post.Image, "png"),
+                CreatedAt = post.CreatedAt,
+                Status = post.Status,
+                CreatedBy = post.CreatedBy,
+                CreatedByUsername = post.CreatedByNavigation.User.Username
+            })
+            .ToList();
+
             var viewModel = new ClubDetailsViewDto
             {
                 ClubId = club.ClubId,
@@ -44,7 +59,8 @@ namespace Services.Implementation
                 Logo = club.Logo,
                 Cover = club.Cover,
                 Description = club.Description,
-                ClubMembers = clubMemberDtos
+                ClubMembers = clubMemberDtos,
+                Posts = postDtos
             };
 
             return viewModel;

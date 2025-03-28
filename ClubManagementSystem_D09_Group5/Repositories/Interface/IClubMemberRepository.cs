@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Repositories.Interface
 {
-    public interface IPostRepository
+    public interface IClubMemberRepository
     {
-        Task<Post> AddAsync(Post post);
-        Task<IEnumerable<Post>> GetAllPostByClubIdAsync(int clubId);
+        Task<bool> IsUserInClubAsync(int userId, int clubId);
     }
 }

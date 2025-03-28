@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Repositories.Interface;
 using Services.Implementation;
+using Microsoft.Extensions.Hosting;
 
 namespace ClubManagementSystem.Controllers
 {
@@ -21,14 +22,16 @@ namespace ClubManagementSystem.Controllers
         private readonly IAccountService _accountService;
         private readonly IClubRequestService _clubRequestService;
         private readonly IClubService _clubService;
+        private readonly IPostService _postService;
         private readonly FptclubsContext _context;
 
-        public ClubsController(FptclubsContext context , IClubRequestService clubRequestService, IAccountService accountService, IClubService clubService)
+        public ClubsController(FptclubsContext context , IClubRequestService clubRequestService, IAccountService accountService, IClubService clubService, IPostService postService)
         {
             _context = context;
             _clubRequestService = clubRequestService;
             _accountService = accountService;
             _clubService = clubService;
+            _postService = postService;
         }
 
         // GET: Clubs
@@ -59,12 +62,12 @@ namespace ClubManagementSystem.Controllers
             return View(viewModel);
         }
 
-        [Authorize]
-        // GET: Clubs/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+        //[Authorize]
+        //// GET: Clubs/Create
+        //public IActionResult Create()
+        //{
+        //    return View();
+        //}
 
         // POST: Clubs/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
