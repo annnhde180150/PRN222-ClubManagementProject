@@ -43,11 +43,16 @@ namespace ClubManagementSystem.Controllers
         [Authorize]
         public async Task<IActionResult> Index(string? searchString ,int? pageNumber)
         {
-            int pageSize = 5;
-            int currentPage = pageNumber ?? 1;
-            var clubs = await _clubService.GetAllClubsAsync();
-
-           var pagedClubs = clubs
+           int pageSize = 5;
+           int currentPage = pageNumber ?? 1;
+           var clubs = await _clubService.GetAllClubsAsync();
+            //Check if user search
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                clubs = clubs.Where(s => s.ClubName.Contains(searchString)).ToList();
+            }
+            //paging
+            var pagedClubs = clubs
                 .Skip((currentPage - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
@@ -66,6 +71,11 @@ namespace ClubManagementSystem.Controllers
             int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var clubsMember = await _clubMemberService.GetClubMemberByUserId(userId);           
             var clubs = clubsMember.Count() > 0 ? clubsMember.Select(m => m.Club).ToList() : new List<Club>();
+            //Check if user search
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                clubs = clubs.Where(s => s.ClubName.Contains(searchString)).ToList();
+            }
             var pagedClubs = clubs
                     .Skip((currentPage - 1) * pageSize)
                     .Take(pageSize)

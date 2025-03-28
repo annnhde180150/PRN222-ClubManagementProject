@@ -52,45 +52,62 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="text-primary fw-bold"> Clubs</h2>
     </div>
-    <div>
-        <button class="btn btn-primary" >All Clubs</button>
-        <button class="btn btn-success">Your Club</button>
+    <div class="d-flex">
+        <div class="col-md-4">
+            <a asp-action="Index"><button class="btn btn-primary">All Clubs</button></a>
+            <a asp-action="YourClubs"><button class="btn btn-success">Your Club</button></a>
+        </div>
+        <div class="col-md-8 d-flex justify-content-end">
+            <form asp-action="YourClubs" method="get">
+                <p style="padding-top:3px">
+                    <input type="text"  name="searchString" value="@ViewBag.SearchString" placeholder="Club name" />
+                    <input class="btn btn-primary" type="submit" value="Search" />
+                </p>
+            </form>
+        </div>
     </div>
-    <div class="table-responsive">
-        <table class="table table-hover table-striped align-middle shadow-sm">
-            <thead class="custom-header text-white text-center">
-                <tr>
-                    <th>🏆 @Html.DisplayNameFor(model => model.ClubName)</th>
-                    <th>📄 @Html.DisplayNameFor(model => model.Description)</th>
-                    <th>⚙️ Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr class="text-center">
-                        <td class="fw-semibold">@Html.DisplayFor(modelItem => item.ClubName)</td>
-                        <td class="text-truncate" style="max-width: 200px;">@Html.DisplayFor(modelItem => item.Description)</td>
-                        <td>
-                            <a asp-action="Details" asp-route-id="@item.ClubId" class="btn btn-sm btn-info text-white">
-                                Details
-                            </a>
-                        </td>
+    @if(Model.Count() == 0 ){
+		<div class="alert alert-warning text-center mt-4" role="alert">
+			You have not joined any club yet.
+		</div>
+    }else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover table-striped align-middle shadow-sm">
+                <thead class="custom-header text-white text-center">
+                    <tr>
+                        <th>🏆 @Html.DisplayNameFor(model => model.ClubName)</th>
+                        <th>📄 @Html.DisplayNameFor(model => model.Description)</th>
+                        <th>⚙️ Actions</th>
                     </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="text-center">
+                            <td class="fw-semibold">@Html.DisplayFor(modelItem => item.ClubName)</td>
+                            <td class="text-truncate" style="max-width: 200px;">@Html.DisplayFor(modelItem => item.Description)</td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.ClubId" class="btn btn-sm btn-info text-white">
+                                    Details
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <ul class="pagination">
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                        <a class="page-link" asp-action="Index" asp-route-pageNumber="@i" asp-route-searchString="@ViewBag.SearchString">@i</a>
+                    </li>
                 }
-            </tbody>
-        </table>
-    </div>
-    <div>
-        <ul class="pagination">
-            @for (int i = 1; i <= ViewBag.TotalPages; i++)
-            {
-                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
-                    <a class="page-link" asp-action="Index" asp-route-pageNumber="@i" asp-route-searchString="@ViewBag.SearchString">@i</a>
-                </li>
-            }
-        </ul>
-    </div>
+            </ul>
+        </div>
+    }   
 </section>
 
 <!-- FontAwesome for icons -->
