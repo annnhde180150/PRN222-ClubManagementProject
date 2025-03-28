@@ -10,13 +10,7 @@
         <div class="ContainerLogin">
             <div class="WrapLogin">
                 <form asp-controller="Account" asp-action="CheckLogin" class="LoginForm">
-                    <span class="LoginTitle">Login</span>
-                    @if (TempData["ErrorMessage"] != null)
-                    {
-                        <div class="text-danger">
-                            @TempData["ErrorMessage"]
-                        </div>
-                    }
+                    <span class="LoginTitle">Login</span>                   
                     <div class="InputUsername">
                         <label for="Gmail" class="LoginLabel">Gmail</label>
                         <input id="Gmail" class="LoginInput" type="text" name="Gmail"
@@ -30,9 +24,14 @@
                                placeholder="Type your username" required>
                         <span class="LoginIcon" data-symbol="&#xf190;"></span>
                     </div>
-                 
+                    
                     <div class="ForgotPassword">
-                        <a href="#"> Forgot password? </a>
+                        @if (TempData["ErrorMessage"] != null)
+                        {
+                            <div class="text-danger">
+                                @TempData["ErrorMessage"]
+                            </div>
+                        }
                     </div>
 
                     <div class="LoginButtonContainer">
