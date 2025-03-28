@@ -1,4 +1,5 @@
 ﻿using BussinessObjects.Models;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Repositories.Interface;
 using Services.Interface;
 using System;
@@ -28,14 +29,20 @@ namespace Services.Implementation
             return await _eventRepository.GetEventAsync(EventId);
         }
 
-        public async Task<IEnumerable<Event>> GetEventsAsync()
+        public async Task<IEnumerable<Event>> GetEventsAsync(int clubID)
         {
-            return await _eventRepository.GetEventsAsync();
+            return (await _eventRepository.GetEventsAsync()).Where(e => e.CreatedByNavigation.ClubId == clubID);
         }
 
         public async Task<bool> UpdateEventAsync(Event Event)
         {
             return await _eventRepository.UpdateEventAsync(Event);
+        }
+
+        public async Task<IEnumerable<Event>> GetEventsAsync(DateTime start, DateTime end, int clubID)
+        {
+            var events = await _eventRepository.GetEventsAsync();
+            return events.Where(e => e.EventDate >= start && e.EventDate <= end).Where(e => e.CreatedByNavigation.ClubId == clubID);
         }
     }
 }

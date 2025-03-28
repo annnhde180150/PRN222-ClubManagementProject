@@ -1,5 +1,6 @@
 using System;
 using BussinessObjects.Models;
+using ClubManagementSystem.Controllers.Common;
 using ClubManagementSystem.Controllers.SignalR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -66,6 +67,9 @@ builder.Services.AddCors(options =>
               .AllowCredentials();
     });
 });
+
+//Common
+builder.Services.AddScoped<Week>();
 
 
 // Add DbContext

@@ -2,6 +2,9 @@
 
 @{
     ViewData["Title"] = "Index";
+    var dropdown = ViewBag.WeekDropdown;
+    var days = ViewBag.WeekDays;
+    var clubID = ViewBag.ClubID;
 }
 
 <h1>Index</h1>
@@ -9,45 +12,44 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<form asp-action="Index" method="get">
+    <label>Select a Week:</label>
+    <select name="selectedWeek" asp-items="dropdown" class="form-control">
+       <option value="">-- Select Week --</option>
+    </select>
+    <input type="hidden" value="@clubID" name="clubID" />
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.EventTitle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EventDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EventDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedByNavigation)
-            </th>
+            <th>@*space for time in days*@</th>
+            @foreach(var day in days){
+                <th>
+                   @Html.Raw(day)
+                </th>
+            }
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.EventTitle)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EventDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EventDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedByNavigation.MembershipId)
-            </td>
+            @* <td> *@
+            @*     @Html.DisplayFor(modelItem => item.EventTitle) *@
+            @* </td> *@
+            @* <td> *@
+            @*     @Html.DisplayFor(modelItem => item.EventDescription) *@
+            @* </td> *@
+            @* <td> *@
+            @*     @Html.DisplayFor(modelItem => item.EventDate) *@
+            @* </td> *@
+            @* <td> *@
+            @*     @Html.DisplayFor(modelItem => item.CreatedAt) *@
+            @* </td> *@
+            @* <td> *@
+            @*     @Html.DisplayFor(modelItem => item.CreatedByNavigation.MembershipId) *@
+            @* </td> *@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.EventId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.EventId">Details</a> |

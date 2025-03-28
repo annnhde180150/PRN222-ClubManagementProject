@@ -33,12 +33,12 @@ namespace Repositories.Implementation
 
         public async Task<Event> GetEventAsync(int EventId)
         {
-            return await _context.Events.FirstOrDefaultAsync(noti => noti.EventId == EventId);
+            return await _context.Events.Include(e => e.CreatedByNavigation).FirstOrDefaultAsync(noti => noti.EventId == EventId);
         }
 
         public async Task<IEnumerable<Event>> GetEventsAsync()
         {
-            return await _context.Events.OrderBy(e => e.EventDate).ToListAsync();
+            return await _context.Events.OrderBy(e => e.EventDate).Include(e => e.CreatedByNavigation).ToListAsync();
         }
 
         public async Task<Boolean> UpdateEventAsync(Event Event)
