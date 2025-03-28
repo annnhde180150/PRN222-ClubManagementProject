@@ -18,11 +18,13 @@ namespace Repositories.Implementation
             _context = context;
         }
 
-        public async Task<Club> GetClubByIdWithMembersAsync(int clubId)
+        public async Task<Club> GetClubByIdWithMembersPostsAsync(int clubId)
         {
             return await _context.Clubs
                 .Include(c => c.ClubMembers)
                     .ThenInclude(cm => cm.User)
+                .Include(c => c.ClubMembers)
+                    .ThenInclude(m => m.Posts)
                 .FirstOrDefaultAsync(c => c.ClubId == clubId);
         }
 

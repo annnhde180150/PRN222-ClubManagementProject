@@ -14,5 +14,6 @@ namespace Repositories.Interface
         public Task<ClubMember> AddClubMemberAsync(ClubMember clubMember);
         public Task DeleteClubMemberAsync(int id);
         public Task UpdateClubMemberAsync(ClubMember clubMember);
+        Task<bool> IsUserInClubAsync(int userId, int clubId);
     }
 }

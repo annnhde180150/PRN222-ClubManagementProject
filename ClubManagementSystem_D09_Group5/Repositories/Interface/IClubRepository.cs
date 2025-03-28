@@ -11,5 +11,6 @@ namespace Repositories.Interface
     {
         Task<Club> GetClubByIdWithMembersAsync(int clubId);
         Task AddClubAsync(Club club);
+        Task<Club> GetClubByIdWithMembersPostsAsync(int clubId);
     }
 }

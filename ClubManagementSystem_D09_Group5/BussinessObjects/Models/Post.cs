@@ -14,7 +14,11 @@ public partial class Post
     public int CreatedBy { get; set; }
 
     [Required]
-    [StringLength(2000)]
+    [StringLength(200)]
+    public string Title { get; set; } = null!;
+
+    [Required]
+    [Column(TypeName = "nvarchar(MAX)")]
     public string Content { get; set; } = null!;
     public byte[]? Image { get; set; }
 

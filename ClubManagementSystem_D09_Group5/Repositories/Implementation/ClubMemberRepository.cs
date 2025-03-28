@@ -12,7 +12,6 @@ namespace Repositories.Implementation
     public class ClubMemberRepository : IClubMemberRepository
     {
         private readonly FptclubsContext _context;
-
         public ClubMemberRepository(FptclubsContext context)
         {
             _context = context;
@@ -46,6 +45,12 @@ namespace Repositories.Implementation
         {
             _context.Entry(clubMember).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+        }
+    
+        public async Task<bool> IsUserInClubAsync(int userId, int clubId)
+        {
+            return await _context.ClubMembers
+                .AnyAsync(cm => cm.UserId == userId && cm.ClubId == clubId);
         }
     }
 }

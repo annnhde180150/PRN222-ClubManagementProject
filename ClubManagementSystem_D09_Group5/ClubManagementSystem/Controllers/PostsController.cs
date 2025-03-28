@@ -79,7 +79,14 @@ namespace ClubManagementSystem.Controllers
                 return Unauthorized();
             }
 
-            var post = await _postService.CreatePostAsync(model, ImageFile, userId);
+            try
+            {
+                var post = await _postService.CreatePostAsync(model, ImageFile, userId, clubId);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Unauthorized();
+            }
 
             return RedirectToAction("Details", "Clubs", new { id = clubId });
         }
