@@ -45,7 +45,7 @@ namespace Services.Implementation
             var totalPosts = postsQuery.Count();
             var posts = postsQuery.Skip((postNumber - 1) * postSize).Take(postSize).ToList();
 
-            var postDtos = posts.Select(post => new PostDto
+            var postDtos = posts.Select(post => new PostDetailsDto
             {
                 PostId = post.PostId,
                 Title = post.Title,
@@ -53,8 +53,8 @@ namespace Services.Implementation
                 ImageBase64 = _imageHelperService.ConvertToBase64(post.Image, "png"),
                 CreatedAt = post.CreatedAt,
                 Status = post.Status,
-                CreatedBy = post.CreatedBy,
                 CreatedByUsername = post.CreatedByNavigation.User.Username
+               
             }).ToList();
 
             return new ClubDetailsViewDto

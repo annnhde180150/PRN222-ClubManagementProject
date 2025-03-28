@@ -15,7 +15,7 @@ namespace BussinessObjects.Models.Dtos
         public string? Description { get; set; }
         public DateTime? CreatedAt { get; set; }
         public List<ClubMemberDto> ClubMembers { get; set; } = new List<ClubMemberDto>();
-        public List<PostDto> Posts { get; set; } = new List<PostDto>();
+        public List<PostDetailsDto> Posts { get; set; } = new List<PostDetailsDto>();
 
         public int TotalPosts { get; set; }
         public int PostNumber { get; set; }
