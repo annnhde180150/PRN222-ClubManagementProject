@@ -29,16 +29,53 @@ namespace ClubManagementSystem.Controllers
 
 
         // GET: Events
+        //event :_________| Monday | Tue | Wed | Thu | Fri | Sat | Sun
+        //       Morning  |
+        //       Noon     |
+        //       Afternoon|
+        //       Evening  |
         public async Task<IActionResult> Index(int? week, int? clubID)
         {
             if(clubID == null) return RedirectToAction("Index","JoinRequests");
 
             var currentWeek = week != null ? _week.GetWeekRange(DateTime.Now.Year, week.Value) : _week.GetWeekRange(DateTime.Now);
-            var events = await _eventService.GetEventsAsync(currentWeek.StartOfWeek, currentWeek.EndOfWeek, clubID.Value);
+            var eventsList = await _eventService.GetEventsAsync(currentWeek.StartOfWeek, currentWeek.EndOfWeek, clubID.Value);
             var weekDays = _week.GetWeekDays(currentWeek.StartOfWeek);
             var dropdownList = _week.GetWeekDropDown(DateTime.Now.Year);
             var selectList = new SelectList(dropdownList, "Value", "Text");
+            var days = Enum.GetValues(typeof(DayOfWeek))
+                .Cast<DayOfWeek>()
+                .OrderBy(d => (d == DayOfWeek.Sunday) ? 7 : (int)d)
+                .Select(d => d.ToString())
+                .ToList();
+            var events = new List<Dictionary<String, Event>>()
+            {
+                new Dictionary<String, Event>(),
+                new Dictionary<String, Event>(),
+                new Dictionary<String, Event>(),
+                new Dictionary<String, Event>()
+            };
 
+            foreach (var ev in eventsList)
+            {
+                var day = ev.EventDate.DayOfWeek.ToString();
+                Console.WriteLine(day);
+                int slot;
+
+                if (ev.EventDate.TimeOfDay < TimeSpan.FromHours(11)) slot = 0;
+                else if (ev.EventDate.TimeOfDay < TimeSpan.FromHours(14)) slot = 1;
+                else if (ev.EventDate.TimeOfDay < TimeSpan.FromHours(17)) slot = 2;
+                else slot = 3;
+
+                events[slot][day] = ev;
+            }
+
+            foreach(var item in eventsList)
+            {
+                Console.WriteLine(item.EventDate);
+            }
+
+            ViewBag.DaysOfWeek = days;
             ViewBag.WeekDays = weekDays;
             ViewBag.WeekDropdown = selectList;
             ViewBag.ClubID = clubID.Value;
@@ -46,24 +83,12 @@ namespace ClubManagementSystem.Controllers
             return View(events);
         }
 
-        ////GET: Events/Details/5
-        //public async Task<IActionResult> Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var @event = await _context.Events
-        //        .Include(@ => @.CreatedByNavigation)
-        //        .FirstOrDefaultAsync(m => m.EventId == id);
-        //    if (@event == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(@event);
-        //}
+        //GET: Events/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            var currentEvent = await _eventService.GetEventAsync(id.Value);
+            return RedirectToAction("Index");
+        }
 
         ////GET: Events/Create
         //public IActionResult Create()

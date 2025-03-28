@@ -36,8 +36,8 @@ namespace ClubManagementSystem.Controllers.Common
         public (DateTime StartOfWeek, DateTime EndOfWeek) GetWeekRange(DateTime date)
         {
             int offset = date.DayOfWeek - DayOfWeek.Monday;
-            DateTime startOfWeek = offset > 0 ? date.AddDays(-offset) : date;
-            DateTime endOfWeek = startOfWeek.AddDays(6);
+            DateTime startOfWeek = (offset > 0 ? date.AddDays(-offset) : date).Date;
+            DateTime endOfWeek = startOfWeek.AddDays(6).Date.AddHours(23).AddMinutes(59).AddSeconds(59);
 
             return (startOfWeek, endOfWeek);
         }
@@ -49,7 +49,7 @@ namespace ClubManagementSystem.Controllers.Common
             for (int i = 1; i < 7; i++)
             {
                 list.Add($"{(DayOfWeek)i}<br>{startDate}");
-                start.AddDays(1);
+                startDate = startDate.AddDays(1);
             }
             list.Add($"{(DayOfWeek)0}<br>{startDate}");
             return list;
