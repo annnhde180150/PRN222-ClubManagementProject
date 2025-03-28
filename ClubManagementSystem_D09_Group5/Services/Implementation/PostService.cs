@@ -1,4 +1,5 @@
 ﻿using BussinessObjects.Models;
+using BussinessObjects.Models.Dtos;
 using Microsoft.AspNetCore.Http;
 using Repositories.Interface;
 using Services.Interface;
@@ -14,10 +15,12 @@ namespace Services.Implementation
     {
         private readonly IPostRepository _postRepository;
         private readonly IClubMemberRepository _clubMemberRepository;
-        public PostService(IPostRepository postRepository, IClubMemberRepository clubMemberRepository)
+        private readonly IImageHelperService _imageHelperService;
+        public PostService(IPostRepository postRepository, IClubMemberRepository clubMemberRepository, IImageHelperService imageHelperService)
         {
             _postRepository = postRepository;
             _clubMemberRepository = clubMemberRepository;
+            _imageHelperService = imageHelperService;
         }
 
         public async Task<IEnumerable<Post>> GetAllPostsByClubIdAsync(int clubId)
@@ -49,6 +52,44 @@ namespace Services.Implementation
             }
 
             return await _postRepository.AddAsync(post);
+        }
+
+        public async Task<PostDetailsDto?> GetPostDetailsByIdAsync(int postId)
+        {
+            var post = await _postRepository.GetPostByIdAsync(postId);
+
+            if (post == null)
+            {
+                return null; 
+            }
+            var relatedPosts = await _postRepository.GetRelatedPostsAsync(post.CreatedByNavigation.Club.ClubId, post.PostId, 3);
+
+            var viewModel = new PostDetailsDto
+            {
+                PostId = post.PostId,
+                Title = post.Title,
+                Content = post.Content,
+                ImageBase64 = _imageHelperService.ConvertToBase64(post.Image, "png"),
+                CreatedAt = post.CreatedAt,
+                Status = post.Status,
+                CreatedBy = post.CreatedBy,
+                CreatedByUsername = post.CreatedByNavigation.User.Username,
+                ClubName = post.CreatedByNavigation.Club.ClubName,
+                RelatedPosts = relatedPosts.Select(p => new RelatedPostDto
+                {
+                    PostId = p.PostId,
+                    Title = p.Title,
+                    ImageBase64 = _imageHelperService.ConvertToBase64(p.Image, "png"),
+                }).ToList()
+            };
+
+            if (viewModel == null)
+            {
+                return null;
+            }
+
+            return viewModel;
+
         }
     }
 }

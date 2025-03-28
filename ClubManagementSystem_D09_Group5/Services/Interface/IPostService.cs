@@ -1,4 +1,5 @@
 ﻿using BussinessObjects.Models;
+using BussinessObjects.Models.Dtos;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace Services.Interface
     {
         Task<Post> CreatePostAsync(Post model, IFormFile? imageFile, int userId, int clubId);
         Task<IEnumerable<Post>> GetAllPostsByClubIdAsync(int clubId);
+        Task<PostDetailsDto?> GetPostDetailsByIdAsync(int postId);
 
     }
 }

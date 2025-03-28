@@ -1,48 +1,152 @@
-﻿@model BussinessObjects.Models.Post
+﻿@model BussinessObjects.Models.Dtos.PostDetailsDto
 
 @{
     ViewData["Title"] = "Details";
 }
+<link rel="stylesheet" href="~/css/post-details.css">
 
-<h1>Details</h1>
 
-<div>
-    <h4>Post</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Content)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Image)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedByNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedByNavigation.MembershipId)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.PostId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<section class="single-block-wrapper section-padding">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
+                <div class="single-post">
+                    <div class="post-header mb-5 text-center">
+                        <div class="meta-cat">
+                            <a class="post-category font-extra text-color text-uppercase font-sm letter-spacing-1"
+                               href="#">@Model.ClubName</a>
+                            
+                        </div>
+                        <h2 class="post-title mt-2">
+                            @Model.Title
+                        </h2>
+
+                        <div class="post-meta">
+                            <span class="text-uppercase font-sm letter-spacing-1 mr-3">by @Model.CreatedByUsername</span>
+                            <span class="text-uppercase font-sm letter-spacing-1">@Model.CreatedAt</span>
+                        </div>
+                        <div class="post-featured-image mt-5">
+                            <img src="@Model.ImageBase64" class="img-fluid" alt="featured-image">
+                        </div>
+                    </div>
+                    <div class="post-body">
+                        <div class="entry-content">
+                            <p>
+                               @Model.Content
+                            </p>
+                        </div>
+
+                        <div class="tags-share-box center-box d-flex justify-content-between border-top border-bottom py-3 text-center">
+
+                            <span class="single-comment-o"><i class="fa fa-comment-o"></i>0 comment</span>
+
+                            <div class="post-share">
+                                <span class="count-number-like">2</span>
+                                <a class="penci-post-like single-like-button"><i class="ti-heart"></i></a>
+                            </div>
+
+                           
+                        </div>
+                    </div>
+                </div>
+
+
+
+                @if (Model.RelatedPosts.Any())
+                {
+                    <div class="related-posts-block mt-5">
+                        <h3 class="news-title mb-4 text-center">You May Also Like</h3>
+                        <div class="row">
+                            @foreach (var post in Model.RelatedPosts)
+                            {
+                                <div class="col-lg-4 col-md-4 col-sm-6">
+                                    <div class="post-block-wrapper mb-4 mb-lg-0">
+                                        <a asp-action="Details" asp-controller="Posts" asp-route-id="@post.PostId">
+                                            <img class="img-fluid" id="related-posts-img" src="@post.ImageBase64" alt="post-thumbnail" />
+                                        </a>
+                                        <div class="post-content mt-3">
+                                            <h5>
+                                                <a asp-action="Details" asp-controller="Posts" asp-route-id="@post.PostId">@post.Title</a>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <div class="comment-area my-5">
+                    <h3 class="mb-4 text-center">2 Comments</h3>
+                    <div class="comment-area-box media">
+                        <img alt="" src="~/img/blog-user-2.jpg" class="img-fluid mr-3 mt-2 float-left">
+
+                        <div class="media-body ml-4">
+                            <h4 class="mb-0">Micle harison </h4>
+                            <span class="date-comm font-sm text-capitalize text-color">
+                                <i class="ti-time mr-2"></i>June 7, 2019
+                            </span>
+
+                            <div class="comment-content mt-3">
+                                <p>
+                                    Lorem ipsum dolor sit amet, usu ut perfecto postulant deterruisset, libris causae
+                                    volutpat at est, ius id modus laoreet urbanitas. Mel ei delenit dolores.
+                                </p>
+                            </div>
+                            <div class="comment-meta mt-4 mt-lg-0 mt-md-0">
+                                <a href="#" class="text-underline">Reply</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="comment-area-box media mt-5">
+                        <img alt="" src="~/img/blog-user-3.jpg" class="mt-2 img-fluid mr-3 float-left">
+
+                        <div class="media-body ml-4">
+                            <h4 class="mb-0">John Doe </h4>
+                            <span class="date-comm font-sm text-capitalize text-color">
+                                <i class="ti-time mr-2"></i>June 7, 2019
+                            </span>
+
+                            <div class="comment-content mt-3">
+                                <p>
+                                    Some consultants are employed indirectly by the client via a consultancy staffing
+                                    company.
+                                </p>
+                            </div>
+                            <div class="comment-meta mt-4 mt-lg-0 mt-md-0">
+                                <a href="#" class="text-underline">Reply</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <form class="comment-form mb-5 gray-bg p-5" id="comment-form">
+                    <h3 class="mb-4 text-center">Leave a comment</h3>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <textarea class="form-control mb-3" name="comment" id="comment" cols="30" rows="5"
+                                      placeholder="Comment"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input class="form-control" type="text" name="name" id="name" placeholder="Name:">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input class="form-control" type="text" name="mail" id="mail" placeholder="Email:">
+                            </div>
+                        </div>
+                    </div>
+
+                    <input class="btn btn-primary" type="submit" name="submit-contact" id="submit_contact"
+                           value="Submit Message">
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+    </div>
+</section>

@@ -36,15 +36,14 @@ namespace ClubManagementSystem.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Posts
-                .Include(p => p.CreatedByNavigation)
-                .FirstOrDefaultAsync(m => m.PostId == id);
-            if (post == null)
+            var postDetails = await _postService.GetPostDetailsByIdAsync(id.Value);
+
+            if (postDetails == null)
             {
                 return NotFound();
             }
 
-            return View(post);
+            return View(postDetails);
         }
 
         // GET: Posts/Create

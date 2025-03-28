@@ -1,4 +1,5 @@
 ﻿using BussinessObjects.Models;
+using BussinessObjects.Models.Dtos;
 using Microsoft.EntityFrameworkCore;
 using Repositories.Interface;
 using System;
@@ -27,5 +28,21 @@ namespace Repositories.Implementation
             return await _context.Posts.Where(p => p.CreatedByNavigation.ClubId == clubId).ToListAsync();
         }
 
+        public async Task<Post> GetPostByIdAsync(int postId)
+        {
+            return await _context.Posts
+                        .Include(p => p.CreatedByNavigation.User)
+                        .Include(p => p.CreatedByNavigation.Club)
+                        .FirstOrDefaultAsync(p => p.PostId == postId);
+        }
+
+        public async Task<IEnumerable<Post>> GetRelatedPostsAsync(int clubId, int excludePostId, int count)
+        {
+            return await _context.Posts
+                .Where(p => p.CreatedByNavigation.Club.ClubId == clubId && p.PostId != excludePostId)
+                .OrderByDescending(p => p.CreatedAt)
+                .Take(count)
+                .ToListAsync();
+        }
     }
 }
