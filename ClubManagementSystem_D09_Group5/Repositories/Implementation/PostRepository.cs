@@ -44,5 +44,22 @@ namespace Repositories.Implementation
                 .Take(count)
                 .ToListAsync();
         }
+
+        public async Task UpdatePostAsync(Post post)
+        {
+            _context.Update(post);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeletePostAsync(int id)
+        {
+            var post = await GetPostByIdAsync(id);
+            if (post != null)
+            {
+                _context.Remove(post);
+                await _context.SaveChangesAsync();
+            }
+        }
+
     }
 }

@@ -14,5 +14,8 @@ namespace Repositories.Interface
         Task<IEnumerable<Post>> GetAllPostByClubIdAsync(int clubId);
         Task<Post> GetPostByIdAsync(int postId);
         Task<IEnumerable<Post>> GetRelatedPostsAsync(int clubId, int excludePostId, int count);
+        Task UpdatePostAsync(Post post);
+        Task DeletePostAsync(int id);
+
     }
 }

@@ -27,6 +27,7 @@ namespace BussinessObjects.Models.Dtos
         public string? Status { get; set; }
         public int CreatedBy { get; set; }
         public string CreatedByUsername { get; set; } = string.Empty;
+        public int ClubId { get; set; }
         public string ClubName { get; set; } = string.Empty;
         public List<RelatedPostDto> RelatedPosts { get; set; } = new();
     }
@@ -37,4 +38,13 @@ namespace BussinessObjects.Models.Dtos
         public string Title { get; set; }
         public string ImageBase64 { get; set; }
     }
+
+    public class PostUpdateDto
+    {
+        public int PostId { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string Content { get; set; } = string.Empty;
+        public string ImageBase64 { get; set; }
+    }
+
 }

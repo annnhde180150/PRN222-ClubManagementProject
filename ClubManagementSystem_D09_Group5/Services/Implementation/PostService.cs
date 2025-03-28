@@ -1,6 +1,7 @@
 ﻿using BussinessObjects.Models;
 using BussinessObjects.Models.Dtos;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Repositories.Interface;
 using Services.Interface;
 using System;
@@ -74,6 +75,7 @@ namespace Services.Implementation
                 Status = post.Status,
                 CreatedBy = post.CreatedBy,
                 CreatedByUsername = post.CreatedByNavigation.User.Username,
+                ClubId = post.CreatedByNavigation.ClubId,
                 ClubName = post.CreatedByNavigation.Club.ClubName,
                 RelatedPosts = relatedPosts.Select(p => new RelatedPostDto
                 {
@@ -91,5 +93,21 @@ namespace Services.Implementation
             return viewModel;
 
         }
+
+        public async Task UpdatePostAsync(Post post)
+        {
+            await _postRepository.UpdatePostAsync(post);
+        }
+
+        public async Task<Post> GetPostByIdAsync(int postId)
+        {
+            return await _postRepository.GetPostByIdAsync(postId);
+        }
+
+        public async Task DeletePostAsync(int id)
+        {
+            await _postRepository.DeletePostAsync(id);
+        }
+
     }
 }

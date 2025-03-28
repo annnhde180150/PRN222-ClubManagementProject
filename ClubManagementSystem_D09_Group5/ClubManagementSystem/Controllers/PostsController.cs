@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BussinessObjects.Models;
 using System.Security.Claims;
 using Services.Interface;
+using BussinessObjects.Models.Dtos;
 
 namespace ClubManagementSystem.Controllers
 {
@@ -92,92 +93,71 @@ namespace ClubManagementSystem.Controllers
 
 
 
-        // GET: Posts/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var post = await _context.Posts.FindAsync(id);
-            if (post == null)
-            {
-                return NotFound();
-            }
-            ViewData["CreatedBy"] = new SelectList(_context.ClubMembers, "MembershipId", "MembershipId", post.CreatedBy);
-            return View(post);
-        }
-
         // POST: Posts/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PostId,CreatedBy,Content,Image,CreatedAt,Status")] Post post)
+        public async Task<IActionResult> Edit(PostUpdateDto postDto, IFormFile? ImageFile)
         {
-            if (id != post.PostId)
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            if (userId == 0)
             {
-                return NotFound();
+                return Unauthorized();
             }
 
-            if (ModelState.IsValid)
+            var existingPost = await _postService.GetPostByIdAsync(postDto.PostId);
+            if (existingPost == null || existingPost.CreatedBy != userId)
             {
-                try
-                {
-                    _context.Update(post);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PostExists(post.PostId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return Forbid();
             }
-            ViewData["CreatedBy"] = new SelectList(_context.ClubMembers, "MembershipId", "MembershipId", post.CreatedBy);
-            return View(post);
+
+            existingPost.Title = postDto.Title;
+            existingPost.Content = postDto.Content;
+
+            if (ImageFile != null)
+            {
+                using var ms = new MemoryStream();
+                await ImageFile.CopyToAsync(ms);
+                existingPost.Image = ms.ToArray();
+            }
+
+            try
+            {
+                await _postService.UpdatePostAsync(existingPost);
+                return RedirectToAction("Details", "Posts", new { id = existingPost.PostId });
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
         }
 
-        // GET: Posts/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var post = await _context.Posts
-                .Include(p => p.CreatedByNavigation)
-                .FirstOrDefaultAsync(m => m.PostId == id);
-            if (post == null)
-            {
-                return NotFound();
-            }
 
-            return View(post);
-        }
-
-        // POST: Posts/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int postId, int clubId)
         {
-            var post = await _context.Posts.FindAsync(id);
-            if (post != null)
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            if (userId == 0)
             {
-                _context.Posts.Remove(post);
+                return Unauthorized();
             }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var post = await _postService.GetPostByIdAsync(postId);
+            if (post == null || post.CreatedBy != userId)
+            {
+                return Forbid(); // Ensure only the owner can delete
+            }
+
+            await _postService.DeletePostAsync(postId);
+
+            // Redirect back to the Club Details page
+            return RedirectToAction("Details", "Clubs", new { id = clubId });
         }
+
+       
 
         private bool PostExists(int id)
         {
