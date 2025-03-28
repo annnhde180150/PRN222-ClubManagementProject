@@ -26,11 +26,8 @@ namespace ClubManagementSystem.Controllers
         private readonly IJoinRequestService _joinRequestService;
         private readonly FptclubsContext _context;
 
-        public ClubsController(FptclubsContext context , IClubRequestService clubRequestService, IAccountService accountService, IClubService clubService, IJoinRequestService joinRequestService)
         private readonly IPostService _postService;
-        private readonly FptclubsContext _context;
-
-        public ClubsController(FptclubsContext context , IClubRequestService clubRequestService, IAccountService accountService, IClubService clubService, IPostService postService)
+        public ClubsController(FptclubsContext context , IClubRequestService clubRequestService, IAccountService accountService, IClubService clubService, IPostService postService, IJoinRequestService joinRequestService)
         {
             _context = context;
             _clubRequestService = clubRequestService;
