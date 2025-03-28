@@ -36,7 +36,7 @@ namespace ClubManagementSystem.Controllers
         //       Evening  |
         public async Task<IActionResult> Index(int? week, int? clubID)
         {
-            if(clubID == null) return RedirectToAction("Index","JoinRequests");
+            if(clubID == null) return RedirectToAction("Index","Clubs");
 
             var currentWeek = week != null ? _week.GetWeekRange(DateTime.Now.Year, week.Value) : _week.GetWeekRange(DateTime.Now);
             var eventsList = await _eventService.GetEventsAsync(currentWeek.StartOfWeek, currentWeek.EndOfWeek, clubID.Value);
@@ -167,39 +167,26 @@ namespace ClubManagementSystem.Controllers
         //    return View(@event);
         //}
 
-        //// GET: Events/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        // GET: Events/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            var currentEvent = await _eventService.GetEventAsync(id.Value);
+            return View(currentEvent);
+        }
 
-        //    var @event = await _context.Events
-        //        .Include(@ => @.CreatedByNavigation)
-        //        .FirstOrDefaultAsync(m => m.EventId == id);
-        //    if (@event == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(@event);
-        //}
-
-        //// POST: Events/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    var @event = await _context.Events.FindAsync(id);
-        //    if (@event != null)
-        //    {
-        //        _context.Events.Remove(@event);
-        //    }
-
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
+        // POST: Events/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var @event = await _eventService.GetEventAsync(id);
+            if (!(await _eventService.IsDependedOn(id)) && @event.Status.Equals("Not Yet"))
+            {
+                @event.Status = "Cancelled";
+                await _eventService.UpdateEventAsync(@event);
+            }
+            return RedirectToAction("Index","Events", new { clubID = @event.CreatedByNavigation.ClubId });
+        }
 
         //private bool EventExists(int id)
         //{
