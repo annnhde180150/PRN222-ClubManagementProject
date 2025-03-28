@@ -265,7 +265,7 @@ namespace ClubManagementSystem.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(newUser); // Return the view to show validation messages
+                return View(newUser); 
             }
             bool isUserExist = CheckExistUser(newUser.Email, newUser.Username);
            
@@ -273,18 +273,19 @@ namespace ClubManagementSystem.Controllers
             {
                 return RedirectToAction("SignUp", "Account");
             }
-
+            byte[] defaultProfilePicture = await _accountService.GetDefaultProfilePictureAsync();
             User user = new User
             {
                 Username = newUser.Username,
                 Email = newUser.Email,
                 Password = newUser.Password,
-                CreatedAt = DateTime.Now
+                CreatedAt = DateTime.Now,
+                ProfilePicture = defaultProfilePicture
             };
 
             await _accountService.AddUser(user);
 
-            //TempData["SuccessMessage"] = "Sign up successfully!";
+            TempData["SuccessMessage"] = "Sign up successfully! Please login.";
             return RedirectToAction("Login", "Account");
         }
 
@@ -399,16 +400,16 @@ namespace ClubManagementSystem.Controllers
 
         public bool CheckExistUser(string email, string username)
         {
-            var emailValid = _accountService.CheckEmailExist(email);
-            var usernameValid = _accountService.CheckUsernameExist(username);
+            bool emailExists = _accountService.CheckEmailExist(email).Result != null;
+            bool usernameExists = _accountService.CheckUsernameExist(username).Result != null;
 
-            if (emailValid != null)
+            if (emailExists)
             {
                 TempData["ErrorMessage"] = "Email already exists!";
                 //return RedirectToAction("SignUp", "Account");
                 return true;
             }
-            else if (usernameValid != null)
+            if (usernameExists)
             {
                 TempData["ErrorMessage"] = "Username already exists!";
                 //return RedirectToAction("SignUp", "Account");
