@@ -87,7 +87,7 @@ namespace ClubManagementSystem.Controllers
         public async Task<IActionResult> Details(int? id)
         {
             var currentEvent = await _eventService.GetEventAsync(id.Value);
-            return RedirectToAction("Index");
+            return View(currentEvent);
         }
 
         ////GET: Events/Create
