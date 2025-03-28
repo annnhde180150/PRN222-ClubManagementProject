@@ -40,6 +40,7 @@ namespace Services.Implementation
 
             var viewModel = new ClubDetailsViewDto
             {
+                ClubId = club.ClubId,
                 ClubName = club.ClubName,
                 Logo = club.Logo,
                 Cover = club.Cover,

@@ -1,7 +1,11 @@
-﻿@model BussinessObjects.Models.Dtos.ClubDetailsViewDto
+﻿@using System.Security.Claims
+@model BussinessObjects.Models.Dtos.ClubDetailsViewDto
+@inject IHttpContextAccessor HttpContextAccessor
 
 @{
-    ViewData["Title"] = "Details";
+	ViewData["Title"] = "Details";
+	var username = User.FindFirst(ClaimTypes.Name)?.Value;
+	string? sessionPicture = HttpContextAccessor.HttpContext.Session.GetString("userPicture") as string;
 }
 <link rel="stylesheet" href="~/css/club-details.css">
 
@@ -41,13 +45,24 @@
 						@* 	@Model.Description *@
 						@* </p> *@
 						<div class="avatar-list">
-							@foreach (var member in Model.ClubMembers)
+							@* @foreach (var member in Model.ClubMembers) *@
+							@* { *@
+							@* 	<div class="avatar"> *@
+							@* 		<img src="@(member.ProfilePictureBase64)" alt="@member.Username"> *@
+							@* 		<span class="username">@member.Username</span> *@
+							@* 	</div> *@
+							@* } *@
+
+
+							@for (int i = 0; i < Model.ClubMembers.Count && i < 10; i++)
 							{
+								var member = Model.ClubMembers[i];
 								<div class="avatar">
 									<img src="@(member.ProfilePictureBase64)" alt="@member.Username">
 									<span class="username">@member.Username</span>
 								</div>
 							}
+
 						</div>
 
 						@* <a href="blog-single.html" class="btn btn-grey mt-3"> read more</a> *@
@@ -95,6 +110,61 @@
 				</article>
 
 
+				@* <div> *@
+				@* 	<button class="btn btn-primary d-block mb-5"> *@
+				@* 		Create Post *@
+				@* 	</button> *@
+				@* </div> *@
+
+				<!-- Post -->
+				<div class="p-4 mb-5 shadow">
+					<div class="align-items-center flex">
+	
+						<img src="@sessionPicture" alt="Profile" class="w-5 h-5 rounded-circle"> 
+						<!-- Clickable Textarea (Triggers Modal) -->
+						<textarea placeholder="What's on your mind?"
+								  class="px-4 py-2 ms-4 rounded-full border-0 text-lg"
+								  data-bs-toggle="modal"
+								  data-bs-target="#postModal"
+								  id="post-input"
+								  readonly></textarea>
+					</div>
+
+					<!-- Modal for Creating Post -->
+					<div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="postModalLabel">Create a Post</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<form asp-action="Create" asp-controller="Posts" id="postForm" method="post" enctype="multipart/form-data">
+									<input type="hidden" name="clubId" value="@Model.ClubId" />
+									<div class="modal-body">
+										<!-- Post Text -->
+										<textarea id="postContent" name="Content" placeholder="What's on your mind?"
+												  class="w-100 p-2 rounded border" rows="4" required></textarea>
+
+										<!-- Image Upload -->
+										<div class="mt-3">
+											<label for="postImage" class="form-label">Upload Image</label>
+											<input type="file" class="form-control" id="postImage" name="ImageFile" accept=".jpg, .jpeg, .png">
+										</div>
+
+										<!-- Image Preview -->
+										<div id="imagePreview" class="mt-3 d-none text-center">
+											<img id="previewImg" src="#" class="img-fluid rounded" alt="Image Preview">
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+										<button type="submit" class="btn btn-primary">Post</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
 
 				<div class="mb-4 post-list border-bottom pb-4">
 					<div class="row no-gutters">
@@ -425,3 +495,19 @@
 		</div>
 	</div>
 </section>
+
+
+
+<script>
+	document.getElementById('postImage').addEventListener('change', function(event) {
+		const file = event.target.files[0];
+		if (file) {
+			const reader = new FileReader();
+			reader.onload = function(e) {
+				document.getElementById('previewImg').src = e.target.result;
+				document.getElementById('imagePreview').classList.remove('d-none');
+			};
+			reader.readAsDataURL(file);
+		}
+	});
+</script>

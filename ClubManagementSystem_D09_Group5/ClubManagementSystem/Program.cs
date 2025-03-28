@@ -14,10 +14,16 @@ using Services.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddUserSecrets<Program>();
-string clientSecret = builder.Configuration["GoogleAuth:ClientSecret"];
-string clientId = builder.Configuration["GoogleAuth:ClientId"];
+string keyVaultUri = builder.Configuration["AzureKeyVault:VaultUri"];
 
+//var clientId = builder.Configuration["ClientId"];
+//var clientSecret = builder.Configuration["ClientSecret"];
+
+builder.Configuration.AddUserSecrets<Program>();
+//string clientSecret = builder.Configuration["GoogleAuth:ClientSecret"];
+//string clientId = builder.Configuration["GoogleAuth:ClientId"];
+string clientId = "439699209301-9iqj2l29punn6vaemn5k0tjr636b3gu5.apps.googleusercontent.com";
+string clientSecret = "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";
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -40,6 +46,7 @@ builder.Services.AddScoped<IJoinRequestRepository, JoinRequestRepository>();
 builder.Services.AddScoped<IClubMemberRepository, ClubMemberRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
+builder.Services.AddScoped<IPostRepository, PostRepository>();
 
 
 //Add Services
@@ -53,6 +60,7 @@ builder.Services.AddScoped<IJoinRequestService, JoinRequestService>();
 builder.Services.AddScoped<IClubMemberService, ClubMemberService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<IPostService, PostService>();
 
 //signalR
 builder.Services.AddSignalR();

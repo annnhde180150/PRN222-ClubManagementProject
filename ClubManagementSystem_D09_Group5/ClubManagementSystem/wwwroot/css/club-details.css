@@ -35,3 +35,9 @@
     opacity: 1;
     visibility: visible;
 }
+#post-input {
+    width: 80%;
+    background-color: rgba(220, 220, 220, 0.222);
+    resize: none;
+    line-height: 2;
+}
