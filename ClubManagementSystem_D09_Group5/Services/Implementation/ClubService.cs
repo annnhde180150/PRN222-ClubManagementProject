@@ -22,7 +22,7 @@ namespace Services.Implementation
             _imageHelperService = imageHelperService;
         }
 
-        public async Task<ClubDetailsViewDto> GetClubDetailsAsync(int clubId)
+        public async Task<ClubDetailsViewDto> GetClubDetailsAsync(int clubId, int postNumber, int postSize)
         {
             var club = await _clubRepository.GetClubByIdWithMembersPostsAsync(clubId);
 
@@ -37,22 +37,25 @@ namespace Services.Implementation
                 })
                 .ToList();
 
-            var postDtos = club.ClubMembers
-            .SelectMany(member => member.Posts)  
-            .Select(post => new PostDto
+            var postsQuery = club.ClubMembers
+        .SelectMany(member => member.Posts)
+        .OrderByDescending(post => post.CreatedAt); // Order by newest posts
+
+            var totalPosts = postsQuery.Count();
+            var posts = postsQuery.Skip((postNumber - 1) * postSize).Take(postSize).ToList();
+
+            var postDtos = posts.Select(post => new PostDto
             {
                 PostId = post.PostId,
-                Title = post.Title,
                 Content = post.Content,
                 ImageBase64 = _imageHelperService.ConvertToBase64(post.Image, "png"),
                 CreatedAt = post.CreatedAt,
                 Status = post.Status,
                 CreatedBy = post.CreatedBy,
                 CreatedByUsername = post.CreatedByNavigation.User.Username
-            })
-            .ToList();
+            }).ToList();
 
-            var viewModel = new ClubDetailsViewDto
+            return new ClubDetailsViewDto
             {
                 ClubId = club.ClubId,
                 ClubName = club.ClubName,
@@ -60,11 +63,12 @@ namespace Services.Implementation
                 Cover = club.Cover,
                 Description = club.Description,
                 ClubMembers = clubMemberDtos,
-                Posts = postDtos
-            };
+                Posts = postDtos,
 
-            return viewModel;
+                TotalPosts = totalPosts,
+                PostNumber = postNumber,
+                PostSize = postSize
+            };
         }
     }
-
 }

@@ -6,8 +6,9 @@
 	ViewData["Title"] = "Details";
 	var username = User.FindFirst(ClaimTypes.Name)?.Value;
 	string? sessionPicture = HttpContextAccessor.HttpContext.Session.GetString("userPicture") as string;
-
+	var totalPages = Math.Ceiling((double)Model.TotalPosts / Model.PostSize);
 }
+
 <link rel="stylesheet" href="~/css/club-details.css">
 <section class="banner">
 	<div class="container">
@@ -192,9 +193,7 @@
 										</ul>
 									</div>
 									<div class="post-content">
-										<p>
-											<p>@(post.Content.Length > 50 ? post.Content[..50] + "..." : post.Content)</p>
-										</p>
+										<p>@(post.Content.Length > 50 ? post.Content[..50] + "..." : post.Content)</p>
 									</div>
 								</div>
 							</div>
@@ -204,12 +203,26 @@
 
 
 
+				@* <div class="pagination mt-5 pt-4"> *@
+				@* 	<ul class="list-inline"> *@
+				@* 		<li class="list-inline-item"><a href="#" class="active">1</a></li> *@
+				@* 		<li class="list-inline-item"><a href="#">2</a></li> *@
+				@* 		<li class="list-inline-item"><a href="#">3</a></li> *@
+				@* 		<li class="list-inline-item"><a href="#" class="prev-posts"><i class="ti-arrow-right"></i></a></li> *@
+				@* 	</ul> *@
+				@* </div> *@
+
 				<div class="pagination mt-5 pt-4">
 					<ul class="list-inline">
-						<li class="list-inline-item"><a href="#" class="active">1</a></li>
-						<li class="list-inline-item"><a href="#">2</a></li>
-						<li class="list-inline-item"><a href="#">3</a></li>
-						<li class="list-inline-item"><a href="#" class="prev-posts"><i class="ti-arrow-right"></i></a></li>
+					
+						@for (var i = 1; i <= totalPages; i++)
+						{
+							<li class="list-inline-item">
+								<a asp-action="Details" asp-route-id="@Model.ClubId" asp-route-pageNumber="@i"
+								   asp-route-pageSize="@Model.PostSize" class="@(Model.PostNumber == i ? "active" : "")">@i</a>
+							</li>
+						}
+						
 					</ul>
 				</div>
 			</div>

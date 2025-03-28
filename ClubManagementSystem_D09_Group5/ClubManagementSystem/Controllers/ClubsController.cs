@@ -42,17 +42,20 @@ namespace ClubManagementSystem.Controllers
             return View(clubRequest);
         }
 
-       
+
 
         // GET: Clubs/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, int? pageNumber)
         {
+            int postSize = 5;
+            int currentPage = pageNumber ?? 1;
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var viewModel = await _clubService.GetClubDetailsAsync(id.Value);
+            var viewModel = await _clubService.GetClubDetailsAsync(id.Value, currentPage, postSize);
 
             if (viewModel == null)
             {
@@ -61,6 +64,7 @@ namespace ClubManagementSystem.Controllers
 
             return View(viewModel);
         }
+
 
         //[Authorize]
         //// GET: Clubs/Create
