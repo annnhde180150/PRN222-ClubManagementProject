@@ -10,5 +10,6 @@ namespace Repositories.Interface
     public interface IPostRepository
     {
         Task<Post> AddAsync(Post post);
+        Task<IEnumerable<Post>> GetAllPostByClubIdAsync(int clubId);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BussinessObjects.Models;
+using Microsoft.EntityFrameworkCore;
 using Repositories.Interface;
 using System;
 using System.Collections.Generic;
@@ -21,5 +22,10 @@ namespace Repositories.Implementation
             await _context.SaveChangesAsync();
             return post;
         }
+        public async Task<IEnumerable<Post>> GetAllPostByClubIdAsync(int clubId)
+        {
+            return await _context.Posts.Where(p => p.CreatedByNavigation.ClubId == clubId).ToListAsync();
+        }
+
     }
 }

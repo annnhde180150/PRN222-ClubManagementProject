@@ -41,3 +41,8 @@
     resize: none;
     line-height: 2;
 }
+
+#post-image-index {
+    width: 300px !important;
+    height: 225px;
+}

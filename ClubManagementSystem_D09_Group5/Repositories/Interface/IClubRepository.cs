@@ -9,8 +9,8 @@ namespace Repositories.Interface
 {
     public interface IClubRepository
     {
-        Task<Club> GetClubByIdWithMembersAsync(int clubId);
         Task AddClubAsync(Club club);
         Task<IEnumerable<Club>> GetAllClubAsync();
+        Task<Club> GetClubByIdWithMembersPostsAsync(int clubId);
     }
 }

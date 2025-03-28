@@ -10,6 +10,8 @@ namespace Services.Interface
 {
     public interface IPostService
     {
-        Task<Post> CreatePostAsync(Post model, IFormFile? imageFile, int userId);
+        Task<Post> CreatePostAsync(Post model, IFormFile? imageFile, int userId, int clubId);
+        Task<IEnumerable<Post>> GetAllPostsByClubIdAsync(int clubId);
+
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using BussinessObjects.Models;
+using ClubManagementSystem.Controllers.Common;
 using ClubManagementSystem.Controllers.SignalR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -44,7 +45,9 @@ builder.Services.AddScoped<IConnectionRepository, ConnectionRepository>();
 builder.Services.AddScoped<IJoinRequestRepository, JoinRequestRepository>();
 builder.Services.AddScoped<IClubMemberRepository, ClubMemberRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
+builder.Services.AddScoped<IClubMemberRepository, ClubMemberRepository>();
 
 
 //Add Services
@@ -57,7 +60,9 @@ builder.Services.AddScoped<IConnectionService, ConnectionService>();
 builder.Services.AddScoped<IJoinRequestService, JoinRequestService>();
 builder.Services.AddScoped<IClubMemberService, ClubMemberService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IPostService, PostService>();
+builder.Services.AddScoped<IClubMemberService, ClubMemberService>();
 
 //signalR
 builder.Services.AddSignalR();
@@ -72,6 +77,9 @@ builder.Services.AddCors(options =>
               .AllowCredentials();
     });
 });
+
+//Common
+builder.Services.AddScoped<Week>();
 
 
 // Add DbContext

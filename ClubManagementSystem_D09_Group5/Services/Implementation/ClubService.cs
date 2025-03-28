@@ -23,9 +23,9 @@ namespace Services.Implementation
             _imageHelperService = imageHelperService;
         }
 
-        public async Task<ClubDetailsViewDto> GetClubDetailsAsync(int clubId)
+        public async Task<ClubDetailsViewDto> GetClubDetailsAsync(int clubId, int postNumber, int postSize)
         {
-            var club = await _clubRepository.GetClubByIdWithMembersAsync(clubId);
+            var club = await _clubRepository.GetClubByIdWithMembersPostsAsync(clubId);
 
             if (club == null) return null;
 
@@ -38,17 +38,38 @@ namespace Services.Implementation
                 })
                 .ToList();
 
-            var viewModel = new ClubDetailsViewDto
+            var postsQuery = club.ClubMembers
+        .SelectMany(member => member.Posts)
+        .OrderByDescending(post => post.CreatedAt); // Order by newest posts
+
+            var totalPosts = postsQuery.Count();
+            var posts = postsQuery.Skip((postNumber - 1) * postSize).Take(postSize).ToList();
+
+            var postDtos = posts.Select(post => new PostDto
+            {
+                PostId = post.PostId,
+                Content = post.Content,
+                ImageBase64 = _imageHelperService.ConvertToBase64(post.Image, "png"),
+                CreatedAt = post.CreatedAt,
+                Status = post.Status,
+                CreatedBy = post.CreatedBy,
+                CreatedByUsername = post.CreatedByNavigation.User.Username
+            }).ToList();
+
+            return new ClubDetailsViewDto
             {
                 ClubId = club.ClubId,
                 ClubName = club.ClubName,
                 Logo = club.Logo,
                 Cover = club.Cover,
                 Description = club.Description,
-                ClubMembers = clubMemberDtos
-            };
+                ClubMembers = clubMemberDtos,
+                Posts = postDtos,
 
-            return viewModel;
+                TotalPosts = totalPosts,
+                PostNumber = postNumber,
+                PostSize = postSize
+            };
         }
         public async Task AddClubAsync(Club club)
         {
@@ -62,5 +83,4 @@ namespace Services.Implementation
 
         
     }
-
 }

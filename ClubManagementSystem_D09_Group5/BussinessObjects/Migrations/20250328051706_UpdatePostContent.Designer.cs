@@ -4,6 +4,7 @@ using BussinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BussinessObjects.Migrations
 {
     [DbContext(typeof(FptclubsContext))]
-    partial class FptclubsContextModelSnapshot : ModelSnapshot
+    [Migration("20250328051706_UpdatePostContent")]
+    partial class UpdatePostContent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -296,36 +299,6 @@ namespace BussinessObjects.Migrations
                     b.HasIndex("CreatedBy");
 
                     b.ToTable("Events");
-                });
-
-            modelBuilder.Entity("BussinessObjects.Models.JoinRequest", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ClubId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClubId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("JoinRequests");
                 });
 
             modelBuilder.Entity("BussinessObjects.Models.Notification", b =>
@@ -641,25 +614,6 @@ namespace BussinessObjects.Migrations
                     b.Navigation("CreatedByNavigation");
                 });
 
-            modelBuilder.Entity("BussinessObjects.Models.JoinRequest", b =>
-                {
-                    b.HasOne("BussinessObjects.Models.Club", "Club")
-                        .WithMany("JoinRequests")
-                        .HasForeignKey("ClubId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BussinessObjects.Models.User", "User")
-                        .WithMany("JoinRequests")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Club");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("BussinessObjects.Models.Notification", b =>
                 {
                     b.HasOne("BussinessObjects.Models.User", "User")
@@ -724,8 +678,6 @@ namespace BussinessObjects.Migrations
             modelBuilder.Entity("BussinessObjects.Models.Club", b =>
                 {
                     b.Navigation("ClubMembers");
-
-                    b.Navigation("JoinRequests");
                 });
 
             modelBuilder.Entity("BussinessObjects.Models.ClubMember", b =>
@@ -765,8 +717,6 @@ namespace BussinessObjects.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Connections");
-
-                    b.Navigation("JoinRequests");
 
                     b.Navigation("Notifications");
 

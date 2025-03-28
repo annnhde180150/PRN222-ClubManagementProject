@@ -14,6 +14,7 @@ using System.Security.Claims;
 using Repositories.Interface;
 using Services.Implementation;
 using Azure.Core;
+using Microsoft.Extensions.Hosting;
 
 namespace ClubManagementSystem.Controllers
 {
@@ -26,7 +27,8 @@ namespace ClubManagementSystem.Controllers
         private readonly IJoinRequestService _joinRequestService;
         private readonly FptclubsContext _context;
 
-        public ClubsController(FptclubsContext context , IClubRequestService clubRequestService, IAccountService accountService, IClubService clubService, IJoinRequestService joinRequestService, IClubMemberService clubMemberService)
+        private readonly IPostService _postService;
+        public ClubsController(FptclubsContext context , IClubRequestService clubRequestService, IAccountService accountService, IClubService clubService, IPostService postService, IJoinRequestService joinRequestService)
         {
             _context = context;
             _clubRequestService = clubRequestService;
@@ -34,7 +36,7 @@ namespace ClubManagementSystem.Controllers
             _clubService = clubService;
             _joinRequestService = joinRequestService;
             _clubMemberService = clubMemberService;
-
+            _postService = postService;
         }
 
         // GET: Clubs
@@ -86,14 +88,17 @@ namespace ClubManagementSystem.Controllers
         }
 
         // GET: Clubs/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, int? pageNumber)
         {
+            int postSize = 5;
+            int currentPage = pageNumber ?? 1;
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var viewModel = await _clubService.GetClubDetailsAsync(id.Value);
+            var viewModel = await _clubService.GetClubDetailsAsync(id.Value, currentPage, postSize);
 
             if (viewModel == null)
             {
@@ -103,12 +108,13 @@ namespace ClubManagementSystem.Controllers
             return View(viewModel);
         }
 
-        [Authorize]
-        // GET: Clubs/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+
+        //[Authorize]
+        //// GET: Clubs/Create
+        //public IActionResult Create()
+        //{
+        //    return View();
+        //}
 
         // POST: Clubs/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
