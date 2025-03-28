@@ -120,6 +120,21 @@
     </div>
 </div>
 
+<!-- Edit Event Modal -->
+<div class="modal fade" id="editEventModal" tabindex="-1" aria-labelledby="editEventModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body" id="editEventContent">
+                <div class="text-center">
+                    <div class="spinner-border text-warning" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     function loadEventDetails(eventId) {
         var modalBody = document.getElementById("eventDetailsContent");
@@ -148,4 +163,51 @@
                 modalBody.innerHTML = '<p class="text-danger">Failed to load delete confirmation.</p>';
             });
     }
+
+        function loadEditModal(eventId) {
+        var modalBody = document.getElementById("editEventContent");
+        modalBody.innerHTML = '<div class="text-center"><div class="spinner-border text-warning" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+
+        // Close the details modal
+        var detailsModal = bootstrap.Modal.getInstance(document.getElementById("eventDetailsModal"));
+        if (detailsModal) {
+            detailsModal.hide();
+        }
+
+        // Load Edit Form
+        fetch(`/Events/Edit/${eventId}`)
+            .then(response => response.text())
+            .then(html => {
+                modalBody.innerHTML = html;
+                new bootstrap.Modal(document.getElementById("editEventModal")).show();
+            })
+            .catch(error => {
+                modalBody.innerHTML = '<p class="text-danger">Failed to load edit form.</p>';
+            });
+    }
+
+    function setMinDateTime() {
+            const now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset()); // Adjust for timezone
+
+            const eventDateInput = document.getElementById("eventDateInput");
+            eventDateInput.min = now.toISOString().slice(0, 16);
+
+            eventDateInput.addEventListener("input", function () {
+                const selectedDateTime = new Date(eventDateInput.value);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0); // Set to start of today
+
+                if (selectedDateTime < now) {
+                    alert("Selected date/time cannot be in the past.");
+                    eventDateInput.value = now.toISOString().slice(0, 16);
+                }
+            });
+        }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        $('editEventModal').on('shown.bs.modal', function () {
+            setMinDateTime();
+        });
+    });
 </script>
