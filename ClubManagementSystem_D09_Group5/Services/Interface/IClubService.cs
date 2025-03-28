@@ -11,6 +11,7 @@ namespace Services.Interface
     public interface IClubService
     {
         Task AddClubAsync(Club club);
+        Task<IEnumerable<Club>> GetAllClubsAsync();       
         Task<ClubDetailsViewDto> GetClubDetailsAsync(int clubId, int postNumber, int postSize);
     }
 }

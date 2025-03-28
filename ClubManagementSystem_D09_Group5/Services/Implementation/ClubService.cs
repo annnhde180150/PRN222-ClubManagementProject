@@ -76,5 +76,12 @@ namespace Services.Implementation
         {
             await _clubRepository.AddClubAsync(club);
         }
+
+        public async Task<IEnumerable<Club>> GetAllClubsAsync()
+        {
+            return await _clubRepository.GetAllClubAsync();
+        }
+
+        
     }
 }

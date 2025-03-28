@@ -33,13 +33,24 @@ namespace Repositories.Implementation
 
         public async Task<IEnumerable<ClubMember>> GetClubMembersAsync()
         {
-            return await _context.ClubMembers.Include(m => m.TaskAssignments).Include(m => m.User).ToListAsync();
+            return await _context.ClubMembers
+                .Include(m => m.TaskAssignments)
+                .Include(m => m.User)
+                .Include(m => m.Club)
+                .ToListAsync();
         }
 
         public async Task<ClubMember> GetClubMemberAsync(int id)
         {
-            return await _context.ClubMembers.Include(m => m.TaskAssignments).Include(m => m.User).Include(m => m.Role).FirstOrDefaultAsync(m => m.MembershipId == id);
+            return await _context.ClubMembers.Include(m => m.TaskAssignments)
+                .Include(m => m.User)
+                .Include(m => m.Role)
+                .Include(m => m.Club)
+                .FirstOrDefaultAsync(m => m.MembershipId == id);
         }
+
+
+
 
         public async Task UpdateClubMemberAsync(ClubMember clubMember)
         {
