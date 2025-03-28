@@ -11,6 +11,9 @@ public partial class ClubTask
     public int TaskId { get; set; }
 
     [Required]
+    public int EventId { get; set; }
+
+    [Required]
     [StringLength(1000)]
     public string TaskDescription { get; set; } = null!;
 
@@ -28,6 +31,9 @@ public partial class ClubTask
 
     [ForeignKey("CreatedBy")]
     public virtual ClubMember CreatedByNavigation { get; set; } = null!;
+
+    [ForeignKey("EventId")]
+    public virtual Event? Event { get; set; }
 
     public virtual ICollection<TaskAssignment> TaskAssignments { get; set; } = new List<TaskAssignment>();
 }

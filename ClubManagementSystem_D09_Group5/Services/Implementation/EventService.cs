@@ -42,7 +42,22 @@ namespace Services.Implementation
         public async Task<IEnumerable<Event>> GetEventsAsync(DateTime start, DateTime end, int clubID)
         {
             var events = await _eventRepository.GetEventsAsync();
-            return events.Where(e => e.EventDate >= start && e.EventDate <= end).Where(e => e.CreatedByNavigation.ClubId == clubID);
+            return events
+                .Where(e => e.EventDate >= start && e.EventDate <= end)
+                .Where(e => e.CreatedByNavigation.ClubId == clubID)
+                .Where(e => e.Status!="Cancelled");
+        }
+
+        public async Task<bool> IsDependedOn(int EventID)
+        {
+            var currentEvent = await _eventRepository.GetEventAsync(EventID);
+            if (currentEvent.Tasks == null) return false;
+            foreach (var item in currentEvent.Tasks)
+            {
+                if (item.TaskAssignments.Count > 0)
+                    return true;
+            }
+            return false;
         }
     }
 }

@@ -19,6 +19,8 @@ public partial class Event
     [StringLength(1000)]
     public string? EventDescription { get; set; }
 
+    public string? Status { get; set; }
+
     [Required]
     [DataType(DataType.DateTime)]
     public DateTime EventDate { get; set; }
@@ -28,4 +30,5 @@ public partial class Event
 
     [ForeignKey("CreatedBy")]
     public virtual ClubMember CreatedByNavigation { get; set; } = null!;
+    public virtual List<ClubTask>? Tasks { get; set; }
 }
