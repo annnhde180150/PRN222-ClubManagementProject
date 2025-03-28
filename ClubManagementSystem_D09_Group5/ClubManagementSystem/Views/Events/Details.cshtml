@@ -40,9 +40,10 @@
 </div>
 
 <div class="modal-footer">
-    <a asp-controller="Events" asp-action="Edit" asp-route-clubID="@Model?.CreatedByNavigation.ClubId" class="btn btn-warning">
+    <button type="button" class="btn btn-warning"
+            onclick="loadEditModal(@Model.EventId)">
         <i class="fas fa-edit"></i> Edit
-    </a>
+    </button>
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
         <i class="fas fa-times"></i> Close
     </button>
