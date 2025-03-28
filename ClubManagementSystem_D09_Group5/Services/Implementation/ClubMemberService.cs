@@ -23,5 +23,17 @@ namespace Services.Implementation
         {
             return await _clubMemberRepository.AddClubMemberAsync(clubMember);
         }
+
+        public async Task<ClubMember> GetClubMemberById(int id)
+        {
+            return await _clubMemberRepository.GetClubMemberAsync(id);
+        }
+
+        public async Task<IEnumerable<ClubMember>> GetClubMemberByUserId(int id)
+        {
+            var allClubMembers = await _clubMemberRepository.GetClubMembersAsync();
+            var clubMembers =  allClubMembers.Where(m => m.UserId == id).ToList(); ;
+            return clubMembers;
+        }
     }
 }

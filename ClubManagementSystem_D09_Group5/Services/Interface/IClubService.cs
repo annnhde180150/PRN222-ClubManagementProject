@@ -12,5 +12,7 @@ namespace Services.Interface
     {
         Task<ClubDetailsViewDto> GetClubDetailsAsync(int clubId);
         Task AddClubAsync(Club club);
+        Task<IEnumerable<Club>> GetAllClubsAsync();
+       
     }
 }

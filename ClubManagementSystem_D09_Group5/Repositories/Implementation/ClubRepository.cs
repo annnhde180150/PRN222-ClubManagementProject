@@ -31,5 +31,10 @@ namespace Repositories.Implementation
             _context.Clubs.Add(club);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<Club>> GetAllClubAsync()
+        {
+            return await _context.Clubs.ToListAsync();
+        }
     }
 }

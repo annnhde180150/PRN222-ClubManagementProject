@@ -1,7 +1,6 @@
 ﻿@model IEnumerable<BussinessObjects.Models.Club>
-
 @{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "YourClubs";
 }
 <style>
     .ClubIndex {
@@ -49,12 +48,14 @@
         border-radius: 20px;
     }
 </style>
-
 <section class="ClubIndex container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="text-primary fw-bold"> Clubs</h2>
     </div>
-
+    <div>
+        <button class="btn btn-primary" >All Clubs</button>
+        <button class="btn btn-success">Your Club</button>
+    </div>
     <div class="table-responsive">
         <table class="table table-hover table-striped align-middle shadow-sm">
             <thead class="custom-header text-white text-center">

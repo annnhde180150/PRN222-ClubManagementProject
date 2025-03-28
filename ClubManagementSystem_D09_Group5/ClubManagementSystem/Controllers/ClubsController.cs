@@ -21,25 +21,58 @@ namespace ClubManagementSystem.Controllers
     {
         private readonly IAccountService _accountService;
         private readonly IClubRequestService _clubRequestService;
+        private readonly IClubMemberService _clubMemberService;
         private readonly IClubService _clubService;
         private readonly IJoinRequestService _joinRequestService;
         private readonly FptclubsContext _context;
 
-        public ClubsController(FptclubsContext context , IClubRequestService clubRequestService, IAccountService accountService, IClubService clubService, IJoinRequestService joinRequestService)
+        public ClubsController(FptclubsContext context , IClubRequestService clubRequestService, IAccountService accountService, IClubService clubService, IJoinRequestService joinRequestService, IClubMemberService clubMemberService)
         {
             _context = context;
             _clubRequestService = clubRequestService;
             _accountService = accountService;
             _clubService = clubService;
             _joinRequestService = joinRequestService;
+            _clubMemberService = clubMemberService;
+
         }
 
         // GET: Clubs
-        [Authorize("SystemAdmin")]
-        public async Task<IActionResult> Index()
+        [Authorize]
+        public async Task<IActionResult> Index(string? searchString ,int? pageNumber)
         {
-            //var clubRequest = _clubRequestService.GetAllClubRequestPendingAsync();
-            return View();
+            int pageSize = 5;
+            int currentPage = pageNumber ?? 1;
+            var clubs = await _clubService.GetAllClubsAsync();
+
+           var pagedClubs = clubs
+                .Skip((currentPage - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+            int totalRecords = await _context.Clubs.CountAsync();
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
+            ViewBag.CurrentPage = currentPage;
+            ViewBag.SearchString = searchString;
+            return View(pagedClubs);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> YourClubs(string? searchString, int? pageNumber)
+        {
+            int pageSize = 5;
+            int currentPage = pageNumber ?? 1;
+            int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var clubsMember = await _clubMemberService.GetClubMemberByUserId(userId);           
+            var clubs = clubsMember.Count() > 0 ? clubsMember.Select(m => m.Club).ToList() : new List<Club>();
+            var pagedClubs = clubs
+                    .Skip((currentPage - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+            int totalRecords = await _context.Clubs.CountAsync();
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
+            ViewBag.CurrentPage = currentPage;
+            ViewBag.SearchString = searchString;
+            return View(pagedClubs);
         }
 
         public async Task<IActionResult> Request(int? id)
