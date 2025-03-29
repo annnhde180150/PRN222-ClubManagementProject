@@ -40,7 +40,7 @@ namespace Repositories.Implementation
                 .ToListAsync();
         }
 
-        public async Task<ClubMember> GetClubMemberAsync(int id)
+        public async Task<ClubMember?> GetClubMemberAsync(int id)
         {
             return await _context.ClubMembers.Include(m => m.TaskAssignments)
                 .Include(m => m.User)
@@ -48,9 +48,11 @@ namespace Repositories.Implementation
                 .Include(m => m.Club)
                 .FirstOrDefaultAsync(m => m.MembershipId == id);
         }
-
-
-
+        public async Task<ClubMember?> GetClubMemberAsync(int userId, int clubId)
+        {
+            return await _context.ClubMembers
+                .FirstOrDefaultAsync(cm => cm.UserId == userId && cm.ClubId == clubId);
+        }
 
         public async Task UpdateClubMemberAsync(ClubMember clubMember)
         {
@@ -58,10 +60,6 @@ namespace Repositories.Implementation
             await _context.SaveChangesAsync();
         }
     
-        public async Task<bool> IsUserInClubAsync(int userId, int clubId)
-        {
-            return await _context.ClubMembers
-                .AnyAsync(cm => cm.UserId == userId && cm.ClubId == clubId);
-        }
+       
     }
 }

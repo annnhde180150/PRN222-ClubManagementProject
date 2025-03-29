@@ -25,11 +25,11 @@ namespace BussinessObjects.Models.Dtos
         public string ImageBase64 { get; set; }
         public DateTime? CreatedAt { get; set; }
         public string? Status { get; set; }
-        public int CreatedBy { get; set; }
-        public string CreatedByUsername { get; set; } = string.Empty;
-        public int ClubId { get; set; }
-        public string ClubName { get; set; } = string.Empty;
+        public UserDto User { get; set; } = new();
+        public ClubDto Club { get; set; } = new();
         public List<RelatedPostDto> RelatedPosts { get; set; } = new();
+        public List<CommentDto> Comments { get; set; } = new();
+
     }
 
     public class RelatedPostDto

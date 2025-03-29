@@ -25,7 +25,7 @@ namespace ClubManagementSystem.Controllers
         // GET: Posts
         public async Task<IActionResult> Index()
         {
-            var fptclubsContext = _context.Posts.Include(p => p.CreatedByNavigation);
+            var fptclubsContext = _context.Posts.Include(p => p.ClubMember);
             return View(await fptclubsContext.ToListAsync());
         }
 
@@ -47,27 +47,7 @@ namespace ClubManagementSystem.Controllers
             return View(postDetails);
         }
 
-        // GET: Posts/Create
-        //public IActionResult Create()
-        //{
-        //    //ViewData["CreatedBy"] = new SelectList(_context.ClubMembers, "MembershipId", "MembershipId");
-        //    return View();
-        //}
-
-        // POST: Posts/
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("PostId,CreatedBy,Content,Image,CreatedAt,Status")] Post post)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(post);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["CreatedBy"] = new SelectList(_context.ClubMembers, "MembershipId", "MembershipId", post.CreatedBy);
-        //    return View(post);
-        //}
+     
 
         [HttpPost]
         [ValidateAntiForgeryToken]

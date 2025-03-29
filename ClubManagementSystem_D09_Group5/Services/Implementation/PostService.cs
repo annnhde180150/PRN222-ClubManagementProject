@@ -15,12 +15,14 @@ namespace Services.Implementation
     public class PostService : IPostService
     {
         private readonly IPostRepository _postRepository;
-        private readonly IClubMemberRepository _clubMemberRepository;
+        private readonly IClubMemberService _clubMemberService;
+        private readonly ICommentService _commentService;
         private readonly IImageHelperService _imageHelperService;
-        public PostService(IPostRepository postRepository, IClubMemberRepository clubMemberRepository, IImageHelperService imageHelperService)
+        public PostService(IPostRepository postRepository, IClubMemberService clubMemberService, ICommentService commentService , IImageHelperService imageHelperService)
         {
             _postRepository = postRepository;
-            _clubMemberRepository = clubMemberRepository;
+            _clubMemberService = clubMemberService;
+            _commentService = commentService;
             _imageHelperService = imageHelperService;
         }
 
@@ -30,7 +32,7 @@ namespace Services.Implementation
         }
         public async Task<Post> CreatePostAsync(Post model, IFormFile? imageFile, int userId, int clubId)
         {
-            bool isMember = await _clubMemberRepository.IsUserInClubAsync(userId, clubId);
+            bool isMember = await _clubMemberService.IsUserInClubAsync(userId, clubId);
             if (!isMember)
             {
                 throw new UnauthorizedAccessException("User is not a member of the club.");
@@ -63,7 +65,9 @@ namespace Services.Implementation
             {
                 return null; 
             }
-            var relatedPosts = await _postRepository.GetRelatedPostsAsync(post.CreatedByNavigation.Club.ClubId, post.PostId, 3);
+            var relatedPosts = await _postRepository.GetRelatedPostsAsync(post.ClubMember.ClubId, post.PostId, 3);
+
+            var comments = await _commentService.GetCommentsByPostIdAsync(postId);
 
             var viewModel = new PostDetailsDto
             {
@@ -73,16 +77,27 @@ namespace Services.Implementation
                 ImageBase64 = _imageHelperService.ConvertToBase64(post.Image, "png"),
                 CreatedAt = post.CreatedAt,
                 Status = post.Status,
-                CreatedBy = post.CreatedBy,
-                CreatedByUsername = post.CreatedByNavigation.User.Username,
-                ClubId = post.CreatedByNavigation.ClubId,
-                ClubName = post.CreatedByNavigation.Club.ClubName,
-                RelatedPosts = relatedPosts.Select(p => new RelatedPostDto
+               
+                Club = new ClubDto
                 {
-                    PostId = p.PostId,
-                    Title = p.Title,
-                    ImageBase64 = _imageHelperService.ConvertToBase64(p.Image, "png"),
+                    ClubId = post.ClubMember.ClubId,
+                    ClubName = post.ClubMember.Club.ClubName
+                },
+                Comments = post.Comments.Select(c => new CommentDto
+                {
+                    CommentId = c.CommentId,
+                    PostId = c.PostId,
+                    CommentText = c.CommentText,
+                    CreatedAt = c.CreatedAt,
+                    User = new UserDto
+                    {
+                        UserId = c.User.UserId,  
+                        Username = c.User.Username,
+                        Email = c.User.Email,
+                        ProfilePictureBase64 = _imageHelperService.ConvertToBase64(c.User.ProfilePicture, "png"),
+                    }
                 }).ToList()
+
             };
 
             if (viewModel == null)

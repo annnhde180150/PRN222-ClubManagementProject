@@ -56,4 +56,12 @@ namespace BussinessObjects.Models.Dtos
         [MinLength(6, ErrorMessage = "Password must be at least 6 characters long.")]
         public string? ConfirmNewPassword { get; set; } 
     }
+
+    public class UserDto
+    {
+        public int UserId { get; set; }
+        public string Username { get; set; } = string.Empty;
+        public string Email { get; set; } = null!;
+        public string? ProfilePictureBase64 { get; set; } 
+    }
 }
