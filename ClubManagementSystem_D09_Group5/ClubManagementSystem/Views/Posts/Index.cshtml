@@ -1,59 +1,68 @@
-﻿@model IEnumerable<BussinessObjects.Models.Post>
-
+﻿@model BussinessObjects.Models.Dtos.ClubDetailsViewDto
 @{
-    ViewData["Title"] = "Index";
+	var totalPages = Math.Ceiling((double)Model.TotalPosts / Model.PostSize);
+}
+<!-- Post -->
+@await Html.PartialAsync("~/Views/Posts/Create.cshtml", Model)
+
+@foreach (var post in Model.Posts)
+{
+	<div class="mb-4 post-list border-bottom pb-4">
+		<div class="row no-gutters">
+			<div class="col-md-5">
+				<a class="post-thumb" asp-action="Details" asp-controller="Posts" asp-route-id="@post.PostId">
+					<img src="@post.ImageBase64" id="post-image-index" alt="PostImage" class="img-fluid">
+				</a>
+
+			</div>
+
+			<div class="col-md-7">
+				<div class="post-article mt-sm-3">
+					<div class="meta-cat">
+						<a asp-action="Details" asp-controller="Posts" asp-route-id="@post.PostId">
+							<span class="letter-spacing cat-name font-extra text-uppercase font-sm">Post</span>
+						</a>
+					</div>
+
+					<h3 class="post-title mt-2">
+						<a asp-action="Details" asp-controller="Posts" asp-route-id="@post.PostId">@post.Title</a>
+					</h3>
+
+					<div class="post-meta">
+						<ul class="list-inline">
+							<li class="post-like list-inline-item">
+								<span class="font-sm letter-spacing-1 text-uppercase">
+									<i class="ti-time mr-2"></i> @post.CreatedAt
+								</span>
+							</li>
+							<li class="post-view list-inline-item letter-spacing-1">@post.User.Username</li>
+						</ul>
+					</div>
+
+					<div class="post-content">
+						<p>
+							<a asp-action="Details" asp-controller="Posts" asp-route-id="@post.PostId">
+								@(post.Content.Length > 50 ? post.Content[..50] + "..." : post.Content)
+							</a>
+						</p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
 }
 
-<h1>Index</h1>
+<div class="pagination mt-5 pt-4">
+	<ul class="list-inline">
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Image)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ClubMember)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Image)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ClubMember.MembershipId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.PostId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.PostId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PostId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+		@for (var i = 1; i <= totalPages; i++)
+		{
+			<li class="list-inline-item">
+				<a asp-action="Details" asp-route-id="@Model.ClubId" asp-route-pageNumber="@i"
+				   asp-route-pageSize="@Model.PostSize" class="@(Model.PostNumber == i ? "active" : "")">@i</a>
+			</li>
+		}
+
+	</ul>
+</div>

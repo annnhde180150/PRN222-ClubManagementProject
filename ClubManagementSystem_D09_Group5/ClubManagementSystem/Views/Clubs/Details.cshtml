@@ -5,8 +5,7 @@
 @{
 	ViewData["Title"] = "Details";
 	var username = User.FindFirst(ClaimTypes.Name)?.Value;
-	string? sessionPicture = HttpContextAccessor.HttpContext.Session.GetString("userPicture") as string;
-	var totalPages = Math.Ceiling((double)Model.TotalPosts / Model.PostSize);
+	
 }
 
 <link rel="stylesheet" href="~/css/club-details.css">
@@ -110,126 +109,14 @@
 					</div>
 				</article>
 
-
-				<!-- Post -->
-				<div class="p-4 mb-5 shadow">
-					<div class="align-items-center d-flex">
-
-						<img src="@sessionPicture" alt="Profile" class="w-5 h-5 rounded-circle"> 
-						<!-- Clickable Textarea (Triggers Modal) -->
-						<textarea placeholder="What's on your mind?"
-						class="px-4 py-2 ms-4 rounded-full border-0 text-lg"
-						data-bs-toggle="modal"
-						data-bs-target="#postModal"
-						id="post-input"
-						readonly></textarea>
-					</div>
-
-					<!-- Modal for Creating Post -->
-					<div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title" id="postModalLabel">Create a Post</h5>
-									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-								</div>
-								<form asp-action="Create" asp-controller="Posts" id="postForm" method="post" enctype="multipart/form-data">
-									<input type="hidden" name="clubId" value="@Model.ClubId" />
-									<div class="modal-body">
-										<!-- Post Title -->
-										<textarea id="postTitle" name="Title" placeholder="Enter title here"
-										class="w-100 p-2 rounded border" rows="2" required maxlength="100"></textarea>
-
-										<!-- Post Text -->
-										<textarea id="postContent" name="Content" placeholder="What's on your mind?"
-										class="w-100 p-2 rounded border" rows="10" required></textarea>
-
-										<!-- Image Upload -->
-										<div class="mt-3">
-											<label for="postImage" class="form-label">Upload Image</label>
-											<input type="file" class="form-control" id="postImage" name="ImageFile" accept=".jpg, .jpeg, .png">
-										</div>
-
-										<!-- Image Preview -->
-										<div id="imagePreview" class="mt-3 d-none text-center">
-											<img id="previewImg" src="#" class="img-fluid rounded" alt="Image Preview">
-										</div>
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-										<button type="submit" class="btn btn-primary">Post</button>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-				@foreach (var post in Model.Posts)
-				{
-					<div class="mb-4 post-list border-bottom pb-4">
-						<div class="row no-gutters">
-							<div class="col-md-5">
-								<a class="post-thumb" asp-action="Details" asp-controller="Posts" asp-route-id="@post.PostId">
-									<img src="@post.ImageBase64" id="post-image-index" alt="PostImage" class="img-fluid">
-								</a>
-
-							</div>
-
-							<div class="col-md-7">
-								<div class="post-article mt-sm-3">
-									<div class="meta-cat">
-										<a asp-action="Details" asp-controller="Posts" asp-route-id="@post.PostId">
-											<span class="letter-spacing cat-name font-extra text-uppercase font-sm">Post</span>
-										</a>
-									</div>
-
-									<h3 class="post-title mt-2">
-										<a asp-action="Details" asp-controller="Posts" asp-route-id="@post.PostId">@post.Title</a>
-									</h3>
-
-									<div class="post-meta">
-										<ul class="list-inline">
-											<li class="post-like list-inline-item">
-												<span class="font-sm letter-spacing-1 text-uppercase">
-													<i class="ti-time mr-2"></i> @post.CreatedAt
-												</span>
-											</li>
-											<li class="post-view list-inline-item letter-spacing-1">@post.User.Username</li>
-										</ul>
-									</div>
-
-									<div class="post-content">
-										<p>
-											<a asp-action="Details" asp-controller="Posts" asp-route-id="@post.PostId">
-												@(post.Content.Length > 50 ? post.Content[..50] + "..." : post.Content)
-											</a>
-										</p>
-									</div>
-								</div>
-							</div>
-
-						</div>
-					</div>
-				}
-
-				<div class="pagination mt-5 pt-4">
-					<ul class="list-inline">
-					
-						@for (var i = 1; i <= totalPages; i++)
-						{
-							<li class="list-inline-item">
-								<a asp-action="Details" asp-route-id="@Model.ClubId" asp-route-pageNumber="@i"
-								   asp-route-pageSize="@Model.PostSize" class="@(Model.PostNumber == i ? "active" : "")">@i</a>
-							</li>
-						}
-						
-					</ul>
-				</div>
+				
+				@await Html.PartialAsync("~/Views/Posts/Index.cshtml", Model)
+				
 			</div>
 			<div class="col-lg-4 col-md-8 col-sm-12 col-xs-12">
 				<div class="sidebar sidebar-right">
 
-					<div class="text-center my-4">
+					<div class="my-4 text-center">
 						@if (ViewBag.IsMember){
 							<a asp-controller="Events" asp-action="Index" asp-route-clubID="@Model.ClubId" class="btn btn-primary btn-lg">
 								<i class="fas fa-calendar-alt me-2"></i> View Club Events
@@ -325,16 +212,3 @@
 
 
 
-<script>
-	document.getElementById('postImage').addEventListener('change', function(event) {
-		const file = event.target.files[0];
-		if (file) {
-			const reader = new FileReader();
-			reader.onload = function(e) {
-				document.getElementById('previewImg').src = e.target.result;
-				document.getElementById('imagePreview').classList.remove('d-none');
-			};
-			reader.readAsDataURL(file);
-		}
-	});
-</script>
