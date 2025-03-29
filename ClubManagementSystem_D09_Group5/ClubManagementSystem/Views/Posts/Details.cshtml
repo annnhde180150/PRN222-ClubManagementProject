@@ -137,7 +137,7 @@
                     </div>
                 }
                 <div class="comment-area my-5" style="max-height: 500px; overflow-y: auto;">
-                    @* <h3 class="mb-4 sticky-top bg-white p-2 text-center">@Model.Count Comments</h3> *@
+                    <h3 class="mb-4 sticky-top bg-white p-2 text-center">@Model.Comments.Count Comments</h3>
                     <div class="comments-container">
                         @foreach (var comment in Model.Comments)
                         {
