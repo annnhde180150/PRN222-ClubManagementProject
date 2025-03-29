@@ -82,6 +82,35 @@ namespace Services.Implementation
             return await _clubRepository.GetAllClubAsync();
         }
 
-        
+        public async Task<(bool success, string message)> UpdateClubAsync(ClubEditDto clubEditDto)
+        {
+            var clubs = await _clubRepository.GetAllClubAsync();
+            var clubCheck = clubs.FirstOrDefault(m => m.ClubName.Equals(clubEditDto.ClubName) && m.ClubId != clubEditDto.ClubId);
+            if (clubCheck != null)
+            {
+                return (false, "This club name already exist!");
+            }
+            var club = clubs.FirstOrDefault(m => m.ClubId == clubEditDto.ClubId);
+            if(!String.IsNullOrEmpty(clubEditDto.ClubName) && !String.IsNullOrEmpty(clubEditDto.Description))
+            {
+                club.ClubName = clubEditDto.ClubName;
+                club.Description = clubEditDto.Description;
+            }
+            if (clubEditDto.Logo != null)
+            {
+                club.Logo = clubEditDto.Logo;
+            }
+            if (clubEditDto.Cover != null)
+            {
+                club.Cover = clubEditDto.Cover;
+            }
+            await _clubRepository.UpdateClubAsync(club);
+            return (true, "Club update successfully!");
+        }
+
+        public async Task<Club> GetClubByClubIdAsync(int clubId)
+        {
+            return await _clubRepository.GetClubByClubIdAsync(clubId);
+        }
     }
 }
