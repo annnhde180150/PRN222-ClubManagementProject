@@ -68,8 +68,8 @@ namespace Services.Implementation
             {
                 ClubId = club.ClubId,
                 ClubName = club.ClubName,
-                Logo = club.Logo,
-                Cover = club.Cover,
+                LogoBase64 = _imageHelperService.ConvertToBase64(club.Logo, "png"),
+                CoverBase64 = _imageHelperService.ConvertToBase64(club.Cover, "png"),
                 Description = club.Description,
                 ClubMembers = clubMemberDtos,
                 Posts = postDtos,

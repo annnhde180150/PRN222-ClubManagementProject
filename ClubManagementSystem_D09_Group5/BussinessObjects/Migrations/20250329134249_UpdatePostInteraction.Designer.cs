@@ -4,6 +4,7 @@ using BussinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BussinessObjects.Migrations
 {
     [DbContext(typeof(FptclubsContext))]
-    partial class FptclubsContextModelSnapshot : ModelSnapshot
+    [Migration("20250329134249_UpdatePostInteraction")]
+    partial class UpdatePostInteraction
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,12 +59,6 @@ namespace BussinessObjects.Migrations
                         .HasColumnType("varbinary(max)")
                         .HasColumnName("logo");
 
-                    b.Property<bool>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true)
-                        .HasColumnName("status");
-
                     b.HasKey("ClubId")
                         .HasName("PK__Clubs__BCAD3DD9E76837C6");
 
@@ -90,12 +87,6 @@ namespace BussinessObjects.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int")
                         .HasColumnName("role_id");
-
-                    b.Property<bool>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true)
-                        .HasColumnName("status");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int")

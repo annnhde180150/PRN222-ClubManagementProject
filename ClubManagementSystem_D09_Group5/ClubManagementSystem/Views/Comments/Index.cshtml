@@ -39,12 +39,12 @@
                 <form id="edit-form-@Model.CommentId" asp-action="Edit" asp-controller="Comments" method="post" class="d-none">
                     <input type="hidden" asp-for="@Model.CommentId" value="@Model.CommentId" />
                     <input type="hidden" asp-for="@Model.PostId" value="@Model.PostId" />
-                <textarea asp-for="@Model.CommentText" class="form-control mb-2" maxlength="1000"></textarea>
+                    <textarea asp-for="@Model.CommentText" class="form-control mb-2" maxlength="1000"></textarea>
                     <div>
-                    <span asp-validation-for="@Model.CommentText" class="text-danger"></span>
+                        <span asp-validation-for="@Model.CommentText" class="text-danger"></span>
                     </div>
                     <button type="submit" class="btn btn-sm btn-success">Save</button>
-                <button type="button" class="btn btn-sm btn-secondary" onclick="cancelEdit(@Model.CommentId)">Cancel</button>
+                    <button type="button" class="btn btn-sm btn-secondary" onclick="cancelEdit(@Model.CommentId)">Cancel</button>
                 </form>
 
                     

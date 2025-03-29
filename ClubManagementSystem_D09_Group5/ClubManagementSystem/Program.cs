@@ -50,6 +50,7 @@ builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<IClubMemberRepository, ClubMemberRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+builder.Services.AddScoped<IPostReactionRepository, PostReactionRepository>();
 
 
 //Add Services
@@ -66,6 +67,7 @@ builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IClubMemberService, ClubMemberService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<IPostReactionService, PostReactionService>();
 
 //filter
 builder.Services.AddScoped<ClubAuthorization>();
