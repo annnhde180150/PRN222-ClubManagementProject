@@ -32,7 +32,7 @@ namespace ClubManagementSystem.Controllers
         }
 
         // GET: ClubRequests
-        [Authorize]
+        [Authorize(Roles = "SystemAdmin")]
         public async Task<IActionResult> Index()
         {
             int userId;

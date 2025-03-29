@@ -17,5 +17,6 @@ namespace Services.Interface
         Task<Club> GetClubByClubIdAsync(int clubId);
         Task<Club> GetClubAsync(int id);
         Task<(bool success, string message)> DeleteClub(Club club);
+        Task<Club> CheckClubName(string clubName);
     }
 }
