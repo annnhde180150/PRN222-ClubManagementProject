@@ -61,19 +61,8 @@ namespace ClubManagementSystem.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(CommentDto commentDto)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    TempData["Error"] = "Invalid input.";
-            //    return RedirectToAction("Details", "Posts", new { id = commentDto.PostId });
-            //}
 
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
-
-            var comment = await _commentService.GetCommentAsync(commentDto.CommentId);
-            if (comment == null)
-            {
-                return NotFound();
-            }
 
             var success = await _commentService.UpdateCommentAsync(commentDto.CommentId, commentDto.CommentText, userId);
             if (!success)
@@ -97,7 +86,6 @@ namespace ClubManagementSystem.Controllers
                 return NotFound();
             }
             int postId = comment.PostId;
-
 
             var result = await _commentService.DeleteCommentAsync(id, userId);
 
