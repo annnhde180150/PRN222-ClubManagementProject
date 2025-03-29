@@ -102,6 +102,7 @@ namespace ClubManagementSystem.Controllers
                         CreatedAt = DateTime.Now,
                         Status = true
                     };
+                    await _clubService.AddClubAsync(club);
 
                     ClubMember clubMember = new ClubMember
                     {
@@ -110,11 +111,8 @@ namespace ClubManagementSystem.Controllers
                         RoleId = 1,
                         JoinedAt = DateTime.Now,
                         Status = true
-                    };
-
+                    };                                                         
                     await _clubMemberService.AddClubMemberAsync(clubMember);
-
-                    await _clubService.AddClubAsync(club);
                     notification = new Notification
                     {
                         UserId = clubRequest.UserId,
