@@ -78,6 +78,10 @@ public partial class FptclubsContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
+            entity.Property(e => e.Status)
+                .HasDefaultValue(true)
+                .HasColumnType("bit")
+                .HasColumnName("status");
         });
 
 
@@ -106,6 +110,10 @@ public partial class FptclubsContext : DbContext
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__ClubMembe__user___440B1D61");
+            entity.Property(e => e.Status)
+                .HasDefaultValue(true)
+                .HasColumnType("bit")
+                .HasColumnName("status");
         });
 
         modelBuilder.Entity<ClubRequest>(entity =>

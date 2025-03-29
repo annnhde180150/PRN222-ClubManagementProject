@@ -1,4 +1,5 @@
 ﻿using BussinessObjects.Models;
+using Microsoft.EntityFrameworkCore;
 using Repositories.Implementation;
 using Repositories.Interface;
 using Services.Interface;
@@ -19,6 +20,11 @@ namespace Services.Implementation
             _clubMemberRepository = clubMemberRepository;
         }
 
+        public async Task<ClubMember> GetClubMemberByIdAsync(int membershipId)
+        {
+            return await _clubMemberRepository.GetClubMemberByIdAsync(membershipId);
+        }
+
         public async Task<ClubMember> AddClubMemberAsync(ClubMember clubMember)
         {
             return await _clubMemberRepository.AddClubMemberAsync(clubMember);
@@ -33,6 +39,12 @@ namespace Services.Implementation
         {
             var allClubMembers = await _clubMemberRepository.GetClubMembersAsync();
             var clubMembers = allClubMembers.Where(m => m.UserId == id).ToList(); ;
+            return clubMembers;
+        }
+        public async Task<IEnumerable<ClubMember>> GetClubMembersByClubIdAsync(int id)
+        {
+            var allClubMembers = await _clubMemberRepository.GetClubMembersAsync();
+            var clubMembers = allClubMembers.Where(m => m.ClubId == id).ToList(); ;
             return clubMembers;
         }
 
@@ -59,6 +71,12 @@ namespace Services.Implementation
         {
             return (await _clubMemberRepository.GetClubMembersAsync())
                 .Where(m => m.ClubId == clubId);
+        }
+
+        public async Task<(bool success, string message)> UpdateClubMemberAsync(ClubMember clubMember)
+        {
+            await _clubMemberRepository.UpdateClubMemberAsync(clubMember);
+            return (true, "Update successfully!");
         }
     }
 }

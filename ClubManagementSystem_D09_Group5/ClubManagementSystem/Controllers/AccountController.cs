@@ -331,6 +331,11 @@ namespace ClubManagementSystem.Controllers
 
             return false;
         }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
     }
 }
 

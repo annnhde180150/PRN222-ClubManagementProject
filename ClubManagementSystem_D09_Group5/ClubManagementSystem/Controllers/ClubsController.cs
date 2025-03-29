@@ -124,12 +124,12 @@ namespace ClubManagementSystem.Controllers
         }
 
 
-        //[Authorize]
-        //// GET: Clubs/Create
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
+        [Authorize]
+        // GET: Clubs/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
 
         // POST: Clubs/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.

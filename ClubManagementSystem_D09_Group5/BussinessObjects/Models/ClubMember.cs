@@ -19,6 +19,8 @@ public partial class ClubMember
     [Required]
     public int RoleId { get; set; }
 
+    public bool Status { get; set; }  
+
     [DataType(DataType.DateTime)]
     public DateTime? JoinedAt { get; set; }
 

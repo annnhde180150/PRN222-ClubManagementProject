@@ -36,7 +36,9 @@ namespace Repositories.Implementation
 
         public async Task<IEnumerable<Club>> GetAllClubAsync()
         {
-            return await _context.Clubs.ToListAsync();
+            return await _context.Clubs
+                .Where(m => m.Status == true)
+                .ToListAsync();
         }
 
         public async Task<Club> UpdateClubAsync(Club club)

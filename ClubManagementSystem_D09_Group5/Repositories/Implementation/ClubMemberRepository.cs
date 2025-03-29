@@ -17,6 +17,15 @@ namespace Repositories.Implementation
             _context = context;
         }
 
+        public async Task<ClubMember> GetClubMemberByIdAsync(int membershipId)
+        {
+            return await _context.ClubMembers
+                .Include(c => c.Club)
+                .Include(c => c.Role)
+                .Include(c => c.User)
+                .FirstOrDefaultAsync(m => m.MembershipId == membershipId);
+        }
+
         public async Task<ClubMember> AddClubMemberAsync(ClubMember clubMember)
         {
             await _context.ClubMembers.AddAsync(clubMember);
@@ -37,6 +46,8 @@ namespace Repositories.Implementation
                 .Include(m => m.TaskAssignments)
                 .Include(m => m.User)
                 .Include(m => m.Club)
+                .Include(m => m.Role)
+                .Where(m => m.Status == true)
                 .ToListAsync();
         }
 

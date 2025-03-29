@@ -15,6 +15,8 @@ public partial class Club
     public byte[]? Logo { get; set; }
     public byte[]? Cover { get; set; }
 
+    public bool Status { get; set; }
+
     [StringLength(500)]
     public string? Description { get; set; }
 

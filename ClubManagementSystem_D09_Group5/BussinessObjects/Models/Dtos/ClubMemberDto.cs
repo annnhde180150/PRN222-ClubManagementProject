@@ -14,4 +14,12 @@ namespace BussinessObjects.Models.Dtos
 
     }
 
+    public class ClubMeberIndexDto
+    {
+        public int MembershipId { get; set; }
+        public string Username { get; set; } = string.Empty;
+        public string ProfilePictureBase64 { get; set; } = string.Empty;
+        public string Role { get; set; } = string.Empty;
+        public DateTime? JoinedAt { get; set; }
+    }
 }
