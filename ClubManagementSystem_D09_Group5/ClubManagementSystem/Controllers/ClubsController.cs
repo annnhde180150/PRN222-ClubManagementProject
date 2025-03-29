@@ -29,7 +29,7 @@ namespace ClubManagementSystem.Controllers
         private readonly FptclubsContext _context;
 
         private readonly IPostService _postService;
-        public ClubsController(FptclubsContext context , IClubRequestService clubRequestService, IAccountService accountService, IClubService clubService, IPostService postService, IJoinRequestService joinRequestService, IClubMemberService clubMemberService, IImageHelperService imageHelperService)
+        public ClubsController(FptclubsContext context, IClubRequestService clubRequestService, IAccountService accountService, IClubService clubService, IPostService postService, IJoinRequestService joinRequestService, IClubMemberService clubMemberService, IImageHelperService imageHelperService)
         {
             _context = context;
             _clubRequestService = clubRequestService;
@@ -43,11 +43,11 @@ namespace ClubManagementSystem.Controllers
 
         // GET: Clubs
         [Authorize]
-        public async Task<IActionResult> Index(string? searchString ,int? pageNumber)
+        public async Task<IActionResult> Index(string? searchString, int? pageNumber)
         {
-           int pageSize = 5;
-           int currentPage = pageNumber ?? 1;
-           var clubs = await _clubService.GetAllClubsAsync();
+            int pageSize = 5;
+            int currentPage = pageNumber ?? 1;
+            var clubs = await _clubService.GetAllClubsAsync();
             //Check if user search
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -71,7 +71,7 @@ namespace ClubManagementSystem.Controllers
             int pageSize = 5;
             int currentPage = pageNumber ?? 1;
             int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            var clubsMember = await _clubMemberService.GetClubMemberByUserId(userId);           
+            var clubsMember = await _clubMemberService.GetClubMemberByUserId(userId);
             var clubs = clubsMember.Count() > 0 ? clubsMember.Select(m => m.Club).ToList() : new List<Club>();
             //Check if user search
             if (!String.IsNullOrEmpty(searchString))
@@ -123,6 +123,18 @@ namespace ClubManagementSystem.Controllers
             return View(viewModel);
         }
 
+        public async Task<IActionResult> DeleteClub(int? clubId)
+        {
+            if (clubId == 0)
+            {
+                NotFound();
+            }
+            var club = await _clubService.GetClubByClubIdAsync(clubId.Value);
+            club.Status = false;
+            var (success, message) = await _clubService.DeleteClub(club);
+            TempData[success ? "SuccessMessage" : "ErrorMessage"] = message;
+            return RedirectToAction("Index", "Clubs");
+        }
 
         [Authorize]
         // GET: Clubs/Create
@@ -137,7 +149,7 @@ namespace ClubManagementSystem.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(IFormFile logoPicture,string clubName, string description,IFormFile coverPicture)
+        public async Task<IActionResult> Create(IFormFile logoPicture, string clubName, string description, IFormFile coverPicture)
         {
             if ((logoPicture != null && logoPicture.Length > 0) || (coverPicture != null && coverPicture.Length > 0))
             {
@@ -147,7 +159,7 @@ namespace ClubManagementSystem.Controllers
                 using (var logomemoryStream = new MemoryStream())
                 {
                     await logoPicture.CopyToAsync(logomemoryStream);
-                    logoPictureBytes = logomemoryStream.ToArray();                   
+                    logoPictureBytes = logomemoryStream.ToArray();
                 }
                 using (var covermemoryStream = new MemoryStream())
                 {
@@ -170,13 +182,13 @@ namespace ClubManagementSystem.Controllers
                     await _clubRequestService.AddClubRequestAsync(clubRequest);
                     TempData["SuccessMessage"] = "Club created successfully!";
                     return RedirectToAction("Index", "Home");
-                }                                  
+                }
             }
             TempData["ErrorMessage"] = "Please fill logo picture and cover picture!";
             return View();
         }
 
-        [Authorize(Roles =("Admin"))]
+        [Authorize(Roles = ("Admin,SystemAdmin"))]
         public async Task<IActionResult> Edit(int? id)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -184,21 +196,26 @@ namespace ClubManagementSystem.Controllers
             {
                 NotFound();
             }
-            var clubmember = await _clubMemberService.GetClubMemberByUserId(int.Parse(userId));
-            var club = _clubService.GetClubByClubIdAsync(id.Value);
-            var logoPicture = _imageService.ConvertToBase64(club.Result.Logo, "png");
-            var coverPicture = _imageService.ConvertToBase64(club.Result.Cover, "png");
+            //if (User.IsInRole("SystemAdmin"))
+            //{
+
+            //}
+            ////var clubmember = await _clubMemberService.GetClubMemberByUserId(int.Parse(userId));
+            var club = await _clubService.GetClubByClubIdAsync(id.Value);
+            var logoPicture = _imageService.ConvertToBase64(club.Logo, "png");
+            var coverPicture = _imageService.ConvertToBase64(club.Cover, "png");
             var clubView = new ClubEditViewDto
             {
-                ClubId = club.Result.ClubId,
-                ClubName = club.Result.ClubName,
-                Description = club.Result.Description,
+                ClubId = club.ClubId,
+                ClubName = club.ClubName,
+                Description = club.Description,
                 Logo = logoPicture,
                 Cover = coverPicture
             };
             return View(clubView);
         }
 
+        [Authorize(Roles = ("Admin,SystemAdmin"))]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ClubEditViewDto clubViewEditDto)
@@ -225,6 +242,7 @@ namespace ClubManagementSystem.Controllers
             return View(clubView);
         }
 
+        [Authorize(Roles = ("Admin,SystemAdmin"))]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UploadLogoPicture(IFormFile logoPicture, int? clubId)
@@ -257,6 +275,7 @@ namespace ClubManagementSystem.Controllers
             return RedirectToAction("Edit", new { id = clubId });
         }
 
+        [Authorize(Roles = ("Admin,SystemAdmin"))]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UploadCoverPicture(IFormFile coverPicture, int? clubId)
@@ -307,7 +326,7 @@ namespace ClubManagementSystem.Controllers
             return View(club);
         }
 
-        
+
 
         // POST: Clubs/Delete/5
         [HttpPost, ActionName("Delete")]

@@ -87,6 +87,12 @@
                             <a asp-action="Details" asp-route-id="@item.ClubId" class="btn btn-sm btn-info text-white">
                                 Details
                             </a>
+                            @if (User.IsInRole("SystemAdmin"))
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.ClubId" class="btn btn-sm btn-info text-white">
+                                    Edit
+                                </a>
+                            }
                         </td>
                     </tr>
                 }
@@ -107,3 +113,28 @@
 
 <!-- FontAwesome for icons -->
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Popup success and fail -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var successMessage = '@TempData["SuccessMessage"]';
+        if (successMessage) {
+            Swal.fire({
+                title: "Success!",
+                text: successMessage,
+                icon: "success",
+                confirmButtonText: "OK"
+            });
+        }
+        var errorMessage = '@TempData["ErrorMessage"]';
+        if (errorMessage) {
+            Swal.fire({
+                title: "Error!",
+                text: errorMessage,
+                icon: "error",
+                confirmButtonText: "OK"
+            });
+        }
+    });
+</script>

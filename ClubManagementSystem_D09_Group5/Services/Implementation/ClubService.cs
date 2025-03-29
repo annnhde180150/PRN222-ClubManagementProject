@@ -115,6 +115,12 @@ namespace Services.Implementation
             return (true, "Club update successfully!");
         }
 
+        public async Task<(bool success, string message)> DeleteClub(Club club)
+        {
+            await _clubRepository.UpdateClubAsync(club);
+            return (true, "Club delete successfully!");
+        }
+
         public async Task<Club> GetClubByClubIdAsync(int clubId)
         {
             return await _clubRepository.GetClubByClubIdAsync(clubId);

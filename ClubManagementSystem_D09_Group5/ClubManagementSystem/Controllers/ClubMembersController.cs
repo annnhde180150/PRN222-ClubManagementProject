@@ -9,6 +9,7 @@ using BussinessObjects.Models;
 using Microsoft.AspNetCore.Authorization;
 using Services.Interface;
 using BussinessObjects.Models.Dtos;
+using ClubManagementSystem.Controllers.SignalR;
 
 namespace ClubManagementSystem.Controllers
 {
@@ -17,12 +18,14 @@ namespace ClubManagementSystem.Controllers
         private readonly FptclubsContext _context;
         private readonly IClubMemberService _clubMemberService;
         private readonly IImageHelperService _imageService;
+        private readonly SignalRSender _signalRSender;
 
-        public ClubMembersController(FptclubsContext context, IClubMemberService clubMemberService, IImageHelperService imageHelperService)
+        public ClubMembersController(FptclubsContext context, IClubMemberService clubMemberService, IImageHelperService imageHelperService,SignalRSender signalRSender)
         {
             _context = context;
             _clubMemberService = clubMemberService;
             _imageService = imageHelperService;
+            _signalRSender = signalRSender;
         }
 
         [Authorize(Roles ="Admin")]
@@ -54,7 +57,8 @@ namespace ClubManagementSystem.Controllers
             });
             return View(clubmemberView.ToList());
         }
-
+     
+        // Assign role for member
         public async Task<IActionResult> AssignRole(int membershipId, string role)
         {
             if (membershipId == 0)
@@ -82,6 +86,45 @@ namespace ClubManagementSystem.Controllers
             var (success ,message) = await _clubMemberService.UpdateClubMemberAsync(clubMember);
 
             TempData[success ? "SuccessMessage" : "ErrorMessage"] = message;
+            return RedirectToAction("Index", new { clubId = clubMember.ClubId });
+        }
+
+
+        //Kick member
+        [Authorize(Roles = ("Admin,SystemAdmin"))]
+        [HttpPost]
+        public async Task<IActionResult> KickMember(int membershipId, string? reason)
+        {
+            
+            if (membershipId == 0)
+            {
+                NotFound();
+            }
+            Notification notification;
+            var clubMember = await _clubMemberService.GetClubMemberByIdAsync(membershipId);
+            if(clubMember.Role.RoleName.Equals("Admin"))
+            {
+                TempData["ErrorMessage"] = "Can not kick club admin!";
+                return RedirectToAction("Index", new { clubId = clubMember.ClubId });
+            }
+            clubMember.Status = false;
+            var (success, message) = await _clubMemberService.UpdateClubMemberAsync(clubMember);
+            TempData[success ? "SuccessMessage" : "ErrorMessage"] = message;
+            if (success)
+            {
+                if (String.IsNullOrEmpty(reason))
+                {
+                    reason = "";
+                }
+                notification = new Notification
+                {
+                    UserId = clubMember.UserId,
+                    Message = reason,
+                    Location = "you have been kick out by club admin"
+                };
+
+                await _signalRSender.Notify(notification, notification.UserId);
+            }
             return RedirectToAction("Index", new { clubId = clubMember.ClubId });
         }
 
