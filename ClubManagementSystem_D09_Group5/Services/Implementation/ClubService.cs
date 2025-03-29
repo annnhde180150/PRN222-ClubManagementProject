@@ -118,6 +118,8 @@ namespace Services.Implementation
         public async Task<Club> GetClubByClubIdAsync(int clubId)
         {
             return await _clubRepository.GetClubByClubIdAsync(clubId);
+        }
+
         public async Task<Club> GetClubAsync(int id)
         {
             return (await _clubRepository.GetAllClubAsync()).FirstOrDefault(c => c.ClubId == id);
