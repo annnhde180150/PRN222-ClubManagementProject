@@ -18,12 +18,15 @@ namespace Services.Implementation
         private readonly IClubMemberService _clubMemberService;
         private readonly ICommentService _commentService;
         private readonly IImageHelperService _imageHelperService;
-        public PostService(IPostRepository postRepository, IClubMemberService clubMemberService, ICommentService commentService , IImageHelperService imageHelperService)
+        private readonly IPostReactionService _postReactionService;
+        public PostService(IPostRepository postRepository, IClubMemberService clubMemberService, ICommentService commentService , IImageHelperService imageHelperService, IPostReactionService postReactionService)
         {
             _postRepository = postRepository;
             _clubMemberService = clubMemberService;
             _commentService = commentService;
             _imageHelperService = imageHelperService;
+            _postReactionService = postReactionService;
+            _postReactionService = postReactionService;
         }
 
         public async Task<IEnumerable<Post>> GetAllPostsByClubIdAsync(int clubId)
@@ -57,7 +60,7 @@ namespace Services.Implementation
             return await _postRepository.AddAsync(post);
         }
 
-        public async Task<PostDetailsDto?> GetPostDetailsByIdAsync(int postId)
+        public async Task<PostDetailsDto?> GetPostDetailsByIdAsync(int postId, int userId)
         {
             var post = await _postRepository.GetPostByIdAsync(postId);
 
@@ -101,8 +104,8 @@ namespace Services.Implementation
                         Email = c.User.Email,
                         ProfilePictureBase64 = _imageHelperService.ConvertToBase64(c.User.ProfilePicture, "png"),
                     }
-                }).ToList()
-
+                }).ToList(),
+                LikeCount = await _postReactionService.GetLikeCountAsync(post.PostId)
             };
 
             if (viewModel == null)

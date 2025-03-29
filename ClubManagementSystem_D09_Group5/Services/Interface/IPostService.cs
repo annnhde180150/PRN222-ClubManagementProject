@@ -13,7 +13,7 @@ namespace Services.Interface
     {
         Task<Post> CreatePostAsync(Post model, IFormFile? imageFile, int userId, int clubId);
         Task<IEnumerable<Post>> GetAllPostsByClubIdAsync(int clubId);
-        Task<PostDetailsDto?> GetPostDetailsByIdAsync(int postId);
+        Task<PostDetailsDto?> GetPostDetailsByIdAsync(int postId, int userId);
         Task UpdatePostAsync(Post post);
         Task<Post> GetPostByIdAsync(int postId);
         Task DeletePostAsync(int postId);

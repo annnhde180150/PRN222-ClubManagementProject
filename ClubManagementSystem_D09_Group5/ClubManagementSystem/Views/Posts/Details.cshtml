@@ -48,8 +48,13 @@
                             <span class="single-comment-o"><i class="fa fa-comment-o"></i> @Model.Comments.Count comment</span>
 
                             <div class="post-share">
-                                <span class="count-number-like">2</span>
-                                <a class="penci-post-like single-like-button"><i class="ti-heart"></i></a>
+                                <span class="count-number-like" id="like-count-@Model.PostId">
+                                    @Model.LikeCount
+                                </span>
+                                <a class="penci-post-like single-like-button" onclick="toggleLike(@Model.PostId)">
+                                    <i class="ti-heart"></i>
+                                </a>
+
                             </div>
 
 
@@ -107,3 +112,13 @@
 </section>
 
 
+<script>
+    function toggleLike(postId) {
+        fetch(`/PostReactions/ToggleLike?postId=${postId}`, { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById(`like-count-${postId}`).innerText = data.likeCount;
+        })
+        .catch(error => console.error("Error:", error));
+    }
+</script>

@@ -1677,3 +1677,6 @@ footer
     border: 2px solid white; /* Optional: Adds a white border */
     display: none;
 }
+.liked {
+    color: red;
+}

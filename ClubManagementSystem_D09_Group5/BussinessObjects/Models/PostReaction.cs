@@ -15,6 +15,9 @@ public class PostReaction
     [Required]
     public int UserId { get; set; }
 
+    [Required]
+    public bool IsLiked { get; set; }
+
     // Navigation properties
     [ForeignKey("PostId")]
     public virtual Post Post { get; set; } = null!;

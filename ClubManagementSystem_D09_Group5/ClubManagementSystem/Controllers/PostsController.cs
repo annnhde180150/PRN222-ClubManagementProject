@@ -32,12 +32,18 @@ namespace ClubManagementSystem.Controllers
         // GET: Posts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            if (userId == 0)
+            {
+                return Unauthorized();
+            }
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var postDetails = await _postService.GetPostDetailsByIdAsync(id.Value);
+            var postDetails = await _postService.GetPostDetailsByIdAsync(id.Value, userId);
 
             if (postDetails == null)
             {
