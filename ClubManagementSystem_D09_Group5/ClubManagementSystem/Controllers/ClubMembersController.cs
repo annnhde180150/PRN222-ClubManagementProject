@@ -6,23 +6,83 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BussinessObjects.Models;
+using Microsoft.AspNetCore.Authorization;
+using Services.Interface;
+using BussinessObjects.Models.Dtos;
 
 namespace ClubManagementSystem.Controllers
 {
     public class ClubMembersController : Controller
     {
         private readonly FptclubsContext _context;
+        private readonly IClubMemberService _clubMemberService;
+        private readonly IImageHelperService _imageService;
 
-        public ClubMembersController(FptclubsContext context)
+        public ClubMembersController(FptclubsContext context, IClubMemberService clubMemberService, IImageHelperService imageHelperService)
         {
             _context = context;
+            _clubMemberService = clubMemberService;
+            _imageService = imageHelperService;
         }
 
+        [Authorize(Roles ="Admin")]
         // GET: ClubMembers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int clubId)
         {
-            var fptclubsContext = _context.ClubMembers.Include(c => c.Club).Include(c => c.Role).Include(c => c.User);
-            return View(await fptclubsContext.ToListAsync());
+            if (clubId == 0)
+            {
+                NotFound();
+            }
+            var clubMembers = await _clubMemberService.GetClubMembersByClubIdAsync(clubId);
+
+            var clubmemberView = clubMembers.Select(member =>
+            {
+                string profilePictureString = "";
+                if (member.User.ProfilePicture != null)
+                {
+                    profilePictureString = _imageService.ConvertToBase64(member.User.ProfilePicture, "png");
+                }
+
+                return new ClubMeberIndexDto
+                {
+                    MembershipId = member.MembershipId,
+                    Username = member.User.Username,
+                    ProfilePictureBase64 = profilePictureString,
+                    Role = member.Role.RoleName,
+                    JoinedAt = member.JoinedAt
+                };
+            });
+            return View(clubmemberView.ToList());
+        }
+
+        public async Task<IActionResult> AssignRole(int membershipId, string role)
+        {
+            if (membershipId == 0)
+            {
+                NotFound();
+            }
+            var clubMember = await _clubMemberService.GetClubMemberByIdAsync(membershipId);
+            int roleCheck = 0;
+            //Check role Admin
+            if (role.Equals("Admin"))
+            {
+                roleCheck = 1;
+            }
+            //Check role Morderator
+            if (role.Equals("Morderator"))
+            {
+                roleCheck = 2;
+            }
+            //Check role Member
+            if (role.Equals("Member"))
+            {
+                roleCheck = 3;
+            }
+            clubMember.RoleId = roleCheck;
+            var (success ,message) = await _clubMemberService.UpdateClubMemberAsync(clubMember);
+
+            TempData[success ? "SuccessMessage" : "ErrorMessage"] = message;
+            return RedirectToAction("Index", new { clubId = clubMember.ClubId });
         }
 
         // GET: ClubMembers/Details/5
