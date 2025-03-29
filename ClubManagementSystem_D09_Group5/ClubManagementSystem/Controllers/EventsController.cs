@@ -9,6 +9,9 @@ using BussinessObjects.Models;
 using Services.Interface;
 using ClubManagementSystem.Controllers.Common;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Services.Implementation;
+using ClubManagementSystem.Controllers.SignalR;
 
 namespace ClubManagementSystem.Controllers
 {
@@ -18,13 +21,19 @@ namespace ClubManagementSystem.Controllers
         //delete context when finish CRUD
         private readonly FptclubsContext _context;
         private readonly IEventService _eventService;
+        private readonly IClubMemberService _clubMemberService;
+        private readonly IClubService _clubService;
         private readonly Week _week;
+        private readonly SignalRSender _signalRSender;
 
-        public EventsController(FptclubsContext context, IEventService eventService, Week week)
+        public EventsController(FptclubsContext context, IEventService eventService, Week week, IClubMemberService clubMemberService, SignalRSender signalRSender, IClubService clubService)
         {
             _context = context;
             _eventService = eventService;
             _week = week;
+            _clubMemberService = clubMemberService;
+            _signalRSender = signalRSender;
+            _clubService = clubService;
         }
 
 
@@ -34,7 +43,7 @@ namespace ClubManagementSystem.Controllers
         //       Noon     |
         //       Afternoon|
         //       Evening  |
-        public async Task<IActionResult> Index(int? week, int? clubID)
+        public async Task<IActionResult> Index(int? week, int? clubID, string? error)
         {
             if(clubID == null) return RedirectToAction("Index","Clubs");
 
@@ -69,6 +78,7 @@ namespace ClubManagementSystem.Controllers
                 events[slot][day] = ev;
             }
 
+            ViewBag.Error = error ?? null;
             ViewBag.DaysOfWeek = days;
             ViewBag.WeekDays = weekDays;
             ViewBag.WeekDropdown = selectList;
@@ -84,29 +94,36 @@ namespace ClubManagementSystem.Controllers
             return View(currentEvent);
         }
 
-        ////GET: Events/Create
-        //public IActionResult Create()
-        //{
-        //    ViewData["CreatedBy"] = new SelectList(_context.ClubMembers, "MembershipId", "MembershipId");
-        //    return View();
-        //}
+        //GET: Events/Create
+        public IActionResult Create(string? error, int id)
+        {
+            ViewBag.ClubID = id;
+            if (error != null) ViewBag.Error = error;
+            return View();
+        }
 
-        //// POST: Events/Create
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("EventId,CreatedBy,EventTitle,EventDescription,EventDate,CreatedAt")] Event @event)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(@event);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["CreatedBy"] = new SelectList(_context.ClubMembers, "MembershipId", "MembershipId", @event.CreatedBy);
-        //    return View(@event);
-        //}
+        // POST: Events/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(int clubID, [Bind("EventTitle,EventDescription,EventDate")] Event @event)
+        {
+            @event.CreatedAt = DateTime.Now;
+            //wrong created by
+            var clubMem = await _clubMemberService.GetClubMemberAsync(clubID, Int32.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value));
+            @event.CreatedBy = clubMem.MembershipId;
+            @event.Status = "Not Yet";
+            var isOccupied = await _eventService.isOccupied(@event.EventDate, clubID);
+
+            if (!isOccupied)
+            {
+                await _eventService.AddEventAsync(@event);
+                await notifyAllMember(clubID);
+                return RedirectToAction("Index", "Events", new { clubID = clubID });
+            }
+            return RedirectToAction("Index", "Events", new { clubID = clubID , error = "Cannot Create Due to Occupied Event slot!"});
+        }
 
         // GET: Events/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -128,6 +145,7 @@ namespace ClubManagementSystem.Controllers
             currentEvent.EventTitle = @event.EventTitle;
             currentEvent.EventDescription = @event.EventDescription;
             await _eventService.UpdateEventAsync(currentEvent);
+            await notifyAllMember(currentEvent.CreatedByNavigation.ClubId);
             return RedirectToAction("Index", "Events", new { clubID = currentEvent.CreatedByNavigation.ClubId });
         }
 
@@ -149,12 +167,24 @@ namespace ClubManagementSystem.Controllers
                 @event.Status = "Cancelled";
                 await _eventService.UpdateEventAsync(@event);
             }
+            await notifyAllMember(@event.CreatedByNavigation.ClubId);
             return RedirectToAction("Index","Events", new { clubID = @event.CreatedByNavigation.ClubId });
         }
 
-        //private bool EventExists(int id)
-        //{
-        //    return _context.Events.Any(e => e.EventId == id);
-        //}
+        public async Task notifyAllMember(int clubID)
+        {
+            var clubName = (await _clubService.GetClubAsync(clubID)).ClubName;
+            var members = await _clubMemberService.GetClubMembersAsync(clubID);
+            foreach (var member in members)
+            {
+                Notification newNoti = new Notification()
+                {
+                    UserId = member.UserId,
+                    Message = $"There is a new adjust in Club {clubName} Event Schedule",
+                    Location = $"{clubName} Events"
+                };
+                await _signalRSender.Notify(newNoti,member.UserId);
+            }
+        }
     }
 }

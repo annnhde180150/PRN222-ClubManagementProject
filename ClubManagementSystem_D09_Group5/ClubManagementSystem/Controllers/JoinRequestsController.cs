@@ -9,6 +9,7 @@ using BussinessObjects.Models;
 using Services.Interface;
 using Microsoft.AspNetCore.Authorization;
 using ClubManagementSystem.Controllers.SignalR;
+using System.Security.Claims;
 
 namespace ClubManagementSystem.Controllers
 {
@@ -39,7 +40,7 @@ namespace ClubManagementSystem.Controllers
         public async Task<IActionResult> Update(int? id, string? status)
         {
             var request = await _joinRequestService.GetJoinRequestAsync(id.Value);
-            var role = await _roleService.GetRoleAsync("Member");
+            var role = await _roleService.GetRoleAsync("ClubMember");
             request.Status = status;
             if (status.Equals("Approved"))
             {
@@ -50,17 +51,33 @@ namespace ClubManagementSystem.Controllers
                     RoleId = role.RoleId,
                     JoinedAt = DateTime.Now
                 };
-                _clubMemberService.AddClubMemberAsync(newMember);
+                await _clubMemberService.AddClubMemberAsync(newMember);
                 Notification noti = new Notification()
                 {
                     UserId = request.UserId,
                     Message = $"Your Join Request is {status} for your recent Join Club Request",
                     Location = "Join Request"
                 };
-                _sender.Notify(noti, noti.UserId);
+                await _sender.Notify(noti, noti.UserId);
             }
             await _joinRequestService.UpdateJoinRequestAsync(request);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { clubID = request.ClubId });
+        }
+
+        public async Task<IActionResult> Create(int? clubID)
+        {
+            var userID = Int32.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            if (await _joinRequestService.isRequested(clubID.Value, userID))
+            {
+                var newJoin = new JoinRequest()
+                {
+                    UserId = userID,
+                    ClubId = clubID.Value,
+                    CreatedAt = DateTime.Now
+                };
+                await _joinRequestService.AddJoinRequestAsync(newJoin);
+            }
+            return RedirectToAction("Index","Clubs");
         }
 
         //    // GET: JoinRequests/Details/5

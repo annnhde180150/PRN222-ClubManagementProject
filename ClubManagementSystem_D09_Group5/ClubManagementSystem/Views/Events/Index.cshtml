@@ -21,6 +21,9 @@
         </select>
         <input type="hidden" value="@clubID" name="clubID" />
     </form>
+
+    <!-- Create Event Button -->
+    <button class="btn btn-success" onclick="loadCreateModal()">➕ Create Event</button>
 </div>
 
 <!-- Event Table -->
@@ -135,6 +138,21 @@
     </div>
 </div>
 
+<!-- Create Event Modal -->
+<div class="modal fade" id="createEventModal" tabindex="-1" aria-labelledby="createEventModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body" id="createEventContent">
+                <div class="text-center">
+                    <div class="spinner-border text-success" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     function loadEventDetails(eventId) {
         var modalBody = document.getElementById("eventDetailsContent");
@@ -186,7 +204,7 @@
             });
     }
 
-    function setMinDateTime() {
+        function setMinDateTime() {
             const now = new Date();
             now.setMinutes(now.getMinutes() - now.getTimezoneOffset()); // Adjust for timezone
 
@@ -205,9 +223,33 @@
             });
         }
 
+        function loadCreateModal() {
+        var modalBody = document.getElementById("createEventContent");
+        modalBody.innerHTML = '<div class="text-center"><div class="spinner-border text-success" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+
+        fetch(`/Events/Create?id=@clubID`)
+            .then(response => response.text())
+            .then(html => {
+                modalBody.innerHTML = html;
+                new bootstrap.Modal(document.getElementById("createEventModal")).show();
+            })
+            .catch(error => {
+                modalBody.innerHTML = '<p class="text-danger">Failed to load create form.</p>';
+            });
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
         $('editEventModal').on('shown.bs.modal', function () {
             setMinDateTime();
         });
     });
+
+    function showError() {
+        var errorMessage = "@(ViewBag.Error != null ? ViewBag.Error.Replace("\"", "\\\"") : "")";
+        if (errorMessage) {
+            alert(errorMessage);
+        }
+    }
+
+    showError();
 </script>

@@ -23,7 +23,7 @@ function LoadNotificationsIcon(){
 function LoadNotifications(noti) {
     var newNoti = `<div id="gridRow-${noti.notificationId}" class="row py-3 border-bottom notification-item unread-notification"">
                         <div class="col-1 d-flex align-items-center justify-content-center">
-                            <input type="checkbox" class="form-check-input" value="${noti.isRead}" checked disabled>
+                            <input type="checkbox" class="form-check-input" value="${noti.isRead}" disabled>
                         </div>
                         <div class="col-3 text-center d-flex align-items-center"><span>${noti.createdAt}</span></div>
                         <div class="col-3 d-flex align-items-center"><span>${noti.location}</span></div>

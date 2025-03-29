@@ -38,7 +38,7 @@ namespace Repositories.Implementation
 
         public async Task<IEnumerable<Notification>> GetNotificationsAsync(int userId)
         {
-            return await _context.Notifications.Where(n => n.UserId == userId).ToListAsync();
+            return await _context.Notifications.Where(n => n.UserId == userId).OrderByDescending(n => n.CreatedAt).ToListAsync();
         }
 
         public async Task<Boolean> UpdateNotificationAsync(Notification notification)

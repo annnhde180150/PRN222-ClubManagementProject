@@ -59,5 +59,26 @@ namespace Services.Implementation
             }
             return false;
         }
+
+        public async Task<bool> isOccupied(DateTime EventDate,int clubID)
+        {
+            var slotTime = TimeSpan.FromHours(23).Add(TimeSpan.FromMinutes(59)).Add(TimeSpan.FromSeconds(59));
+            if (EventDate.TimeOfDay < TimeSpan.FromHours(11)) slotTime = TimeSpan.FromHours(11);
+            else if (EventDate.TimeOfDay < TimeSpan.FromHours(14)) slotTime = TimeSpan.FromHours(14);
+            else if (EventDate.TimeOfDay < TimeSpan.FromHours(17)) slotTime = TimeSpan.FromHours(17);
+
+            var @event = (await GetEventsAsync(clubID))
+                .Where(e => e.Status != "Cancelled")
+                .Where(e => e.EventDate.Date == EventDate.Date && EventDate.TimeOfDay < slotTime);
+            return @event.Any();
+        }
+
+        public async Task<Event> GetIncomingEvent()
+        {
+            return (await _eventRepository.GetEventsAsync())
+                .Where(e => e.EventDate > DateTime.Now)
+                .OrderBy(e => e.EventDate)
+                .FirstOrDefault();
+        }
     }
 }

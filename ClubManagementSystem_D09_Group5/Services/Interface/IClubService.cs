@@ -15,5 +15,6 @@ namespace Services.Interface
         Task<ClubDetailsViewDto> GetClubDetailsAsync(int clubId, int postNumber, int postSize);
         Task<(bool success, string message)> UpdateClubAsync(ClubEditDto clubEditDto);
         Task<Club> GetClubByClubIdAsync(int clubId);
+        Task<Club> GetClubAsync(int id);
     }
 }

@@ -32,7 +32,7 @@ namespace Services.Implementation
         public async Task<IEnumerable<ClubMember>> GetClubMemberByUserId(int id)
         {
             var allClubMembers = await _clubMemberRepository.GetClubMembersAsync();
-            var clubMembers =  allClubMembers.Where(m => m.UserId == id).ToList(); ;
+            var clubMembers = allClubMembers.Where(m => m.UserId == id).ToList(); ;
             return clubMembers;
         }
 
@@ -40,6 +40,24 @@ namespace Services.Implementation
         {
             var clubMember = await _clubMemberRepository.GetClubMemberAsync(userId, clubId);
             return clubMember != null;
+        public async Task<ClubMember> GetClubMemberAsync(int clubID, int userId)
+        {
+            return (await _clubMemberRepository.GetClubMembersAsync())
+                .Where(m => m.ClubId == clubID && m.UserId == userId)
+                .FirstOrDefault();
+        }
+
+        public async Task<bool> IsClubMember(int clubID, int userId)
+        {
+            return (await _clubMemberRepository.GetClubMembersAsync())
+                .Where(m => m.ClubId == clubID && m.UserId == userId)
+                .FirstOrDefault() != null;
+        }
+
+        public async Task<IEnumerable<ClubMember>> GetClubMembersAsync(int clubId)
+        {
+            return (await _clubMemberRepository.GetClubMembersAsync())
+                .Where(m => m.ClubId == clubId);
         }
     }
 }
