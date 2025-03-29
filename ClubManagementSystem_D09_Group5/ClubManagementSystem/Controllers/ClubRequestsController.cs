@@ -97,7 +97,18 @@ namespace ClubManagementSystem.Controllers
                         Logo = clubRequest.Logo,
                         Cover = clubRequest.Cover,
                         CreatedAt = DateTime.Now,
+                        Status = true
                     };
+
+                    ClubMember clubMember = new ClubMember
+                    {
+                        ClubId = club.ClubId,
+                        UserId = clubRequest.UserId,
+                        RoleId = 1,
+                        JoinedAt = DateTime.Now,
+                        Status = true
+                    };
+
                     await _clubService.AddClubAsync(club);
                     notification = new Notification
                     {
