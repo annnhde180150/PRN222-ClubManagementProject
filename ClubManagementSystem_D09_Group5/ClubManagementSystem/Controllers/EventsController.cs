@@ -11,6 +11,7 @@ using ClubManagementSystem.Controllers.Common;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Services.Implementation;
+using ClubManagementSystem.Controllers.SignalR;
 
 namespace ClubManagementSystem.Controllers
 {
@@ -21,14 +22,18 @@ namespace ClubManagementSystem.Controllers
         private readonly FptclubsContext _context;
         private readonly IEventService _eventService;
         private readonly IClubMemberService _clubMemberService;
+        private readonly IClubService _clubService;
         private readonly Week _week;
+        private readonly SignalRSender _signalRSender;
 
-        public EventsController(FptclubsContext context, IEventService eventService, Week week, IClubMemberService clubMemberService)
+        public EventsController(FptclubsContext context, IEventService eventService, Week week, IClubMemberService clubMemberService, SignalRSender signalRSender, IClubService clubService)
         {
             _context = context;
             _eventService = eventService;
             _week = week;
             _clubMemberService = clubMemberService;
+            _signalRSender = signalRSender;
+            _clubService = clubService;
         }
 
 
@@ -114,8 +119,9 @@ namespace ClubManagementSystem.Controllers
             if (!isOccupied)
             {
                 await _eventService.AddEventAsync(@event);
+                await notifyAllMember(clubID);
+                return RedirectToAction("Index", "Events", new { clubID = clubID });
             }
-
             return RedirectToAction("Index", "Events", new { clubID = clubID , error = "Cannot Create Due to Occupied Event slot!"});
         }
 
@@ -139,6 +145,7 @@ namespace ClubManagementSystem.Controllers
             currentEvent.EventTitle = @event.EventTitle;
             currentEvent.EventDescription = @event.EventDescription;
             await _eventService.UpdateEventAsync(currentEvent);
+            await notifyAllMember(currentEvent.CreatedByNavigation.ClubId);
             return RedirectToAction("Index", "Events", new { clubID = currentEvent.CreatedByNavigation.ClubId });
         }
 
@@ -160,7 +167,24 @@ namespace ClubManagementSystem.Controllers
                 @event.Status = "Cancelled";
                 await _eventService.UpdateEventAsync(@event);
             }
+            await notifyAllMember(@event.CreatedByNavigation.ClubId);
             return RedirectToAction("Index","Events", new { clubID = @event.CreatedByNavigation.ClubId });
+        }
+
+        public async Task notifyAllMember(int clubID)
+        {
+            var clubName = (await _clubService.GetClubAsync(clubID)).ClubName;
+            var members = await _clubMemberService.GetClubMembersAsync(clubID);
+            foreach (var member in members)
+            {
+                Notification newNoti = new Notification()
+                {
+                    UserId = member.UserId,
+                    Message = $"There is a new adjust in Club {clubName} Event Schedule",
+                    Location = $"{clubName} Events"
+                };
+                await _signalRSender.Notify(newNoti,member.UserId);
+            }
         }
     }
 }

@@ -68,7 +68,6 @@ namespace Services.Implementation
             else if (EventDate.TimeOfDay < TimeSpan.FromHours(17)) slotTime = TimeSpan.FromHours(17);
 
             var @event = (await GetEventsAsync(clubID))
-                .AsParallel()
                 .Where(e => e.Status != "Cancelled")
                 .Where(e => e.EventDate.Date == EventDate.Date && EventDate.TimeOfDay < slotTime);
             return @event.Any();

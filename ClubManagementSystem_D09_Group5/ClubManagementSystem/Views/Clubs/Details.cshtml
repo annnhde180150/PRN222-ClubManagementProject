@@ -230,9 +230,15 @@
 				<div class="sidebar sidebar-right">
 
 					<div class="text-center my-4">
-						<a asp-controller="Events" asp-action="Index" asp-route-clubID="@Model.ClubId" class="btn btn-primary btn-lg">
-							<i class="fas fa-calendar-alt me-2"></i> View Club Events
-						</a>
+						@if (ViewBag.IsMember){
+							<a asp-controller="Events" asp-action="Index" asp-route-clubID="@Model.ClubId" class="btn btn-primary btn-lg">
+								<i class="fas fa-calendar-alt me-2"></i> View Club Events
+							</a>
+						}else{
+							<a asp-controller="JoinRequests" asp-action="Create" asp-route-clubID="@Model.ClubId" class="btn btn-primary btn-lg">
+								<i class="fas fa-calendar-alt me-2"></i> Join
+							</a>
+						}
 					</div>
 
 					<div class="sidebar-wrap mt-5 mt-lg-0">

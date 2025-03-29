@@ -82,6 +82,9 @@ namespace Services.Implementation
             return await _clubRepository.GetAllClubAsync();
         }
 
-        
+        public async Task<Club> GetClubAsync(int id)
+        {
+            return (await _clubRepository.GetAllClubAsync()).FirstOrDefault(c => c.ClubId == id);
+        }
     }
 }

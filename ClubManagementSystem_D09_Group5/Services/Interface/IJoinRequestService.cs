@@ -13,5 +13,6 @@ namespace Services.Interface
         Task<JoinRequest> AddJoinRequestAsync(JoinRequest joinRequest);
         Task<JoinRequest> GetJoinRequestAsync(int id);
         Task<bool> UpdateJoinRequestAsync(JoinRequest joinRequest);
+        Task<bool> isRequested(int ClubID, int userID);
     }
 }

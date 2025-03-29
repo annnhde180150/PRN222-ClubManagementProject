@@ -13,5 +13,7 @@ namespace Services.Interface
         Task<ClubMember> GetClubMemberById(int id);
         Task<IEnumerable<ClubMember>> GetClubMemberByUserId(int id);
         Task<ClubMember> GetClubMemberAsync(int clubID, int userId);
+        Task<bool> IsClubMember(int clubID, int userId);
+        Task<IEnumerable<ClubMember>> GetClubMembersAsync(int clubId);
     }
 }

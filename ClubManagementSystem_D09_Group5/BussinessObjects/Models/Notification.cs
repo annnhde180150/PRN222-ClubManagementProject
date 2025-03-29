@@ -22,7 +22,7 @@ public partial class Notification
     public string? Location { get; set; }
 
     [DataType(DataType.DateTime)]
-    public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime? CreatedAt { get; set; } = DateTime.Now;
 
     [ForeignKey("UserId")]
     [JsonIgnore]

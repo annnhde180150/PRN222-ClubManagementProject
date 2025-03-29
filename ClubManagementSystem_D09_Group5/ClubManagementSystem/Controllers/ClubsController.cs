@@ -102,6 +102,7 @@ namespace ClubManagementSystem.Controllers
         {
             int postSize = 5;
             int currentPage = pageNumber ?? 1;
+            var userID = Int32.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
             if (id == null)
             {
@@ -114,6 +115,8 @@ namespace ClubManagementSystem.Controllers
             {
                 return NotFound();
             }
+
+            ViewBag.IsMember = await _clubMemberService.IsClubMember(id.Value, userID);
 
             return View(viewModel);
         }

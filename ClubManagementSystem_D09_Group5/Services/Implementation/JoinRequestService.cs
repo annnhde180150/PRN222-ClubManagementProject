@@ -30,12 +30,20 @@ namespace Services.Implementation
 
         public async Task<IEnumerable<JoinRequest>> GetJoinRequestsAsync(int ClubID)
         {
-            return (await _joinRequestRepository.GetJoinRequestsAsync()).Where(j => j.ClubId == ClubID);
+            return (await _joinRequestRepository.GetJoinRequestsAsync()).Where(j => j.ClubId == ClubID).Where(j => j.Status == "Pending");
         }
 
         public Task<bool> UpdateJoinRequestAsync(JoinRequest joinRequest)
         {
             return _joinRequestRepository.UpdateJoinRequestAsync(joinRequest);
+        }
+
+        public async Task<bool> isRequested(int ClubID, int userID)
+        {
+            return (await _joinRequestRepository.GetJoinRequestsAsync())
+                .Where(j => j.ClubId == ClubID && j.UserId == userID)
+                .Where(j => j.Status == "Pending")
+                .Any();
         }
     }
 }
