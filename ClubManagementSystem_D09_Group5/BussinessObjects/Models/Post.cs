@@ -29,7 +29,7 @@ public partial class Post
     public string? Status { get; set; }
 
     [ForeignKey("CreatedBy")]
-    public virtual ClubMember CreatedByNavigation { get; set; } = null!;
+    public virtual ClubMember ClubMember { get; set; } = null!;
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 

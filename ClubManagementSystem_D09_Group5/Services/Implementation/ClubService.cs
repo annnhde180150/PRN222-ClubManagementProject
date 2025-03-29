@@ -39,8 +39,8 @@ namespace Services.Implementation
                 .ToList();
 
             var postsQuery = club.ClubMembers
-        .SelectMany(member => member.Posts)
-        .OrderByDescending(post => post.CreatedAt); // Order by newest posts
+                .SelectMany(member => member.Posts)
+                .OrderByDescending(post => post.CreatedAt); 
 
             var totalPosts = postsQuery.Count();
             var posts = postsQuery.Skip((postNumber - 1) * postSize).Take(postSize).ToList();
@@ -53,9 +53,16 @@ namespace Services.Implementation
                 ImageBase64 = _imageHelperService.ConvertToBase64(post.Image, "png"),
                 CreatedAt = post.CreatedAt,
                 Status = post.Status,
-                CreatedByUsername = post.CreatedByNavigation.User.Username
-               
+
+                User = new UserDto
+                {
+                    UserId = post.ClubMember.User.UserId,
+                    Username = post.ClubMember.User.Username,
+                    Email = post.ClubMember.User.Email
+                }
+              
             }).ToList();
+
 
             return new ClubDetailsViewDto
             {

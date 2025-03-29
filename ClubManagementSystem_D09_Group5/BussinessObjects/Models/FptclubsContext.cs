@@ -215,7 +215,7 @@ public partial class FptclubsContext : DbContext
                 .HasMaxLength(50)
                 .HasDefaultValue("Pending")
                 .HasColumnName("status");
-            entity.HasOne(d => d.CreatedByNavigation)
+            entity.HasOne(d => d.ClubMember)
                 .WithMany(p => p.Posts)
                 .HasForeignKey(d => d.CreatedBy)
                 .OnDelete(DeleteBehavior.ClientSetNull)

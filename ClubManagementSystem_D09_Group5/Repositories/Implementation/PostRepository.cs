@@ -19,27 +19,27 @@ namespace Repositories.Implementation
         }
         public async Task<Post> AddAsync(Post post)
         {
-            _context.Posts.Add(post);
+            await _context.Posts.AddAsync(post);
             await _context.SaveChangesAsync();
             return post;
         }
         public async Task<IEnumerable<Post>> GetAllPostByClubIdAsync(int clubId)
         {
-            return await _context.Posts.Where(p => p.CreatedByNavigation.ClubId == clubId).ToListAsync();
+            return await _context.Posts.Where(p => p.ClubMember.ClubId == clubId).ToListAsync();
         }
 
         public async Task<Post> GetPostByIdAsync(int postId)
         {
             return await _context.Posts
-                        .Include(p => p.CreatedByNavigation.User)
-                        .Include(p => p.CreatedByNavigation.Club)
+                        .Include(p => p.ClubMember.User)
+                        .Include(p => p.ClubMember.Club)
                         .FirstOrDefaultAsync(p => p.PostId == postId);
         }
 
         public async Task<IEnumerable<Post>> GetRelatedPostsAsync(int clubId, int excludePostId, int count)
         {
             return await _context.Posts
-                .Where(p => p.CreatedByNavigation.Club.ClubId == clubId && p.PostId != excludePostId)
+                .Where(p => p.ClubMember.Club.ClubId == clubId && p.PostId != excludePostId)
                 .OrderByDescending(p => p.CreatedAt)
                 .Take(count)
                 .ToListAsync();

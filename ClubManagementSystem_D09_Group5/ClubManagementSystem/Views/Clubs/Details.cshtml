@@ -113,7 +113,7 @@
 
 				<!-- Post -->
 				<div class="p-4 mb-5 shadow">
-					<div class="align-items-center flex">
+					<div class="align-items-center d-flex">
 
 						<img src="@sessionPicture" alt="Profile" class="w-5 h-5 rounded-circle"> 
 						<!-- Clickable Textarea (Triggers Modal) -->
@@ -194,7 +194,7 @@
 													<i class="ti-time mr-2"></i> @post.CreatedAt
 												</span>
 											</li>
-											<li class="post-view list-inline-item letter-spacing-1">@post.CreatedByUsername</li>
+											<li class="post-view list-inline-item letter-spacing-1">@post.User.Username</li>
 										</ul>
 									</div>
 
