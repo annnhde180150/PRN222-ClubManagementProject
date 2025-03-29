@@ -35,5 +35,12 @@ namespace Services.Implementation
             var clubMembers =  allClubMembers.Where(m => m.UserId == id).ToList(); ;
             return clubMembers;
         }
+
+        public async Task<ClubMember> GetClubMemberAsync(int clubID, int userId)
+        {
+            return (await _clubMemberRepository.GetClubMembersAsync())
+                .Where(m => m.ClubId == clubID && m.UserId == userId)
+                .FirstOrDefault();
+        }
     }
 }
