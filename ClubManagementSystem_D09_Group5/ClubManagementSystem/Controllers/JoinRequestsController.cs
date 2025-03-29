@@ -67,7 +67,7 @@ namespace ClubManagementSystem.Controllers
         public async Task<IActionResult> Create(int? clubID)
         {
             var userID = Int32.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            if (await _joinRequestService.isRequested(clubID.Value, userID))
+            if (!(await _joinRequestService.isRequested(clubID.Value, userID)))
             {
                 var newJoin = new JoinRequest()
                 {

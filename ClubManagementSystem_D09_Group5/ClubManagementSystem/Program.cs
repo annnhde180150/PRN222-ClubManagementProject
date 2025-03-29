@@ -1,6 +1,7 @@
 using System;
 using BussinessObjects.Models;
 using ClubManagementSystem.Controllers.Common;
+using ClubManagementSystem.Controllers.Filter;
 using ClubManagementSystem.Controllers.SignalR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -65,6 +66,9 @@ builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IClubMemberService, ClubMemberService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
+
+//filter
+builder.Services.AddScoped<ClubAuthorization>();
 
 //signalR
 builder.Services.AddSignalR();
