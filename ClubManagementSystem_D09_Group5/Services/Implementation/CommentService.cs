@@ -38,16 +38,31 @@ namespace Services.Implementation
             return await _commentRepository.AddCommentAsync(comment);
         }
 
-        public async Task<Comment> UpdateCommentAsync(Comment comment)
+        public async Task<bool> UpdateCommentAsync(int commentId, string newText, int userId)
         {
-            return await _commentRepository.UpdateCommentAsync(comment);
+            var comment = await _commentRepository.GetCommentAsync(commentId);
+            if (comment == null || comment.UserId != userId)
+            {
+                return false; 
+            }
+
+            comment.CommentText = newText;
+            comment.CreatedAt = DateTime.Now; 
+            await _commentRepository.UpdateCommentAsync(comment);
+            return true;
         }
 
-        public async Task DeleteCommentAsync(int id)
+        public async Task<bool> DeleteCommentAsync(int commentId, int userId)
         {
-            await _commentRepository.DeleteCommentAsync(id);
-        }
+            var comment = await _commentRepository.GetCommentAsync(commentId);
+            if (comment == null || comment.UserId != userId)
+            {
+                return false; 
+            }
 
+            await _commentRepository.DeleteCommentAsync(commentId);
+            return true;
+        }
 
         public async Task<IEnumerable<CommentDto>> GetCommentsByPostIdAsync(int postId)
         {

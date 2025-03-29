@@ -1,41 +1,17 @@
-﻿@model BussinessObjects.Models.Comment
+﻿@model BussinessObjects.Models.Dtos.CommentDto
 
-@{
-    ViewData["Title"] = "Create";
-}
+<form asp-action="Create" asp-controller="Comments" class="comment-form mb-5 gray-bg p-5" id="comment-form">
+    <h3 class="mb-4 text-center">Leave a comment</h3>
+    <div class="row">
+        <div class="col-lg-12">
+            <textarea asp-for="CommentText"
+                      class="form-control mb-3"
+                      cols="30" rows="5"
+                      placeholder="Write your comment here..."></textarea>
+            <span asp-validation-for="CommentText" class="text-danger"></span>
 
-<h1>Create</h1>
-
-<h4>Comment</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="PostId" class="control-label"></label>
-                <select asp-for="PostId" class ="form-control" asp-items="ViewBag.PostId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="CommentText" class="control-label"></label>
-                <input asp-for="CommentText" class="form-control" />
-                <span asp-validation-for="CommentText" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+            <input type="hidden" asp-for="PostId" />
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    <input class="btn btn-primary" type="submit" value="Submit Comment">
+</form>
