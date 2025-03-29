@@ -3,8 +3,9 @@
 	var totalPages = Math.Ceiling((double)Model.TotalPosts / Model.PostSize);
 }
 <!-- Post -->
-@await Html.PartialAsync("~/Views/Posts/Create.cshtml", Model)
-
+@if (ViewBag.IsMember){
+	@await Html.PartialAsync("~/Views/Posts/Create.cshtml", Model)
+}
 @foreach (var post in Model.Posts)
 {
 	<div class="mb-4 post-list border-bottom pb-4">

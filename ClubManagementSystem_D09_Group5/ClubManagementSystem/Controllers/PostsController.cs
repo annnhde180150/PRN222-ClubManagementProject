@@ -9,34 +9,26 @@ using BussinessObjects.Models;
 using System.Security.Claims;
 using Services.Interface;
 using BussinessObjects.Models.Dtos;
+using Services.Implementation;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ClubManagementSystem.Controllers
 {
     public class PostsController : Controller
     {
-        private readonly FptclubsContext _context;
         private readonly IPostService _postService;
-        public PostsController(FptclubsContext context, IPostService postService)
+        private readonly IClubMemberService _clubMemberService;
+        public PostsController(IPostService postService, IClubMemberService clubMemberService)
         {
-            _context = context;
             _postService = postService;
+            _clubMemberService = clubMemberService;
         }
 
-        // GET: Posts
-        public async Task<IActionResult> Index()
-        {
-            var fptclubsContext = _context.Posts.Include(p => p.ClubMember);
-            return View(await fptclubsContext.ToListAsync());
-        }
 
         // GET: Posts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
-            if (userId == 0)
-            {
-                return Unauthorized();
-            }
 
             if (id == null)
             {
@@ -50,11 +42,12 @@ namespace ClubManagementSystem.Controllers
                 return NotFound();
             }
 
+            ViewBag.IsMember = await _clubMemberService.IsClubMember(id.Value, userId);
             return View(postDetails);
         }
 
-     
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Post model, IFormFile? ImageFile, int clubId)
@@ -71,7 +64,7 @@ namespace ClubManagementSystem.Controllers
             }
             catch (UnauthorizedAccessException)
             {
-                return Unauthorized();
+                return RedirectToAction("Details", "Clubs", new { id = clubId });
             }
 
             return RedirectToAction("Details", "Clubs", new { id = clubId });
@@ -145,9 +138,6 @@ namespace ClubManagementSystem.Controllers
 
        
 
-        private bool PostExists(int id)
-        {
-            return _context.Posts.Any(e => e.PostId == id);
-        }
+      
     }
 }

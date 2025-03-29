@@ -51,10 +51,17 @@
                                 <span class="count-number-like" id="like-count-@Model.PostId">
                                     @Model.LikeCount
                                 </span>
-                                <a class="penci-post-like single-like-button" onclick="toggleLike(@Model.PostId)">
-                                    <i class="ti-heart"></i>
-                                </a>
-
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <a class="penci-post-like single-like-button" onclick="toggleLike(@Model.PostId)">
+                                        <i class="ti-heart"></i>
+                                    </a>
+                                } else
+                                {
+                                    <a class="penci-post-like single-like-button">
+                                        <i class="ti-heart" style="color: red"></i>
+                                    </a>
+                                }
                             </div>
 
 
@@ -97,13 +104,17 @@
                     </div>
                 </div>
 
-                @{
-                    var commentDto = new CommentDto { PostId = Model.PostId };
-                }
-                @await Html.PartialAsync("~/Views/Comments/Create.cshtml", commentDto)
-                @section Scripts {
-                    <partial name="_ValidationScriptsPartial" />
-                }
+                    @{
+                        var commentDto = new CommentDto { PostId = Model.PostId };
+                    }
+                    @if (User.Identity.IsAuthenticated)
+                    {
+
+                        @await Html.PartialAsync("~/Views/Comments/Create.cshtml", commentDto)
+                        @section Scripts {
+                            <partial name="_ValidationScriptsPartial" />
+                        }
+                    }
             </div>
 
         </div>

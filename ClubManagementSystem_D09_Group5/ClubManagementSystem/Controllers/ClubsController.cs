@@ -101,11 +101,12 @@ namespace ClubManagementSystem.Controllers
         }
 
         // GET: Clubs/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id, int? pageNumber)
         {
             int postSize = 5;
             int currentPage = pageNumber ?? 1;
-            var userID = Int32.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            int userID = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
 
             if (id == null)
             {
