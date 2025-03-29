@@ -130,5 +130,10 @@ namespace Services.Implementation
         {
             return (await _clubRepository.GetAllClubAsync()).FirstOrDefault(c => c.ClubId == id);
         }
+
+        public async Task<Club> CheckClubName(string clubName)
+        {
+            return (await _clubRepository.GetAllClubAsync()).FirstOrDefault(c => c.ClubName == clubName);
+        }
     }
 }

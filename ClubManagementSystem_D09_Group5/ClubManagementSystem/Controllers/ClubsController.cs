@@ -15,6 +15,7 @@ using Repositories.Interface;
 using Services.Implementation;
 using Azure.Core;
 using Microsoft.Extensions.Hosting;
+using AspNetCoreGeneratedDocument;
 
 namespace ClubManagementSystem.Controllers
 {
@@ -153,6 +154,14 @@ namespace ClubManagementSystem.Controllers
         {
             if ((logoPicture != null && logoPicture.Length > 0) || (coverPicture != null && coverPicture.Length > 0))
             {
+                var club = await _clubService.CheckClubName(clubName);
+
+                //check if club name already exists
+                if (club != null)
+                {
+                    TempData["ErrorMessage"] = "Club name already exists!";
+                    return View();
+                }
                 // Convert image to byte array
                 byte[] logoPictureBytes;
                 byte[] coverPictureBytes;
