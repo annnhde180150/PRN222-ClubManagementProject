@@ -22,13 +22,16 @@ namespace ClubManagementSystem.Controllers
         private readonly IClubRequestService _clubRequestService;
         private readonly IImageHelperService _imageService;
         private readonly SignalRSender _signalRSender;
-        public ClubRequestsController(FptclubsContext context, IClubRequestService clubRequestService, IImageHelperService imageHelperService, IClubService clubService, SignalRSender signalRSender)
+        private readonly IClubMemberService _clubMemberService;
+
+        public ClubRequestsController(FptclubsContext context, IClubRequestService clubRequestService, IImageHelperService imageHelperService, IClubService clubService, SignalRSender signalRSender, IClubMemberService clubMemberService)
         {
             _context = context;
             _clubRequestService = clubRequestService;
             _imageService = imageHelperService;
             _clubService = clubService;
             _signalRSender = signalRSender;
+            _clubMemberService = clubMemberService;
         }
 
         // GET: ClubRequests
@@ -108,6 +111,8 @@ namespace ClubManagementSystem.Controllers
                         JoinedAt = DateTime.Now,
                         Status = true
                     };
+
+                    await _clubMemberService.AddClubMemberAsync(clubMember);
 
                     await _clubService.AddClubAsync(club);
                     notification = new Notification
