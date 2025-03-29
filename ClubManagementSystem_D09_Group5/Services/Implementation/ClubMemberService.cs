@@ -40,6 +40,7 @@ namespace Services.Implementation
         {
             var clubMember = await _clubMemberRepository.GetClubMemberAsync(userId, clubId);
             return clubMember != null;
+        }
         public async Task<ClubMember> GetClubMemberAsync(int clubID, int userId)
         {
             return (await _clubMemberRepository.GetClubMembersAsync())
