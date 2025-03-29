@@ -6,16 +6,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BussinessObjects.Models;
+using Services.Interface;
+using BussinessObjects.Models.Dtos;
+using System.Security.Claims;
 
 namespace ClubManagementSystem.Controllers
 {
     public class CommentsController : Controller
     {
         private readonly FptclubsContext _context;
-
-        public CommentsController(FptclubsContext context)
+        private readonly ICommentService _commentService;
+        public CommentsController(FptclubsContext context, ICommentService commentService)
         {
             _context = context;
+            _commentService = commentService;
         }
 
         // GET: Comments
@@ -46,30 +50,41 @@ namespace ClubManagementSystem.Controllers
         }
 
         // GET: Comments/Create
-        public IActionResult Create()
-        {
-            ViewData["PostId"] = new SelectList(_context.Posts, "PostId", "Content");
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email");
-            return View();
-        }
+        //public IActionResult Create()
+        //{
+        //    ViewData["PostId"] = new SelectList(_context.Posts, "PostId", "Content");
+        //    ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email");
+        //    return View();
+        //}
 
         // POST: Comments/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CommentId,PostId,UserId,CommentText,CreatedAt")] Comment comment)
+        public async Task<IActionResult> Create(CommentDto commentDto)
         {
-            if (ModelState.IsValid)
+            if (string.IsNullOrWhiteSpace(commentDto.CommentText))
+                return BadRequest("Comment cannot be empty.");
+
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            if (userId == 0)
             {
-                _context.Add(comment);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return Unauthorized();
             }
-            ViewData["PostId"] = new SelectList(_context.Posts, "PostId", "Content", comment.PostId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email", comment.UserId);
-            return View(comment);
+
+            var comment = new Comment
+            {
+                PostId = commentDto.PostId,
+                UserId = userId,
+                CommentText = commentDto.CommentText,
+                CreatedAt = DateTime.Now
+            };
+
+            await _commentService.AddCommentAsync(comment);
+            return RedirectToAction("Details", "Posts", new { id = commentDto.PostId });
         }
+
 
         // GET: Comments/Edit/5
         public async Task<IActionResult> Edit(int? id)

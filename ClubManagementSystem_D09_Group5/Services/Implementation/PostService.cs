@@ -44,7 +44,7 @@ namespace Services.Implementation
                 Title = model.Title,
                 Content = model.Content,
                 Status = "Pending",
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.Now
             };
 
             if (imageFile != null && imageFile.Length > 0)
