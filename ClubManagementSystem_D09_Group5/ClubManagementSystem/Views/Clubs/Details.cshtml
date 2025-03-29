@@ -14,8 +14,12 @@
 		<div class="banner-img d-flex justify-content-center">
 			<a href="blog-single.html" class="d-flex justify-content-center">
 				<div>
-					<img src="~/img/cat/180313215_173099011412441_7795843820371964046_n.jpg" alt="Cover picture" class="img-fluid" style="width: 1000px; height: 500px">
-					@* <img src="@Model.Cover" alt="Cover picture" class="img-fluid" style="width: 1000px; height: 500px"> *@
+					<img src="@(string.IsNullOrEmpty(Model.CoverBase64) ? Url.Content("~/img/fashion/bg-fashion.jpg") : Model.CoverBase64)"
+						 alt="Cover picture"
+						 class="img-fluid"
+						 style="width: 1000px; height: 500px">
+
+
 				</div>
 			</a>
 		</div>
@@ -131,7 +135,10 @@
 					<div class="sidebar-wrap mt-5 mt-lg-0">
 						<div class="sidebar-widget about mb-5 p-3 text-center">
 							<div class="about-author">
-								<img src="~/img/author.jpg" alt="" class="img-fluid">
+								<img src="@(string.IsNullOrEmpty(Model.LogoBase64) ? Url.Content("~/img/fashion/bg-fashion.jpg")  : Model.LogoBase64)"
+									 alt="Logo picture"
+									 class="img-fluid">
+
 							</div>
 							<h4 class="mb-0 mt-4">@Model.ClubName</h4>
 							@* <p>Travel Blogger</p> *@

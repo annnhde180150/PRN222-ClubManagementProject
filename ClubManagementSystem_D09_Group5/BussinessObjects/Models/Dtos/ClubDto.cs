@@ -10,8 +10,8 @@ namespace BussinessObjects.Models.Dtos
     {
         public int ClubId { get; set; }
         public string ClubName { get; set; } = string.Empty;
-        public byte[]? Logo { get; set; }
-        public byte[]? Cover { get; set; }
+        public string LogoBase64 { get; set; } = string.Empty;
+        public string CoverBase64 { get; set; } = string.Empty;
         public string? Description { get; set; }
         public DateTime? CreatedAt { get; set; }
         public List<ClubMemberDto> ClubMembers { get; set; } = new List<ClubMemberDto>();
