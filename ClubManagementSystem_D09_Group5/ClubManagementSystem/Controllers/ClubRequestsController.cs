@@ -82,6 +82,7 @@ namespace ClubManagementSystem.Controllers
             return View(clubrequestView);
         }
 
+        [Authorize(Roles = "SystemAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ApproveOrReject(int id, string status)

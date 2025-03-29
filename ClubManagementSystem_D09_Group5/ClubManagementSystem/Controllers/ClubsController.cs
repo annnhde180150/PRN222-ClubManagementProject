@@ -43,7 +43,7 @@ namespace ClubManagementSystem.Controllers
         }
 
         // GET: Clubs
-        [Authorize]
+        [AllowAnonymous]
         public async Task<IActionResult> Index(string? searchString, int? pageNumber)
         {
             int pageSize = 5;
