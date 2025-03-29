@@ -38,5 +38,17 @@ namespace Repositories.Implementation
         {
             return await _context.Clubs.ToListAsync();
         }
+
+        public async Task<Club> UpdateClubAsync(Club club)
+        {
+            _context.Update(club);
+            await _context.SaveChangesAsync();
+            return club;
+        }
+
+        public async Task<Club> GetClubByClubIdAsync(int clubId)
+        {
+            return await _context.Clubs.FirstOrDefaultAsync(c => c.ClubId == clubId);
+        }
     }
 }
