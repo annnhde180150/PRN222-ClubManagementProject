@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Services.Implementation;
 using ClubManagementSystem.Controllers.SignalR;
+using ClubManagementSystem.Controllers.Filter;
 
 namespace ClubManagementSystem.Controllers
 {
@@ -36,7 +37,7 @@ namespace ClubManagementSystem.Controllers
             _clubService = clubService;
         }
 
-
+        [ServiceFilter(typeof(ClubAuthorization))]
         // GET: Events
         //event :_________| Monday | Tue | Wed | Thu | Fri | Sat | Sun
         //       Morning  |
@@ -45,8 +46,6 @@ namespace ClubManagementSystem.Controllers
         //       Evening  |
         public async Task<IActionResult> Index(int? week, int? clubID, string? error)
         {
-            if(clubID == null) return RedirectToAction("Index","Clubs");
-
             var currentWeek = week != null ? _week.GetWeekRange(DateTime.Now.Year, week.Value) : _week.GetWeekRange(DateTime.Now);
             var eventsList = await _eventService.GetEventsAsync(currentWeek.StartOfWeek, currentWeek.EndOfWeek, clubID.Value);
             var weekDays = _week.GetWeekDays(currentWeek.StartOfWeek);
@@ -87,6 +86,7 @@ namespace ClubManagementSystem.Controllers
             return View(events);
         }
 
+        [AjaxOnly]
         //GET: Events/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -94,6 +94,7 @@ namespace ClubManagementSystem.Controllers
             return View(currentEvent);
         }
 
+        [AjaxOnly]
         //GET: Events/Create
         public IActionResult Create(string? error, int id)
         {
@@ -125,6 +126,7 @@ namespace ClubManagementSystem.Controllers
             return RedirectToAction("Index", "Events", new { clubID = clubID , error = "Cannot Create Due to Occupied Event slot!"});
         }
 
+        [AjaxOnly]
         // GET: Events/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -149,6 +151,7 @@ namespace ClubManagementSystem.Controllers
             return RedirectToAction("Index", "Events", new { clubID = currentEvent.CreatedByNavigation.ClubId });
         }
 
+        [AjaxOnly]
         // GET: Events/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -171,7 +174,7 @@ namespace ClubManagementSystem.Controllers
             return RedirectToAction("Index","Events", new { clubID = @event.CreatedByNavigation.ClubId });
         }
 
-        public async Task notifyAllMember(int clubID)
+        private async Task notifyAllMember(int clubID)
         {
             var clubName = (await _clubService.GetClubAsync(clubID)).ClubName;
             var members = await _clubMemberService.GetClubMembersAsync(clubID);

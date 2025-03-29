@@ -158,7 +158,9 @@
         var modalBody = document.getElementById("eventDetailsContent");
         modalBody.innerHTML = '<div class="text-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>';
 
-        fetch(`/Events/Details/${eventId}`)
+            fetch(`/Events/Details/${eventId}`, {
+                headers: { "X-Requested-With": "XMLHttpRequest" } // Set AJAX request header
+            })
             .then(response => response.text())
             .then(html => {
                 modalBody.innerHTML = html;
@@ -172,7 +174,9 @@
         var modalBody = document.getElementById("deleteEventContent");
         modalBody.innerHTML = '<div class="text-center"><div class="spinner-border text-danger" role="status"><span class="visually-hidden">Loading...</span></div></div>';
 
-        fetch(`/Events/Delete/${eventId}`)
+        fetch(`/Events/Delete/${eventId}`, {
+                headers: { "X-Requested-With": "XMLHttpRequest" } // Set AJAX request header
+            })
             .then(response => response.text())
             .then(html => {
                 modalBody.innerHTML = html;
@@ -193,7 +197,9 @@
         }
 
         // Load Edit Form
-        fetch(`/Events/Edit/${eventId}`)
+        fetch(`/Events/Edit/${eventId}`, {
+                headers: { "X-Requested-With": "XMLHttpRequest" } // Set AJAX request header
+            })
             .then(response => response.text())
             .then(html => {
                 modalBody.innerHTML = html;
@@ -227,7 +233,9 @@
         var modalBody = document.getElementById("createEventContent");
         modalBody.innerHTML = '<div class="text-center"><div class="spinner-border text-success" role="status"><span class="visually-hidden">Loading...</span></div></div>';
 
-        fetch(`/Events/Create?id=@clubID`)
+        fetch(`/Events/Create?id=@clubID`, {
+                headers: { "X-Requested-With": "XMLHttpRequest" } // Set AJAX request header
+            })
             .then(response => response.text())
             .then(html => {
                 modalBody.innerHTML = html;
