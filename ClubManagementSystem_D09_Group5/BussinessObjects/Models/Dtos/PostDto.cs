@@ -29,7 +29,6 @@ namespace BussinessObjects.Models.Dtos
         public ClubDto Club { get; set; } = new();
         public List<RelatedPostDto> RelatedPosts { get; set; } = new();
         public List<CommentDto> Comments { get; set; } = new();
-
     }
 
     public class RelatedPostDto

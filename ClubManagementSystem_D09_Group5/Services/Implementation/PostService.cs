@@ -77,7 +77,12 @@ namespace Services.Implementation
                 ImageBase64 = _imageHelperService.ConvertToBase64(post.Image, "png"),
                 CreatedAt = post.CreatedAt,
                 Status = post.Status,
-               
+
+                User = new UserDto
+                {
+                    UserId = post.ClubMember.UserId,
+                    Username = post.ClubMember.User.Username,
+                },
                 Club = new ClubDto
                 {
                     ClubId = post.ClubMember.ClubId,

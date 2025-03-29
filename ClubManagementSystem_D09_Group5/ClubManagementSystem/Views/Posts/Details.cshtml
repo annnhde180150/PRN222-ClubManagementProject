@@ -1,4 +1,5 @@
-﻿@model BussinessObjects.Models.Dtos.PostDetailsDto
+﻿@using BussinessObjects.Models.Dtos
+@model BussinessObjects.Models.Dtos.PostDetailsDto
 
 @{
     ViewData["Title"] = "Details";
@@ -97,7 +98,7 @@
 
                         <div class="tags-share-box center-box d-flex justify-content-between border-top border-bottom py-3 text-center">
 
-                            <span class="single-comment-o"><i class="fa fa-comment-o"></i>0 comment</span>
+                            <span class="single-comment-o"><i class="fa fa-comment-o"></i> @Model.Comments.Count comment</span>
 
                             <div class="post-share">
                                 <span class="count-number-like">2</span>
@@ -135,44 +136,15 @@
                     </div>
                 }
 
-                <div class="comment-area my-5">
-                    <h3 class="mb-4 text-center">@Model.Comments.Count Comments</h3>
-                    @foreach (var comment in Model.Comments)
-                    {
-                        <div class="comment-area-box media mt-4">
-                            <img alt="" src="@comment.User.ProfilePictureBase64" class="img-fluid mr-3 mt-2 float-left" style="width: 50px; height: 50px; border-radius: 50%;">
+                @await Html.PartialAsync("~/Views/Comments/Index.cshtml", Model.Comments)
 
-                            <div class="media-body ml-4">
-                                <h4 class="mb-0">@comment.User.Username</h4>
-                                <span class="date-comm font-sm text-capitalize text-color">
-                                    <i class="ti-time mr-2"></i> @comment.CreatedAt
-                                </span>
-
-                                <div class="comment-content mt-3">
-                                    <p>@comment.CommentText</p>
-                                </div>
-                                <div class="comment-meta mt-4 mt-lg-0 mt-md-0">
-                                    <a href="#" class="text-underline">Reply</a>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                    
-                </div>
-
-                <form asp-action="Create" asp-controller="Comments" class="comment-form mb-5 gray-bg p-5" id="comment-form">
-                    <h3 class="mb-4 text-center">Leave a comment</h3>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <textarea class="form-control mb-3" name="commentText" id="comment" cols="30" rows="5"
-                                      placeholder="Write your comment here..."></textarea>
-                        </div>
-                    </div>
-                    <input type="hidden" value="@Model.PostId" name="PostId" />
-                    <input class="btn btn-primary" type="submit" name="submit-contact" id="submit_contact"
-                           value="Submit Message">
-                </form>
-
+                @{
+                    var commentDto = new CommentDto { PostId = Model.PostId };
+                }
+                @await Html.PartialAsync("~/Views/Comments/Create.cshtml", commentDto)
+                @section Scripts {
+                    <partial name="_ValidationScriptsPartial" />
+                }
             </div>
 
         </div>
