@@ -75,7 +75,7 @@ namespace ClubManagementSystem.Controllers
             return RedirectToAction("Details", "Clubs", new { id = clubId });
         }
 
-        [Authorize(Roles =("SystemAdmin,Admin"))]
+        [Authorize(Roles =("SystemAdmin,Admin,Moderator"))]
         public async Task<IActionResult> ApprovePost(string clubId)
         {
             int clubIdCheck = int.Parse(clubId);
@@ -108,7 +108,7 @@ namespace ClubManagementSystem.Controllers
             return View(postViews.ToList());
         }
 
-        [Authorize(Roles = ("SystemAdmin,Admin"))]
+        [Authorize(Roles = ("SystemAdmin,Admin,Moderator"))]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CensoringPost (int postId,string status)

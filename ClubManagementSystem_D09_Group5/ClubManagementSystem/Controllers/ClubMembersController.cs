@@ -57,7 +57,8 @@ namespace ClubManagementSystem.Controllers
             });
             return View(clubmemberView.ToList());
         }
-     
+
+        [Authorize(Roles = ("Admin,SystemAdmin"))]
         // Assign role for member
         public async Task<IActionResult> AssignRole(int membershipId, string role)
         {
