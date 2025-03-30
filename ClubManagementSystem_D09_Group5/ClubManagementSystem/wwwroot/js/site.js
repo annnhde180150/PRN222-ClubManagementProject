@@ -16,7 +16,7 @@ connection.on("notifyNews", function (noti) {
     LoadNotificationsIcon();
 })
 
-connection.on("NotifyPost", function () {
+connection.on("NotifyPost", function (comment, post) {
     console.log("notify Post");
 })
 
@@ -37,4 +37,12 @@ function LoadNotifications(noti) {
     if (div != null) {
         div.insertAdjacentHTML('afterbegin', newNoti);
     }
+}
+
+function LoadComment(comment) {
+    console.log(comment)
+}
+
+function LoadReaction(reaction) {
+    console.log(reaction)
 }
