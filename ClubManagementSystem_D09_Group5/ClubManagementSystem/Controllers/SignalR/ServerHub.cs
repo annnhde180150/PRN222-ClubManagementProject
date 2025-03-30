@@ -34,10 +34,13 @@ namespace ClubManagementSystem.Controllers.SignalR
             }
         }
 
-        public override System.Threading.Tasks.Task OnDisconnectedAsync(System.Exception exception)
+        public override async Task OnDisconnectedAsync(Exception exception)
         {
-            Console.WriteLine($"Client disconnected: {Context.ConnectionId}, Error: {exception?.Message}");
-            return base.OnDisconnectedAsync(exception);
+            var userID = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userID != null)
+            {
+                await _connectionService.DeleteOldConnection(Int32.Parse(userID));
+            }
         }
     }
 }

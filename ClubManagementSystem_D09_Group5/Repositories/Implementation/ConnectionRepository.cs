@@ -25,6 +25,12 @@ namespace Repositories.Implementation
             return entity;
         }
 
+        public async Task DeleteConnection(Connection entity)
+        {
+            _context.Connections.Remove(entity);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<Connection>> GetConnections()
         {
             return await _context.Connections.ToListAsync();

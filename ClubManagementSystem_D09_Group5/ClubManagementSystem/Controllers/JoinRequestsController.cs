@@ -10,6 +10,7 @@ using Services.Interface;
 using Microsoft.AspNetCore.Authorization;
 using ClubManagementSystem.Controllers.SignalR;
 using System.Security.Claims;
+using ClubManagementSystem.Controllers.Filter;
 
 namespace ClubManagementSystem.Controllers
 {
@@ -30,6 +31,7 @@ namespace ClubManagementSystem.Controllers
         }
 
         // GET: JoinRequests
+        [ServiceFilter(typeof(ClubAuthorization))]
         public async Task<IActionResult> Index(int? clubID)
         {
             Console.WriteLine("Join Request");

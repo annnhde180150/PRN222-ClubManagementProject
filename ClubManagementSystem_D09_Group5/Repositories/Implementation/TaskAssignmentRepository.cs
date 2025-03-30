@@ -37,7 +37,10 @@ namespace Repositories.Implementation
             return await _context.TaskAssignments
                 .Include(a => a.Membership)
                     .ThenInclude(a => a.User)
+                .Include(a => a.Membership)
+                    .ThenInclude(a => a.Club)
                 .Include(a => a.Task)
+                    .ThenInclude(a => a.Event)
                 .FirstOrDefaultAsync(r => r.AssignmentId == TaskAssignmentID);
         }
 
@@ -45,7 +48,11 @@ namespace Repositories.Implementation
         {
             return await _context.TaskAssignments
                 .Include(a => a.Membership)
+                    .ThenInclude(a => a.User)
+                .Include(a => a.Membership)
+                    .ThenInclude(a => a.Club)
                 .Include(a => a.Task)
+                    .ThenInclude(a => a.Event)
                 .ToListAsync();
         }
 

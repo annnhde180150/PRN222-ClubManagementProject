@@ -12,5 +12,7 @@ namespace Repositories.Interface
         public Task<Connection> AddConnection(Connection entity);
 
         public Task<IEnumerable<Connection>> GetConnections();
+
+        public Task DeleteConnection(Connection entity);
     }
 }
