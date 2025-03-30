@@ -29,21 +29,25 @@ namespace Services.Implementation
             _postReactionService = postReactionService;
         }
 
-        public async Task<IEnumerable<Post>> GetAllPostsByClubIdAsync(int clubId)
+        public async Task<IEnumerable<Post>> GetAllPostsAsync(int clubId)
         {
-            return await _postRepository.GetAllPostByClubIdAsync(clubId);
+            return await _postRepository.GetAllPostsByClubIdAsync(clubId);
+        }
+        public async Task<IEnumerable<Post>> GetAllPostsAsync()
+        {
+            return await _postRepository.GetAllPostsAsync();
         }
         public async Task<Post> CreatePostAsync(Post model, IFormFile? imageFile, int userId, int clubId)
         {
-            bool isMember = await _clubMemberService.IsUserInClubAsync(userId, clubId);
-            if (!isMember)
+            var clubMember = await _clubMemberService.GetClubMemberAsync(clubId, userId);
+            if (clubMember == null)
             {
                 throw new UnauthorizedAccessException("User is not a member of the club.");
             }
 
             var post = new Post
             {
-                CreatedBy = userId,
+                CreatedBy = clubMember.MembershipId,
                 Title = model.Title,
                 Content = model.Content,
                 Status = "Pending",

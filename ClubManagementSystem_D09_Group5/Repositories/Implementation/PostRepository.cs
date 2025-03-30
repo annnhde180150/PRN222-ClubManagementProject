@@ -23,9 +23,20 @@ namespace Repositories.Implementation
             await _context.SaveChangesAsync();
             return post;
         }
-        public async Task<IEnumerable<Post>> GetAllPostByClubIdAsync(int clubId)
+        public async Task<IEnumerable<Post>> GetAllPostsByClubIdAsync(int clubId)
         {
-            return await _context.Posts.Where(p => p.ClubMember.ClubId == clubId).ToListAsync();
+            return await _context.Posts
+                        .Include(p => p.ClubMember.User)
+                        .Include(p => p.ClubMember.Club)
+                        .Where(p => p.ClubMember.ClubId == clubId).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Post>> GetAllPostsAsync()
+        {
+            return await _context.Posts
+                .Include(p => p.ClubMember.User)
+                        .Include(p => p.ClubMember.Club)
+                        .ToListAsync();
         }
 
         public async Task<Post> GetPostByIdAsync(int postId)

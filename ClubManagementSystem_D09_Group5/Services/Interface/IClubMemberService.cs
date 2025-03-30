@@ -9,9 +9,8 @@ namespace Services.Interface
 {
     public interface IClubMemberService
     {
-        Task<ClubMember> GetClubMemberByIdAsync(int membershipId);
         Task<ClubMember> AddClubMemberAsync(ClubMember clubMember);
-        Task<ClubMember?> GetClubMemberById(int id);
+        Task<ClubMember?> GetClubMemberByIdAsync(int id);
         Task<IEnumerable<ClubMember>> GetClubMemberByUserId(int id);
         Task<bool> IsUserInClubAsync(int userId, int clubId);
         Task<ClubMember> GetClubMemberAsync(int clubID, int userId);

@@ -17,14 +17,6 @@ namespace Repositories.Implementation
             _context = context;
         }
 
-        public async Task<ClubMember> GetClubMemberByIdAsync(int membershipId)
-        {
-            return await _context.ClubMembers
-                .Include(c => c.Club)
-                .Include(c => c.Role)
-                .Include(c => c.User)
-                .FirstOrDefaultAsync(m => m.MembershipId == membershipId);
-        }
 
         public async Task<ClubMember> AddClubMemberAsync(ClubMember clubMember)
         {

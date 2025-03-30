@@ -12,7 +12,8 @@ namespace Services.Interface
     public interface IPostService
     {
         Task<Post> CreatePostAsync(Post model, IFormFile? imageFile, int userId, int clubId);
-        Task<IEnumerable<Post>> GetAllPostsByClubIdAsync(int clubId);
+        Task<IEnumerable<Post>> GetAllPostsAsync(int clubId);
+        Task<IEnumerable<Post>> GetAllPostsAsync();
         Task<PostDetailsDto?> GetPostDetailsByIdAsync(int postId, int userId);
         Task UpdatePostAsync(Post post);
         Task<Post> GetPostByIdAsync(int postId);

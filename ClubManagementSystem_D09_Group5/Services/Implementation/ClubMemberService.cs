@@ -20,17 +20,13 @@ namespace Services.Implementation
             _clubMemberRepository = clubMemberRepository;
         }
 
-        public async Task<ClubMember> GetClubMemberByIdAsync(int membershipId)
-        {
-            return await _clubMemberRepository.GetClubMemberByIdAsync(membershipId);
-        }
 
         public async Task<ClubMember> AddClubMemberAsync(ClubMember clubMember)
         {
             return await _clubMemberRepository.AddClubMemberAsync(clubMember);
         }
 
-        public async Task<ClubMember?> GetClubMemberById(int id)
+        public async Task<ClubMember?> GetClubMemberByIdAsync(int id)
         {
             return await _clubMemberRepository.GetClubMemberAsync(id);
         }

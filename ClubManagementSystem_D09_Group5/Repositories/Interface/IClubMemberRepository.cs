@@ -9,7 +9,6 @@ namespace Repositories.Interface
 {
     public interface IClubMemberRepository
     {
-        public Task<ClubMember> GetClubMemberByIdAsync(int membershipId);
         public Task<ClubMember?> GetClubMemberAsync(int id);
         public Task<ClubMember?> GetClubMemberAsync(int id, int clubId);
         public Task<IEnumerable<ClubMember>> GetClubMembersAsync();
