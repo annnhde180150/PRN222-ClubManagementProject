@@ -28,7 +28,7 @@ namespace ClubManagementSystem.Controllers
             _signalRSender = signalRSender;
         }
 
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles ="Admin,SystemAdmin")]
         // GET: ClubMembers
         public async Task<IActionResult> Index(int clubId)
         {

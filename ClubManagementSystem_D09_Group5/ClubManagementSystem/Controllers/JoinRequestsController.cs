@@ -34,6 +34,7 @@ namespace ClubManagementSystem.Controllers
         {
             Console.WriteLine("Join Request");
             var requests = await _joinRequestService.GetJoinRequestsAsync(clubID.Value);
+            ViewBag.ClubID = clubID;
             return View(requests);
         }
 
