@@ -15,6 +15,6 @@ namespace Services.Interface
         Task<IEnumerable<ClubTask>> GetClubTasksAsync(int clubID, int eventID);
         Task<ClubTask> GetClubTask(int taskID);
         Task<bool> UpdateClubTaskAsync(ClubTask task);
-        
+        Task<bool> IsAssigned(int taskID);
     }
 }

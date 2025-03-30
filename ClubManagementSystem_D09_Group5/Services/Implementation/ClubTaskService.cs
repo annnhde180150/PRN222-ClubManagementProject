@@ -31,12 +31,14 @@ namespace Services.Implementation
         public async Task<IEnumerable<ClubTask>> GetClubTasksAsync(int clubID)
         {
             return (await _repository.GetClubTasksAsync())
+                .Where(a => a.Status != "Cancelled")
                 .Where(t => t.CreatedByNavigation.ClubId == clubID);
         }
 
         public async Task<IEnumerable<ClubTask>> GetClubTasksAsync(int clubID, int eventID)
         {
             return (await _repository.GetClubTasksAsync())
+                .Where(a => a.Status != "Cancelled")
                 .Where(t => t.EventId == eventID)
                 .Where(t => t.CreatedByNavigation.ClubId == clubID);
         }
@@ -49,9 +51,18 @@ namespace Services.Implementation
         public async Task<IEnumerable<ClubTask>> GetPersonalClubTasksAsync(int userID)
         {
             return (await _repository.GetClubTasksAsync())
+                .Where(a => a.Status != "Cancelled")
                 .Where(t => t.TaskAssignments
                     .Where(u => u.Membership.UserId == userID)
                     .Any());
+        }
+
+        public async Task<bool> IsAssigned(int taskID)
+        {
+            return (await _repository.GetClubTaskAsync(taskID))
+                .TaskAssignments
+                .Where(a => a.Status != "Cancelled")
+                .Any();
         }
     }
 }

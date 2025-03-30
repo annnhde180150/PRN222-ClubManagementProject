@@ -44,6 +44,7 @@
                         <tr>
                             <th>Name</th>
                             <th>Status</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -59,6 +60,11 @@
                                         @item.Status
                                     </span>
                                 </td>
+                                <td>
+                                    <a asp-action="Delete" asp-route-id="@Model?.TaskId" class="btn btn-danger d-flex align-items-center">
+                                        <i class="bi bi-trash3 me-1"></i> UnAssigned
+                                    </a>
+                                </td>
                             </tr>
                         }
                     </tbody>
@@ -67,9 +73,29 @@
         </div>
 
         <div class="card-footer d-flex justify-content-between">
-            <a asp-action="Edit" asp-route-id="@Model?.TaskId" class="btn btn-warning">
+            <button class="btn btn-warning" onclick="showEditModal(@Model?.TaskId)">
                 <i class="bi bi-pencil-square"></i> Edit
-            </a>
+            </button>
         </div>
     </div>
 </section>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="editModalContent"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function showEditModal(taskId) {
+            $.get('/ClubTasks/Edit/' + taskId, function (data) {
+                $('#editModalContent').html(data);
+                $('#editModal').modal('show');
+            });
+        }
+    </script>
+}

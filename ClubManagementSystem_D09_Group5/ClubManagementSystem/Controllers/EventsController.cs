@@ -86,6 +86,13 @@ namespace ClubManagementSystem.Controllers
             return View(events);
         }
 
+        public async Task<IActionResult> Tasks(int? id, string? error)
+        {
+            var currentEvent = await _eventService.GetEventAsync(id.Value);
+            ViewBag.Error = error;
+            return View(currentEvent);
+        }
+
         [AjaxOnly]
         //GET: Events/Details/5
         public async Task<IActionResult> Details(int? id)

@@ -15,7 +15,8 @@ public partial class TaskAssignment
     [Required]
     public int MembershipId { get; set; }
 
-    public string Status { get; set; }
+    //Declined, Accepted, On Going, Done, Pending
+    public string Status { get; set; } = "Pending";
 
     [DataType(DataType.DateTime)]
     public DateTime? AssignedAt { get; set; }

@@ -9,6 +9,7 @@ using BussinessObjects.Models;
 using Services.Interface;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace ClubManagementSystem.Controllers
 {
@@ -18,11 +19,15 @@ namespace ClubManagementSystem.Controllers
         //delet after
         private readonly FptclubsContext _context;
         private readonly IClubTaskService _taskService;
+        private readonly IEventService _eventService;
+        private readonly IClubMemberService _memberService;
 
-        public ClubTasksController(FptclubsContext context, IClubTaskService taskService)
+        public ClubTasksController(FptclubsContext context, IClubTaskService taskService, IClubMemberService memberService, IEventService eventService)
         {
             _context = context;
             _taskService = taskService;
+            _eventService = eventService;
+            _memberService = memberService;
         }
 
         //GET: ClubTasks
@@ -40,125 +45,73 @@ namespace ClubManagementSystem.Controllers
             return View(task);
         }
 
-        //// GET: ClubTasks/Create
-        //public IActionResult Create()
-        //{
-        //    ViewData["CreatedBy"] = new SelectList(_context.ClubMembers, "MembershipId", "MembershipId");
-        //    ViewData["EventId"] = new SelectList(_context.Events, "EventId", "EventTitle");
-        //    return View();
-        //}
+        // GET: ClubTasks/Create
+        public IActionResult Create(int eventID)
+        {
+            ViewBag.EventID = eventID;
+            return View();
+        }
 
-        //// POST: ClubTasks/Create
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("TaskId,EventId,TaskDescription,Status,DueDate,CreatedAt,CreatedBy")] ClubTask clubTask)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(clubTask);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["CreatedBy"] = new SelectList(_context.ClubMembers, "MembershipId", "MembershipId", clubTask.CreatedBy);
-        //    ViewData["EventId"] = new SelectList(_context.Events, "EventId", "EventTitle", clubTask.EventId);
-        //    return View(clubTask);
-        //}
+        // POST: ClubTasks/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("EventId,TaskDescription,DueDate")] ClubTask clubTask)
+        {
+            var userID = Int32.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            int clubID = (await _eventService.GetEventAsync(clubTask.EventId)).CreatedByNavigation.ClubId;
+            var memberID = (await _memberService.GetClubMemberAsync(clubID, userID)).MembershipId;
 
-        //// GET: ClubTasks/Edit/5
-        //public async Task<IActionResult> Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+            clubTask.CreatedBy = memberID;
+            await _taskService.AddClubTaskAsync(clubTask);
+            
+            return RedirectToAction("Tasks", "Events", new { id = clubTask.EventId });
+        }
 
-        //    var clubTask = await _context.Tasks.FindAsync(id);
-        //    if (clubTask == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    ViewData["CreatedBy"] = new SelectList(_context.ClubMembers, "MembershipId", "MembershipId", clubTask.CreatedBy);
-        //    ViewData["EventId"] = new SelectList(_context.Events, "EventId", "EventTitle", clubTask.EventId);
-        //    return View(clubTask);
-        //}
+        // GET: ClubTasks/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            var task = await _taskService.GetClubTask(id.Value);
+            return View(task);
+        }
 
-        //// POST: ClubTasks/Edit/5
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("TaskId,EventId,TaskDescription,Status,DueDate,CreatedAt,CreatedBy")] ClubTask clubTask)
-        //{
-        //    if (id != clubTask.TaskId)
-        //    {
-        //        return NotFound();
-        //    }
+        // POST: ClubTasks/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("TaskId,TaskDescription,DueDate")] ClubTask clubTask)
+        {
+            var task = await _taskService.GetClubTask(id);
+            task.TaskDescription = clubTask.TaskDescription;
+            task.DueDate = clubTask.DueDate;
+            await _taskService.UpdateClubTaskAsync(task);
+            return RedirectToAction("Details", "ClubTasks", new { id = task.TaskId });
+        }
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(clubTask);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!ClubTaskExists(clubTask.TaskId))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["CreatedBy"] = new SelectList(_context.ClubMembers, "MembershipId", "MembershipId", clubTask.CreatedBy);
-        //    ViewData["EventId"] = new SelectList(_context.Events, "EventId", "EventTitle", clubTask.EventId);
-        //    return View(clubTask);
-        //}
+        // GET: ClubTasks/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            var clubTask = await _taskService.GetClubTask(id.Value);
+            return View(clubTask);
+        }
 
-        //// GET: ClubTasks/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        // POST: ClubTasks/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var isAssigned = await _taskService.IsAssigned(id);
+            var eventID = (await _taskService.GetClubTask(id)).EventId;
+            if (isAssigned)
+            {
+                var error = "Task is Assigned, please Unassigned all to delete";
+                return RedirectToAction("Tasks", "Events", new { id = eventID, error = error });
+            }
+            var task = await _taskService.GetClubTask(id);
+            task.Status = "Cancelled";
+            await _taskService.UpdateClubTaskAsync(task);
 
-        //    var clubTask = await _context.Tasks
-        //        .Include(c => c.CreatedByNavigation)
-        //        .Include(c => c.Event)
-        //        .FirstOrDefaultAsync(m => m.TaskId == id);
-        //    if (clubTask == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(clubTask);
-        //}
-
-        //// POST: ClubTasks/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    var clubTask = await _context.Tasks.FindAsync(id);
-        //    if (clubTask != null)
-        //    {
-        //        _context.Tasks.Remove(clubTask);
-        //    }
-
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
-
-        //private bool ClubTaskExists(int id)
-        //{
-        //    return _context.Tasks.Any(e => e.TaskId == id);
-        //}
+            return RedirectToAction("Tasks", "Events", new { id = eventID });
+        }
     }
 }

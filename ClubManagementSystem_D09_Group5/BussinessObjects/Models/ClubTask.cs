@@ -17,14 +17,15 @@ public partial class ClubTask
     [StringLength(1000)]
     public string TaskDescription { get; set; } = null!;
 
+    //On Going, Completed, End, Cancelled
     [StringLength(50)]
-    public string? Status { get; set; }
+    public string? Status { get; set; } = "On Going";
 
     [DataType(DataType.DateTime)]
     public DateTime? DueDate { get; set; }
 
     [DataType(DataType.DateTime)]
-    public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime? CreatedAt { get; set; } = DateTime.Now;
 
     [Required]
     public int CreatedBy { get; set; }
