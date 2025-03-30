@@ -50,7 +50,8 @@ namespace Repositories.Implementation
         public async Task<IEnumerable<ClubTask>> GetClubTasksAsync()
         {
             return await _context.Tasks
-                .Include(u => u.TaskAssignments)
+                .Include(u => u.TaskAssignments
+                    .Where(a => a.Status != "Declined" && a.Status != "Pending"))
                     .ThenInclude(u => u.Membership)
                         .ThenInclude(u => u.User)
                 .Include(u => u.CreatedByNavigation)

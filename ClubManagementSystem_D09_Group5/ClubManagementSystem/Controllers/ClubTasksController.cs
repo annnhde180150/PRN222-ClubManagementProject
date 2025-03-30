@@ -42,7 +42,9 @@ namespace ClubManagementSystem.Controllers
         public async Task<IActionResult> Details(int? id, string? error)
         {
             var task = await _taskService.GetClubTask(id.Value);
+            var members = await _memberService.GetClubMembersAsync(task.CreatedByNavigation.ClubId);
             ViewBag.Error = error;
+            ViewBag.Members = new SelectList(members, "MembershipId", "User.Username");
             return View(task);
         }
 

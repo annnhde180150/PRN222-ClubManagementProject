@@ -70,6 +70,19 @@
                     </tbody>
                 </table>
             </div>
+
+            <h5 class="mt-4">➕ Assign a Member</h5>
+            <div class="d-flex align-items-center gap-2">
+                <select id="memberSelect" class="form-select">
+                    @foreach (var member in ViewBag.Members)
+                    {
+                        <option value="@member.Value">@member.Text</option>
+                    }
+                </select>
+                <button class="btn btn-success" onclick="assignMember(@Model.TaskId)">
+                    <i class="bi bi-person-plus"></i> Assign
+                </button>
+            </div>
         </div>
 
         <div class="card-footer d-flex justify-content-between">
@@ -98,12 +111,29 @@
             });
         }
 
+        function assignMember(taskId) {
+            var memberId = $('#memberSelect').val();
+            if (!memberId) {
+                alert("Please select a member.");
+                return;
+            }
+
+            $.post('/TaskAssignments/Assign', { taskID: taskId, memberID: memberId })
+                .done(function () {
+                    location.reload(); // Refresh page after assignment
+                })
+                .fail(function () {
+                    alert("Error assigning member.");
+                });
+        }
+
         function showError() {
-            var errorMessage = "@(ViewBag.Error != null ? ViewBag.Error.Replace("\"", "\\\"") : "")";
-            if (errorMessage) {
+            var errorMessage = "@Html.Raw(ViewBag.Error?.Replace("\"", "\\\""))";
+            if (errorMessage.trim() !== "") {
                 alert(errorMessage);
             }
         }
+
 
         $(document).ready(function () {
             showError();

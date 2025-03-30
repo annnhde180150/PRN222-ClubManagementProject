@@ -23,6 +23,15 @@ namespace Services.Implementation
             return await _CR.AddConnection(entity);
         }
 
+        public async Task DeleteOldConnection(int UserID)
+        {
+            var connections = (await _CR.GetConnections()).Where(c => c.UserId == UserID);
+            foreach (var connection in connections)
+            {
+                await _CR.DeleteConnection(connection);
+            }
+        }
+
         public async Task<Connection> GetConnection(int UserID)
         {
             return (await _CR.GetConnections()).Where(c => c.UserId == UserID).OrderByDescending(c => c.connectAt).FirstOrDefault();
