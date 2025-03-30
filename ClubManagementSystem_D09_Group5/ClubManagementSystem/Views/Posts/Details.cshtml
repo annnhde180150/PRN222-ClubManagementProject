@@ -33,7 +33,9 @@
 
 
                         <div class="post-featured-image mt-5">
-                            <img src="@Model.ImageBase64" class="img-fluid" alt="featured-image">
+                            <img src="@(string.IsNullOrEmpty(Model.ImageBase64) ? Url.Content("~/defaultImage.jpg") : Model.ImageBase64)"
+                            class="img-fluid" 
+                            alt="Post Image">
                         </div>
                     </div>
                     <div class="post-body">

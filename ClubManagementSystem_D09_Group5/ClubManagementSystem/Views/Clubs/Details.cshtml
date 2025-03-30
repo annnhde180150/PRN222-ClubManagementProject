@@ -14,7 +14,7 @@
 		<div class="banner-img d-flex justify-content-center">
 			<a href="blog-single.html" class="d-flex justify-content-center">
 				<div>
-					<img src="@(string.IsNullOrEmpty(Model.CoverBase64) ? Url.Content("~/img/fashion/bg-fashion.jpg") : Model.CoverBase64)"
+					<img src="@(string.IsNullOrEmpty(Model.CoverBase64) ? Url.Content("~/defaultImage.jpg") : Model.CoverBase64)"
 						 alt="Cover picture"
 						 class="img-fluid"
 						 style="width: 1000px; height: 500px">
@@ -135,7 +135,7 @@
 					<div class="sidebar-wrap mt-5 mt-lg-0">
 						<div class="sidebar-widget about mb-5 p-3 text-center">
 							<div class="about-author">
-								<img src="@(string.IsNullOrEmpty(Model.LogoBase64) ? Url.Content("~/img/fashion/bg-fashion.jpg")  : Model.LogoBase64)"
+								<img src="@(string.IsNullOrEmpty(Model.LogoBase64) ? Url.Content("~/defaultPicture.jpg")  : Model.LogoBase64)"
 									 alt="Logo picture"
 									 class="img-fluid">
 

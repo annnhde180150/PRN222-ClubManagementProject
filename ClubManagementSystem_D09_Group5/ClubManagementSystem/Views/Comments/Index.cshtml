@@ -6,8 +6,10 @@
 <link rel="stylesheet" href="~/css/comment-index.css">
 
         <div class="comment-area-box media mt-4 d-flex">
-            <img alt="" src="@Model.User.ProfilePictureBase64" class="img-fluid"
-                    style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;">
+            <img src="@(string.IsNullOrEmpty(Model.User.ProfilePictureBase64) ? Url.Content("~/defaultPicture.jpg") : Model.User.ProfilePictureBase64)"
+                class="img-fluid"
+                style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;"
+                alt="Logo image">
 
             <div class="d-flex flex-column w-100">
                 <div class="d-flex justify-content-between align-items-center">
