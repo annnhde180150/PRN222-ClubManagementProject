@@ -41,7 +41,7 @@ namespace ClubManagementSystem.Controllers
         public async Task<IActionResult> Update(int? id, string? status)
         {
             var request = await _joinRequestService.GetJoinRequestAsync(id.Value);
-            var role = await _roleService.GetRoleAsync("ClubMember");
+            var role = await _roleService.GetRoleAsync("Member");
             request.Status = status;
             if (status.Equals("Approved"))
             {
@@ -50,7 +50,8 @@ namespace ClubManagementSystem.Controllers
                     ClubId = request.ClubId,
                     UserId = request.UserId,
                     RoleId = role.RoleId,
-                    JoinedAt = DateTime.Now
+                    JoinedAt = DateTime.Now,
+                    Status = true
                 };
                 await _clubMemberService.AddClubMemberAsync(newMember);
                 Notification noti = new Notification()

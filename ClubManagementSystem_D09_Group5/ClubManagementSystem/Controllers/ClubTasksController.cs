@@ -39,9 +39,10 @@ namespace ClubManagementSystem.Controllers
         }
 
         // GET: ClubTasks/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, string? error)
         {
             var task = await _taskService.GetClubTask(id.Value);
+            ViewBag.Error = error;
             return View(task);
         }
 

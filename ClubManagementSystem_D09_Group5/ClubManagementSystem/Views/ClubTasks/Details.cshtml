@@ -97,5 +97,16 @@
                 $('#editModal').modal('show');
             });
         }
+
+        function showError() {
+            var errorMessage = "@(ViewBag.Error != null ? ViewBag.Error.Replace("\"", "\\\"") : "")";
+            if (errorMessage) {
+                alert(errorMessage);
+            }
+        }
+
+        $(document).ready(function () {
+            showError();
+        });
     </script>
 }
