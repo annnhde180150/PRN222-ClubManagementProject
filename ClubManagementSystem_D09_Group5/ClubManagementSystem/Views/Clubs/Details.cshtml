@@ -38,25 +38,14 @@
 					<div class="post-meta footer-meta">
 						<ul class="list-inline">
 							<li class="post-like list-inline-item">
-								<span class="count">197</span> Likes
+								<span class="count">@Model.ClubMembers.Count</span> Members
 							</li>
-							<li class="post-read list-inline-item">2 mins read</li>
-							<li class="post-view list-inline-item">189 Views</li>
+							<li class="post-read list-inline-item">@Model.Posts.Count Posts</li>
 						</ul>
 					</div>
 					<div class="post-content">
-						@* <p> *@
-						@* 	@Model.Description *@
-						@* </p> *@
+			
 						<div class="avatar-list">
-							@* @foreach (var member in Model.ClubMembers) *@
-							@* { *@
-							@* 	<div class="avatar"> *@
-							@* 		<img src="@(member.ProfilePictureBase64)" alt="@member.Username"> *@
-							@* 		<span class="username">@member.Username</span> *@
-							@* 	</div> *@
-							@* } *@
-
 
 							@for (int i = 0; i < Model.ClubMembers.Count && i < 10; i++)
 							{
@@ -69,7 +58,6 @@
 
 						</div>
 
-						@* <a href="blog-single.html" class="btn btn-grey mt-3"> read more</a> *@
 					</div>
 				</div>
 			</div>
@@ -120,7 +108,7 @@
 			<div class="col-lg-4 col-md-8 col-sm-12 col-xs-12">
 				<div class="sidebar sidebar-right">
 
-					<div class="my-4 text-center d-flex flex-column align-items-center">
+					<div class="my-4 d-flex flex-column align-items-center text-center">
 						@if (ViewBag.IsMember){
 							<a asp-controller="Events" asp-action="Index" asp-route-clubID="@Model.ClubId" class="btn btn-primary btn-lg">
 								<i class="fas fa-calendar-alt me-2"></i> View Club Events
@@ -148,75 +136,10 @@
 
 							</div>
 							<h4 class="mb-0 mt-4">@Model.ClubName</h4>
-							@* <p>Travel Blogger</p> *@
 							<p>
 								@Model.Description
 							</p>
 						</div>
-
-				
-
-						<div class="sidebar-widget mb-5">
-							<h4 class="widget-title text-center">Trending Posts</h4>
-
-							<div class="sidebar-post-item-big">
-								<a href="blog-single.html"><img src="~/img/news/img-1.jpg" alt="" class="img-fluid"></a>
-								<div class="mt-3 media-body">
-									<span class="text-muted letter-spacing text-uppercase font-sm">September 10, 2019</span>
-									<h4><a href="blog-single.html">Meeting With Clarissa, Founder Of Purple Conversation App</a></h4>
-								</div>
-							</div>
-
-							<div class="media border-bottom py-3 sidebar-post-item">
-								<a href="#"><img class="mr-4" src="~/img/news/thumb-1.jpg" alt=""></a>
-								<div class="media-body">
-									<span class="text-muted letter-spacing text-uppercase font-sm">September 10, 2019</span>
-									<h4><a href="blog-single.html">Thoughtful living in los Angeles</a></h4>
-								</div>
-							</div>
-
-							<div class="media py-3 sidebar-post-item">
-								<a href="#"><img class="mr-4" src="~/img/news/thumb-2.jpg" alt=""></a>
-								<div class="media-body">
-									<span class="text-muted letter-spacing text-uppercase font-sm">September 10, 2019</span>
-									<h4><a href="blog-single.html">Vivamus molestie gravida turpis.</a></h4>
-								</div>
-							</div>
-						</div>
-
-
-						<div class="sidebar-widget category mb-5">
-							<h4 class="widget-title text-center">Members</h4>
-							<ul class="list-unstyled">
-								<li class="align-items-center d-flex justify-content-between">
-									<a href="#">Innovation</a>
-									<span>14</span>
-								</li>
-								<li class="align-items-center d-flex justify-content-between">
-									<a href="#">Software</a>
-									<span>2</span>
-								</li>
-								<li class="align-items-center d-flex justify-content-between">
-									<a href="#">Social</a>
-									<span>10</span>
-								</li>
-								<li class="align-items-center d-flex justify-content-between">
-									<a href="#">Trends</a>
-									<span>5</span>
-								</li>
-							</ul>
-						</div>
-
-						<div class="sidebar-widget subscribe mb-5">
-							<h4 class="widget-title text-center">Newsletter</h4>
-							<input type="text" class="form-control" placeholder="Email Address">
-							<a href="#" class="btn btn-primary d-block mt-3">Sign Up</a>
-						</div>
-
-						<div class="sidebar-widget sidebar-adv mb-5">
-							<a href="#"><img src="~/img/sidebar-banner3.png" alt="" class="img-fluid w-100"></a>
-						</div>
-
 					</div>
 				</div>
 			</div>
