@@ -17,6 +17,7 @@ namespace Services.Interface
         Task UpdatePostAsync(Post post);
         Task<Post> GetPostByIdAsync(int postId);
         Task DeletePostAsync(int postId);
+        Task<IEnumerable<Post>> GetAllPostsPendingAsync(int clubId);
 
     }
 }

@@ -11,6 +11,7 @@ using Services.Interface;
 using BussinessObjects.Models.Dtos;
 using Services.Implementation;
 using Microsoft.AspNetCore.Authorization;
+using ClubManagementSystem.Controllers.SignalR;
 
 namespace ClubManagementSystem.Controllers
 {
@@ -18,10 +19,14 @@ namespace ClubManagementSystem.Controllers
     {
         private readonly IPostService _postService;
         private readonly IClubMemberService _clubMemberService;
-        public PostsController(IPostService postService, IClubMemberService clubMemberService)
+        private readonly IImageHelperService _imageService;
+        private readonly SignalRSender _signalRSender;
+        public PostsController(IPostService postService, IClubMemberService clubMemberService, IImageHelperService imageHelperService, SignalRSender signalRSender)
         {
             _postService = postService;
             _clubMemberService = clubMemberService;
+            _imageService = imageHelperService;
+            _signalRSender = signalRSender;
         }
 
 
@@ -70,7 +75,62 @@ namespace ClubManagementSystem.Controllers
             return RedirectToAction("Details", "Clubs", new { id = clubId });
         }
 
+        [Authorize(Roles =("SystemAdmin,Admin"))]
+        public async Task<IActionResult> ApprovePost(string clubId)
+        {
+            int clubIdCheck = int.Parse(clubId);
+            if (clubIdCheck == 0)
+            {
+                return NotFound();
+            }
+            var posts = await  _postService.GetAllPostsPendingAsync(clubIdCheck);
+            var postViews = posts.Select(post =>
+            {
+                string imgBase64 = "";
+                if (post.Image != null)
+                {
+                    imgBase64 = _imageService.ConvertToBase64(post.Image, "png");
+                }
 
+                return new PostApproveDto
+                {
+                    PostId = post.PostId,
+                    Title = post.Title,
+                    Content = post.Content,
+                    ImageBase64 = imgBase64,
+                    CreatedAt = post.CreatedAt,
+                    Username = post.ClubMember.User.Username,
+                    Status = post.Status
+                };
+            });
+
+
+            return View(postViews.ToList());
+        }
+
+        [Authorize(Roles = ("SystemAdmin,Admin"))]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CensoringPost (int postId,string status)
+        {
+            Notification notification;
+            var post = await _postService.GetPostByIdAsync(postId);
+            if (post == null)
+            {
+                return NotFound();
+            }
+            post.Status = status;
+            await _postService.UpdatePostAsync(post);
+            TempData["SuccessMessage"] = status+" Successfully!";
+            notification = new Notification
+            {
+                UserId = post.ClubMember.UserId,
+                Message = "Your Post request has been " + status,
+                Location = "Post Censoring"
+            };
+            await _signalRSender.Notify(notification, notification.UserId);
+            return RedirectToAction("ApprovePost", new { clubId = post.ClubMember.ClubId });
+        }
 
         // POST: Posts/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.

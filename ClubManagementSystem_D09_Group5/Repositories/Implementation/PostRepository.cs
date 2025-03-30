@@ -25,7 +25,10 @@ namespace Repositories.Implementation
         }
         public async Task<IEnumerable<Post>> GetAllPostByClubIdAsync(int clubId)
         {
-            return await _context.Posts.Where(p => p.ClubMember.ClubId == clubId).ToListAsync();
+            return await _context.Posts
+                .Include(p => p.ClubMember.User)
+                .Include(p => p.ClubMember.Club)
+                .Where(p => p.ClubMember.ClubId == clubId).ToListAsync();
         }
 
         public async Task<Post> GetPostByIdAsync(int postId)
