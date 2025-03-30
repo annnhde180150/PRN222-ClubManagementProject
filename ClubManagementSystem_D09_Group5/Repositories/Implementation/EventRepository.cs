@@ -43,7 +43,12 @@ namespace Repositories.Implementation
 
         public async Task<IEnumerable<Event>> GetEventsAsync()
         {
-            return await _context.Events.OrderBy(e => e.EventDate).Include(e => e.CreatedByNavigation).ThenInclude(e => e.User).ToListAsync();
+            return await _context.Events
+                .OrderBy(e => e.EventDate)
+                .Include(e => e.CreatedByNavigation)
+                .ThenInclude(e => e.User)
+                .Include(e => e.Tasks)
+                .ToListAsync();
         }
 
         public async Task<Boolean> UpdateEventAsync(Event Event)
