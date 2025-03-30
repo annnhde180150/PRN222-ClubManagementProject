@@ -259,7 +259,7 @@ namespace ClubManagementSystem.Controllers
         }
 
 
-
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UploadProfilePicture(IFormFile profilePicture)
