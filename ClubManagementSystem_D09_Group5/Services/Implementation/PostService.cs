@@ -32,7 +32,7 @@ namespace Services.Implementation
         
         public async Task<IEnumerable<Post>> GetAllPostsPendingAsync(int clubId)
         {
-            var post = await _postRepository.GetAllPostByClubIdAsync(clubId);
+            var post = await _postRepository.GetAllPostsByClubIdAsync(clubId);
             return post.Where(p => p.Status == "Pending");
         }
 
