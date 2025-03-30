@@ -34,7 +34,7 @@ namespace Repositories.Implementation
         public async Task<IEnumerable<Post>> GetAllPostsAsync()
         {
             return await _context.Posts
-                .Include(p => p.ClubMember.User)
+                        .Include(p => p.ClubMember.User)
                         .Include(p => p.ClubMember.Club)
                         .ToListAsync();
         }

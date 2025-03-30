@@ -120,7 +120,7 @@
 			<div class="col-lg-4 col-md-8 col-sm-12 col-xs-12">
 				<div class="sidebar sidebar-right">
 
-					<div class="my-4 text-center">
+					<div class="my-4 text-center d-flex flex-column align-items-center">
 						@if (ViewBag.IsMember){
 							<a asp-controller="Events" asp-action="Index" asp-route-clubID="@Model.ClubId" class="btn btn-primary btn-lg">
 								<i class="fas fa-calendar-alt me-2"></i> View Club Events
@@ -128,6 +128,13 @@
 						}else{
 							<a asp-controller="JoinRequests" asp-action="Create" asp-route-clubID="@Model.ClubId" class="btn btn-primary btn-lg">
 								<i class="fas fa-calendar-alt me-2"></i> Join
+							</a>
+						}
+
+						@if (User.IsInRole("Admin") && ViewBag.IsMember)
+						{
+							<a asp-controller="Posts" asp-action="ApprovePost" asp-route-clubId="@Model.ClubId" class="btn btn-primary btn-lg" style="margin-top:20px">
+								<i class="fa-solid fa-check"></i> Approve post
 							</a>
 						}
 					</div>

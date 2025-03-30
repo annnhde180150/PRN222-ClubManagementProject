@@ -17,6 +17,17 @@ namespace BussinessObjects.Models.Dtos
         public int CreatedBy { get; set; }
     }
 
+
+    public class PostApproveDto
+    {
+        public int PostId { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string Content { get; set; } = string.Empty;
+        public string ImageBase64 { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public string? Status { get; set; }
+        public string Username { get; set; }
+    }
     public class PostDetailsDto
     {
         public int PostId { get; set; }

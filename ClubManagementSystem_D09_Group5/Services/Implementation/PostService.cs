@@ -29,6 +29,13 @@ namespace Services.Implementation
             _postReactionService = postReactionService;
         }
 
+        
+        public async Task<IEnumerable<Post>> GetAllPostsPendingAsync(int clubId)
+        {
+            var post = await _postRepository.GetAllPostByClubIdAsync(clubId);
+            return post.Where(p => p.Status == "Pending");
+        }
+
         public async Task<IEnumerable<Post>> GetAllPostsAsync(int clubId)
         {
             return await _postRepository.GetAllPostsByClubIdAsync(clubId);
