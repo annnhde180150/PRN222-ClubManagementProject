@@ -10,6 +10,7 @@ using Services.Interface;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
+using ClubManagementSystem.Controllers.SignalR;
 
 namespace ClubManagementSystem.Controllers
 {
@@ -21,13 +22,18 @@ namespace ClubManagementSystem.Controllers
         private readonly IClubTaskService _taskService;
         private readonly IEventService _eventService;
         private readonly IClubMemberService _memberService;
+        private readonly ITaskAssignmentService _assignervice;
+        private readonly SignalRSender _sender;
 
-        public ClubTasksController(FptclubsContext context, IClubTaskService taskService, IClubMemberService memberService, IEventService eventService)
+        public ClubTasksController(FptclubsContext context, IClubTaskService taskService, IClubMemberService memberService, IEventService eventService, ITaskAssignmentService assignervice, 
+            SignalRSender sender)
         {
             _context = context;
             _taskService = taskService;
             _eventService = eventService;
             _memberService = memberService;
+            _assignervice = assignervice;
+            _sender = sender;
         }
 
         //GET: ClubTasks
@@ -88,6 +94,19 @@ namespace ClubManagementSystem.Controllers
             task.TaskDescription = clubTask.TaskDescription;
             task.DueDate = clubTask.DueDate;
             await _taskService.UpdateClubTaskAsync(task);
+
+            var assigns = await _assignervice.GetTaskAssignmentsAsync(id);
+            foreach (var assign in assigns)
+            {
+                Notification noti = new Notification()
+                {
+                    Message = "Your assigned Task have been updated",
+                    Location = "Tasks",
+                    UserId = assign.Membership.UserId
+                };
+                await _sender.Notify(noti, noti.UserId);
+            }
+
             return RedirectToAction("Details", "ClubTasks", new { id = task.TaskId });
         }
 

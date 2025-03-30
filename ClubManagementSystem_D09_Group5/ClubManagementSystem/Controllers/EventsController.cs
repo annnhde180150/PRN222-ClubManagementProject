@@ -122,7 +122,7 @@ namespace ClubManagementSystem.Controllers
             var clubMem = await _clubMemberService.GetClubMemberAsync(clubID, Int32.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value));
             @event.CreatedBy = clubMem.MembershipId;
             @event.Status = "Not Yet";
-            var isOccupied = await _eventService.isOccupied(@event.EventDate, clubID);
+            var isOccupied = await _eventService.IsOccupied(@event.EventDate, clubID);
 
             if (!isOccupied)
             {

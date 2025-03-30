@@ -45,10 +45,12 @@
         <i class="bi bi-list-task me-2"></i> View Tasks
     </a>
 
-    <button type="button" class="btn btn-warning fw-bold px-4 py-2 flex-fill"
-            onclick="loadEditModal(@Model.EventId)">
-        <i class="fas fa-edit"></i> Edit
-    </button>
+    @if(Model.Status!= "Cancelled" && Model.Status != "Finished"){
+        <button type="button" class="btn btn-warning fw-bold px-4 py-2 flex-fill"
+                onclick="loadEditModal(@Model.EventId)">
+            <i class="fas fa-edit"></i> Edit
+        </button>
+    }
 
     <button type="button" class="btn btn-secondary fw-bold px-4 py-2 flex-fill" data-bs-dismiss="modal">
         <i class="fas fa-times"></i> Close

@@ -69,35 +69,49 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
-
-				<article class="post-list mb-5 pb-4 border-bottom">
-					<a class="post-thumb mb-3 d-block" href="blog-single.html">
-						<img src="~/img/fashion/bg-fashion.jpg" alt="" class="img-fluid w-100">
-					</a>
-					<div class="meta-cat">
-						<span class="letter-spacing cat-name font-extra text-uppercase font-sm">Experience</span>
+				@if (Model.OngoingEvent != null)
+				{
+					<h4 class="mt-4 fw-bold text-primary">Ongoing Event</h4>
+					<div class="card border-primary shadow-lg">
+						<div class="card-header bg-primary text-white d-flex align-items-center">
+							<i class="fas fa-calendar-alt me-2"></i>
+							<span class="fw-bold">Live Now</span>
+						</div>
+						<div class="card-body">
+							<h4 class="card-title text-primary fw-bold">@Model.OngoingEvent.EventTitle</h4>
+							<h6 class="card-subtitle mb-2 text-muted">
+								<i class="far fa-clock"></i>
+								<span id="eventTime">@Model.OngoingEvent.EventDate.ToString("MMM dd, yyyy hh:mm tt")</span>
+							</h6>
+							<p class="card-text">@Model.OngoingEvent.EventDescription</p>
+						</div>
 					</div>
-					<h3 class="post-title mt-2"><a href="blog-single.html">A guide to Duxton Hill</a></h3>
+				}
 
-					<div class="post-meta footer-meta">
-						<ul class="list-inline">
-							<li class="post-like list-inline-item">
-								<span class="font-sm letter-spacing-1 text-uppercase"><i class="ti-time mr-2"></i>2 min read</span>
-							</li>
-							<li class="post-view list-inline-item letter-spacing-1">189 Views</li>
-						</ul>
+				@if (Model.IncomingEvents?.Count > 0)
+				{
+					<h4 class="mt-4 fw-bold text-secondary">Incoming Events</h4>
+					<div class="d-flex overflow-auto pb-2 incoming-events">
+						@foreach (var item in Model.IncomingEvents)
+						{
+							<div class="card shadow-sm border-0 rounded event-card">
+								<div class="card-body text-center">
+									<h6 class="card-title text-primary fw-bold">@item.EventTitle</h6>
+									<p class="card-subtitle text-muted small">
+										<i class="far fa-calendar"></i> @item.EventDate.ToString("MMM dd, yyyy hh:mm tt")
+									</p>
+									<p class="card-text small">@item.EventDescription</p>
+									<a href="#" class="btn btn-outline-secondary btn-sm">
+										<i class="fas fa-eye"></i> View Details
+									</a>
+								</div>
+							</div>
+						}
 					</div>
-					<div class="post-content">
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit.Magnam nesciunt architecto quaerat
-							necessitatibus tenetur ratione eius numquam! elit. Earum in doloremque, odit quas repellat voluptatum
-							illo nulla ullam sunt, enim animi eaque dolorem possimus saepe! Fuga voluptas sapiente, nemo sit.
-						</p>
+				}
 
-					</div>
-				</article>
 
-				
+
 				@await Html.PartialAsync("~/Views/Posts/Index.cshtml", Model)
 				
 			</div>
@@ -143,5 +157,23 @@
 	</div>
 </section>
 
+<style>
+	.incoming-events {
+		gap: 15px;
+		scrollbar-width: thin;
+		scroll-behavior: smooth;
+		white-space: nowrap;
+		overflow-x: auto;
+		padding-bottom: 5px;
+	}
 
+	.event-card {
+		min-width: 260px;
+		transition: transform 0.2s ease-in-out;
+	}
+
+		.event-card:hover {
+			transform: scale(1.05);
+		}
+</style>
 

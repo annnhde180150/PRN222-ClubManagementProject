@@ -1,5 +1,6 @@
 ﻿using BussinessObjects.Models;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Azure;
 using Services.Interface;
 
 namespace ClubManagementSystem.Controllers.SignalR
@@ -21,9 +22,16 @@ namespace ClubManagementSystem.Controllers.SignalR
         {
             var connection = await _CS.GetConnection(userID);
             await _notificationService.AddNotificationAsync(noti);
-            await _hubContext.Clients.Client(connection.ConnectionId).SendAsync("notifyNews", noti);
+            if (connection != null)
+            {
+                await _hubContext.Clients.Client(connection.ConnectionId).SendAsync("notifyNews", noti);
+            }
             //await _hubContext.Clients.All.SendAsync("notifyNews", noti);
         }
 
+        public async Task NotifyPost(Comment? comment, PostReaction? reaction)
+        {
+            await _hubContext.Clients.All.SendAsync("notifyPost", comment, reaction);
+        }
     }
 }

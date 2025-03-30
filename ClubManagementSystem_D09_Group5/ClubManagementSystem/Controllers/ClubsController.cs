@@ -26,10 +26,11 @@ namespace ClubManagementSystem.Controllers
         private readonly IClubService _clubService;
         private readonly IJoinRequestService _joinRequestService;
         private readonly IImageHelperService _imageService;
+        private readonly IEventService _eventService;
         private readonly FptclubsContext _context;
 
         private readonly IPostService _postService;
-        public ClubsController(FptclubsContext context, IClubRequestService clubRequestService, IAccountService accountService, IClubService clubService, IPostService postService, IJoinRequestService joinRequestService, IClubMemberService clubMemberService, IImageHelperService imageHelperService)
+        public ClubsController(FptclubsContext context, IClubRequestService clubRequestService, IAccountService accountService, IClubService clubService, IPostService postService, IJoinRequestService joinRequestService, IClubMemberService clubMemberService, IImageHelperService imageHelperService, IEventService eventService)
         {
             _context = context;
             _clubRequestService = clubRequestService;
@@ -39,6 +40,7 @@ namespace ClubManagementSystem.Controllers
             _clubMemberService = clubMemberService;
             _postService = postService;
             _imageService = imageHelperService;
+            _eventService = eventService;
         }
 
         // GET: Clubs
@@ -113,6 +115,8 @@ namespace ClubManagementSystem.Controllers
             }
 
             var viewModel = await _clubService.GetClubDetailsAsync(id.Value, currentPage, postSize);
+            viewModel.IncomingEvents = (List<Event>)(await _eventService.GetIncomingEvent(viewModel.ClubId));
+            viewModel.OngoingEvent = await _eventService.GetOnGoingEvent(viewModel.ClubId);
 
             if (viewModel == null)
             {

@@ -15,7 +15,8 @@ namespace Services.Interface
         public Task<Event> GetEventAsync(int EventId);
         public Task<IEnumerable<Event>> GetEventsAsync(DateTime start, DateTime end, int clubID);
         public Task<bool> IsDependedOn(int EventID);
-        public Task<bool> isOccupied(DateTime EventDate, int clubID);
-        public Task<Event> GetIncomingEvent();
+        public Task<bool> IsOccupied(DateTime eventDate, int clubID);
+        public Task<IEnumerable<Event>> GetIncomingEvent(int clubID);
+        public Task<Event> GetOnGoingEvent(int clubID);
     }
 }
