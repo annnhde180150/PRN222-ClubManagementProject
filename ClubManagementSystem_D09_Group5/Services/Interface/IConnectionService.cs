@@ -12,5 +12,6 @@ namespace Services.Interface
         public Task<Connection> AddConnection(Connection entity);
         
         public Task<Connection> GetConnection(int UserID);
+        public Task DeleteOldConnection(int UserID);
     }
 }

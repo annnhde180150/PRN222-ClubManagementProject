@@ -15,7 +15,6 @@ using Repositories.Interface;
 using Services.Implementation;
 using Azure.Core;
 using Microsoft.Extensions.Hosting;
-using AspNetCoreGeneratedDocument;
 
 namespace ClubManagementSystem.Controllers
 {

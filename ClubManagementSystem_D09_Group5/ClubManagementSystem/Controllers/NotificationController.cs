@@ -4,10 +4,12 @@ using Services.Interface;
 using System.Security.Claims;
 using Microsoft.AspNetCore.SignalR;
 using ClubManagementSystem.Controllers.SignalR;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ClubManagementSystem.Controllers
 {
     [Route("Notification")]
+    [Authorize]
     public class NotificationController : Controller
     {
         private readonly INotificationService _NS;
