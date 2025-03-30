@@ -52,6 +52,7 @@ builder.Services.AddScoped<IClubMemberRepository, ClubMemberRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<IPostReactionRepository, PostReactionRepository>();
 builder.Services.AddScoped<IClubTaskRepository, ClubTaskRepository>();
+builder.Services.AddScoped<ITaskAssignmentRepository, TaskAssignmentRepository>();
 
 
 //Add Services
@@ -70,6 +71,7 @@ builder.Services.AddScoped<IClubMemberService, ClubMemberService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<IPostReactionService, PostReactionService>();
 builder.Services.AddScoped<IClubTaskService, ClubTaskService>();
+builder.Services.AddScoped<ITaskAssignmentService, TaskAssignmentService>();
 
 //filter
 builder.Services.AddScoped<ClubAuthorization>();

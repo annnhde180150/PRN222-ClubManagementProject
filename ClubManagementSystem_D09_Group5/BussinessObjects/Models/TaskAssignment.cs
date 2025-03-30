@@ -15,11 +15,11 @@ public partial class TaskAssignment
     [Required]
     public int MembershipId { get; set; }
 
-    //Declined, Accepted, On Going, Done, Pending
+    //Declined, On Going, Done, Pending
     public string Status { get; set; } = "Pending";
 
     [DataType(DataType.DateTime)]
-    public DateTime? AssignedAt { get; set; }
+    public DateTime? AssignedAt { get; set; } = DateTime.Now;
 
     [ForeignKey("MembershipId")]
     public virtual ClubMember Membership { get; set; } = null!;
