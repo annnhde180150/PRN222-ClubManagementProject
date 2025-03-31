@@ -15,10 +15,12 @@ namespace Services.Interface
         Task<IEnumerable<Post>> GetAllPostsAsync(int clubId);
         Task<IEnumerable<Post>> GetAllPostsAsync();
         Task<PostDetailsDto?> GetPostDetailsByIdAsync(int postId, int userId);
+        Task UpdatePostAsync(PostUpdateDto postDto);
         Task UpdatePostAsync(Post post);
         Task<Post> GetPostByIdAsync(int postId);
         Task DeletePostAsync(int postId);
         Task<IEnumerable<Post>> GetAllPostsPendingAsync(int clubId);
+        Task<IEnumerable<Post>> GetAllPostsApprovedAsync();
 
     }
 }

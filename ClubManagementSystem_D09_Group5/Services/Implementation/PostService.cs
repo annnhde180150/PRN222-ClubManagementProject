@@ -29,7 +29,12 @@ namespace Services.Implementation
             _postReactionService = postReactionService;
         }
 
-        
+        public async Task<IEnumerable<Post>> GetAllPostsApprovedAsync()
+        {
+            var post = await _postRepository.GetAllPostsAsync();
+            return post.Where(p => p.Status == "Approved");
+        }
+
         public async Task<IEnumerable<Post>> GetAllPostsPendingAsync(int clubId)
         {
             var post = await _postRepository.GetAllPostsByClubIdAsync(clubId);
@@ -133,6 +138,24 @@ namespace Services.Implementation
             await _postRepository.UpdatePostAsync(post);
         }
 
+        public async Task UpdatePostAsync(PostUpdateDto postDto)
+        {
+            var post = await _postRepository.GetPostByIdAsync(postDto.PostId);
+            if (post == null) 
+            {
+                throw new DbUpdateConcurrencyException();
+            }
+
+            post.Title = postDto.Title;
+            post.Content = postDto.Content;
+
+            if (postDto.ImageBase64 != null)
+            {
+                post.Image = _imageHelperService.ConvertToByte(postDto.ImageBase64);
+            }
+
+            await _postRepository.UpdatePostAsync(post);
+        }
         public async Task<Post> GetPostByIdAsync(int postId)
         {
             return await _postRepository.GetPostByIdAsync(postId);
@@ -140,7 +163,10 @@ namespace Services.Implementation
 
         public async Task DeletePostAsync(int id)
         {
-            await _postRepository.DeletePostAsync(id);
+            var post = await _postRepository.GetPostByIdAsync(id);
+            post.Status = "Deleted";
+            await _postRepository.UpdatePostAsync(post);
+
         }
 
     }

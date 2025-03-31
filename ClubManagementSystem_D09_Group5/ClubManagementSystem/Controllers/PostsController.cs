@@ -145,26 +145,22 @@ namespace ClubManagementSystem.Controllers
                 return Unauthorized();
             }
 
-            var existingPost = await _postService.GetPostByIdAsync(postDto.PostId);
-            if (existingPost == null || existingPost.CreatedBy != userId)
+            var post = await _postService.GetPostByIdAsync(postDto.PostId);
+            if (post == null || post.ClubMember.UserId != userId)
             {
                 return Forbid();
             }
-
-            existingPost.Title = postDto.Title;
-            existingPost.Content = postDto.Content;
 
             if (ImageFile != null)
             {
                 using var ms = new MemoryStream();
                 await ImageFile.CopyToAsync(ms);
-                existingPost.Image = ms.ToArray();
+                postDto.ImageBase64 = Convert.ToBase64String(ms.ToArray());
             }
-
             try
             {
-                await _postService.UpdatePostAsync(existingPost);
-                return RedirectToAction("Details", "Posts", new { id = existingPost.PostId });
+                await _postService.UpdatePostAsync(postDto);
+                return RedirectToAction("Details", "Posts", new { id = post.PostId });
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -185,14 +181,13 @@ namespace ClubManagementSystem.Controllers
             }
 
             var post = await _postService.GetPostByIdAsync(postId);
-            if (post == null || post.CreatedBy != userId)
+            if (post == null || post.ClubMember.User.UserId != userId)
             {
-                return Forbid(); // Ensure only the owner can delete
+                return Forbid(); 
             }
 
             await _postService.DeletePostAsync(postId);
 
-            // Redirect back to the Club Details page
             return RedirectToAction("Details", "Clubs", new { id = clubId });
         }
 
