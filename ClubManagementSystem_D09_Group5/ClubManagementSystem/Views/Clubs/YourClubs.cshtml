@@ -88,10 +88,15 @@
                                 <a asp-action="Details" asp-route-id="@item.ClubId" class="btn btn-sm btn-info text-white">
                                     Details
                                 </a>
-                                @if (User.IsInRole("Admin")){
-                                    <a asp-action="Edit" asp-route-id="@item.ClubId" class="btn btn-sm btn-info text-white">
-                                        Edit
-                                    </a>
+                                @{
+                                    string clubRoleClaim = $"ClubRole_{item.ClubId}";
+                                    bool isClubAdmin = User.Claims.Any(c => c.Type == clubRoleClaim && c.Value == "Admin");
+									if (isClubAdmin  || User.IsInRole("SystemAdmin"))
+									{
+                                        <a asp-action="Edit" asp-route-id="@item.ClubId" class="btn btn-sm btn-info text-white">
+                                            Edit
+                                        </a>
+									}                                   
                                 }                               
                             </td>
                         </tr>

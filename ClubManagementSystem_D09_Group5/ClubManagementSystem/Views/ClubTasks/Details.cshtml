@@ -80,7 +80,7 @@
                             <option value="@member.Value">@member.Text</option>
                         }
                     </select>
-                    <button class="btn btn-success" onclick="assignMember(@Model.TaskId)">
+                    <button class="btn btn-success" onclick="assignMember('@Model.TaskId','@Model.CreatedByNavigation.ClubId')">
                         <i class="bi bi-person-plus"></i> Assign
                     </button>
                 </div>
@@ -88,7 +88,7 @@
         </div>
 
         <div class="card-footer d-flex justify-content-between">
-            <button class="btn btn-warning" onclick="showEditModal(@Model?.TaskId)">
+            <button class="btn btn-warning" onclick="showEditModal('@Model?.TaskId','@Model.CreatedByNavigation.ClubId')">
                 <i class="bi bi-pencil-square"></i> Edit
             </button>
         </div>
@@ -106,21 +106,21 @@
 
 @section Scripts {
     <script>
-        function showEditModal(taskId) {
-            $.get('/ClubTasks/Edit/' + taskId, function (data) {
+        function showEditModal(taskId,clubId) {
+            $.get('/ClubTasks/Edit/'+ clubId +'?taskID='+taskId, function (data) {
                 $('#editModalContent').html(data);
                 $('#editModal').modal('show');
             });
         }
 
-        function assignMember(taskId) {
+        function assignMember(taskId,ClubId) {
             var memberId = $('#memberSelect').val();
             if (!memberId) {
                 alert("Please select a member.");
                 return;
             }
 
-            $.post('/TaskAssignments/Assign', { taskID: taskId, memberID: memberId })
+            $.post('/TaskAssignments/Assign?id='+ClubId, { taskID: taskId, memberID: memberId})
                 .done(function () {
                     location.reload(); // Refresh page after assignment
                 })

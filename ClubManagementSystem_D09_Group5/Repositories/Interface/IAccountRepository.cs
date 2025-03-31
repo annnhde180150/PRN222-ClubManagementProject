@@ -10,7 +10,7 @@ namespace Repositories.Interface
     public interface IAccountRepository
     {
         Task<User?> CheckLogin(string gmail, string password);
-        Task<ClubMember?> CheckRole(int userId);
+        Task<IEnumerable<ClubMember>> CheckRole(int userId);
         Task<User?> CheckEmailExist(string email);
         Task<User?> AddGmailUser(User user);
         Task<User?> AddUser(User user);

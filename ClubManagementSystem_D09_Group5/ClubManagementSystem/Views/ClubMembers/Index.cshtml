@@ -36,11 +36,11 @@
                     </td>
                     <td>
                         <a href="#" class="btn btn-sm btn-primary text-white" data-bs-toggle="modal" data-bs-target="#assignRoleModal" style="border-radius:6px"
-                           onclick="setMembershipId('@item.MembershipId')">
+                           onclick="setMembershipId('@item.MembershipId','@item.ClubId')">
                             Assign Role
                         </a>
 
-                        <a class="btn btn-sm btn-danger text-white" style="border-radius:6px" data-bs-toggle="modal" data-bs-target="#kickMemberModal" onclick="setMembershipId('@item.MembershipId')">
+                        <a class="btn btn-sm btn-danger text-white" style="border-radius:6px" data-bs-toggle="modal" data-bs-target="#kickMemberModal" onclick="setMembershipId('@item.MembershipId','@item.ClubId')">
                             Kick
                         </a>
                     </td>
@@ -61,7 +61,7 @@
             <form id="assignRoleForm" method="post" asp-action="AssignRole">
                 <div class="modal-body">
                     <input type="hidden" id="membershipIdInput" name="membershipId">
-
+                    <input type="hidden" id="assignRoleClubIdInput" name="clubId">
                     <div class="mb-3">
                         <label for="roleSelect" class="form-label">Select Role</label>
                         <select id="roleSelect" name="role" class="form-select">
@@ -88,9 +88,10 @@
                 <h5 class="modal-title" id="kickMemberModalLabel">Kick Member</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="kickMemberForm" method="post" asp-action="KickMember">
+            <form id="kickMemberForm" method="post" asp-action="KickMember" >
                 <div class="modal-body">
                     <input type="hidden" id="kickMembershipIdInput" name="membershipId">
+                    <input type="hidden" id="kickMembershipClubIdInput" name="clubId">
                     <p>Are you sure you want to kick this member from the club?</p>
                     <div class="alert alert-warning">
                         <i class="bi bi-exclamation-triangle-fill"></i> This action cannot be undone!
@@ -111,9 +112,12 @@
 
 
 <script>
-    function setMembershipId(membershipId) {
+    function setMembershipId(membershipId,clubId) {
         document.getElementById('membershipIdInput').value = membershipId;
         document.getElementById('kickMembershipIdInput').value = membershipId;
+        document.getElementById('assignRoleClubIdInput').value = clubId;
+        document.getElementById('kickMembershipClubIdInput').value = clubId;
+        document.getElementById('assignRoleForm').value = clubId;
     }
 </script>
 

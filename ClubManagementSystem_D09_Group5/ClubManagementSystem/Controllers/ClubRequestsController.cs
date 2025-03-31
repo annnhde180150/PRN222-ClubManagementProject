@@ -120,7 +120,7 @@ namespace ClubManagementSystem.Controllers
                         Message = "Your club request has been accepted",
                         Location= "ClubRequest"
                     };
-
+                    TempData["SuccessMessage"] = "Request Successfuly!";
                     await _signalRSender.Notify(notification, notification.UserId);
                     return RedirectToAction(nameof(Index));
 

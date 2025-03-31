@@ -25,16 +25,14 @@ namespace Repositories.Implementation
             }
             return null;
         }
-        public async Task<ClubMember?> CheckRole(int userId)
+        public async Task<IEnumerable<ClubMember>> CheckRole(int userId)
         {
-            var clubMember = await _context.ClubMembers
+            var clubMembers = await _context.ClubMembers
                 .Include(c => c.Role)
-                .FirstOrDefaultAsync(c => c.UserId == userId);
-            if (clubMember != null)
-            {
-                return clubMember;
-            }
-            return null;
+                .Include(c => c.Club)
+                .Where(c => c.UserId == userId)
+                .ToListAsync();
+            return clubMembers;
         }
         public async Task<User?> CheckEmailExist(string email)
         {

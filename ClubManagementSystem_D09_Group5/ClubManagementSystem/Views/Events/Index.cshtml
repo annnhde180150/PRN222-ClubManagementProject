@@ -14,7 +14,7 @@
 
 <!-- Week Selection Form -->
 <div class="mb-4 p-3 bg-light border rounded shadow-sm">
-    <form id="weekForm" asp-action="Index" method="get" class="d-flex align-items-center gap-3">
+    <form id="weekForm" asp-action="Index" method="get" class="d-flex align-items-center gap-3" asp-route-id="@clubID">
         <label class="fw-bold text-secondary">Select a Week:</label>
         <select name="week" asp-items="dropdown" class="form-select w-auto border-primary" onchange="this.form.submit()">
             <option value="">-- Select Week --</option>
@@ -236,7 +236,7 @@
         var modalBody = document.getElementById("createEventContent");
         modalBody.innerHTML = '<div class="text-center"><div class="spinner-border text-success" role="status"><span class="visually-hidden">Loading...</span></div></div>';
 
-        fetch(`/Events/Create?id=@clubID`, {
+        fetch(`/Events/Create/@clubID`, {
                 headers: { "X-Requested-With": "XMLHttpRequest" } // Set AJAX request header
             })
             .then(response => response.text())

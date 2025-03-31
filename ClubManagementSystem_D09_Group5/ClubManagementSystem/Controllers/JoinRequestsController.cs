@@ -32,7 +32,8 @@ namespace ClubManagementSystem.Controllers
         }
 
         // GET: JoinRequests
-        [ServiceFilter(typeof(ClubAuthorization))]
+        //[ServiceFilter(typeof(ClubAuthorization))]
+        [ClubAdminAuthorize("Admin")]
         public async Task<IActionResult> Index(int? clubID)
         {
             Console.WriteLine("Join Request");
