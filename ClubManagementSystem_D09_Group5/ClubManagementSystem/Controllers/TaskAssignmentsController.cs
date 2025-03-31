@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BussinessObjects.Models;
 using Services.Interface;
 using System.Security.Claims;
+using ClubManagementSystem.Controllers.Filter;
 
 namespace ClubManagementSystem.Controllers
 {
@@ -21,7 +22,8 @@ namespace ClubManagementSystem.Controllers
             _taskAssignmentService = taskAssignmentService;
         }
 
-        public async Task<IActionResult> Assign(int taskID, int memberID)
+        //[ClubAdminAuthorize("Admin,Moderator")]
+        public async Task<IActionResult> Assign(int taskID, int memberID,int id)
         {
             var isAssigned = await _taskAssignmentService.IsAssignedBefore(memberID, taskID);
             if (isAssigned)

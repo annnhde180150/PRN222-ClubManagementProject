@@ -11,6 +11,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using ClubManagementSystem.Controllers.SignalR;
+using ClubManagementSystem.Controllers.Filter;
 
 namespace ClubManagementSystem.Controllers
 {
@@ -45,6 +46,7 @@ namespace ClubManagementSystem.Controllers
         }
 
         // GET: ClubTasks/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id, string? error)
         {
             var task = await _taskService.GetClubTask(id.Value);
@@ -54,8 +56,9 @@ namespace ClubManagementSystem.Controllers
             return View(task);
         }
 
+        [ClubAdminAuthorize("Admin,Moderator")]
         // GET: ClubTasks/Create
-        public IActionResult Create(int eventID)
+        public IActionResult Create(int eventID,int id)
         {
             ViewBag.EventID = eventID;
             return View();
@@ -76,10 +79,11 @@ namespace ClubManagementSystem.Controllers
             return RedirectToAction("Tasks", "Events", new { id = clubTask.EventId });
         }
 
+        [ClubAdminAuthorize("Admin,Moderator")]
         // GET: ClubTasks/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? taskId,int clubId)
         {
-            var task = await _taskService.GetClubTask(id.Value);
+            var task = await _taskService.GetClubTask(taskId.Value);
             return View(task);
         }
 
