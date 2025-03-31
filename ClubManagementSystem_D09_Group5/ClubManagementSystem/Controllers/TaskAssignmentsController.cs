@@ -43,6 +43,14 @@ namespace ClubManagementSystem.Controllers
             return RedirectToAction("Index", "TaskAssignments");
         }
 
+        public async Task<IActionResult> Delete(int assignID)
+        {
+            var assign = await _taskAssignmentService.GetTaskAssignmentAsync(assignID);
+            assign.Status = "Unassigned";
+            await _taskAssignmentService.UpdateTaskAssignmentAsync(assign);
+            return RedirectToAction("Details", "ClubTasks", new { id = assign.TaskId});
+        }
+
         // GET: TaskAssignments
         public async Task<IActionResult> Index()
         {

@@ -3,6 +3,7 @@ using BussinessObjects.Models;
 using ClubManagementSystem.Controllers.Common;
 using ClubManagementSystem.Controllers.Filter;
 using ClubManagementSystem.Controllers.SignalR;
+using ClubManagementSystem.Controllers.Worker;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -72,6 +73,9 @@ builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<IPostReactionService, PostReactionService>();
 builder.Services.AddScoped<IClubTaskService, ClubTaskService>();
 builder.Services.AddScoped<ITaskAssignmentService, TaskAssignmentService>();
+
+//worker
+builder.Services.AddHostedService<StatusUpdatingWorker>();
 
 //filter
 builder.Services.AddScoped<ClubAuthorization>();
