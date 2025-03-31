@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using ClubManagementSystem.Controllers.SignalR;
 using System.Security.Claims;
 using ClubManagementSystem.Controllers.Filter;
+using Azure.Core;
 
 namespace ClubManagementSystem.Controllers
 {
@@ -80,6 +81,18 @@ namespace ClubManagementSystem.Controllers
                     CreatedAt = DateTime.Now
                 };
                 await _joinRequestService.AddJoinRequestAsync(newJoin);
+                var adminRoleID = (await _roleService.GetRoleAsync("Admin")).RoleId;
+                var admins = await _clubMemberService.GetClubMembersAsync(clubID.Value,adminRoleID);
+                foreach (var admin in admins)
+                {
+                    Notification noti = new Notification()
+                    {
+                        UserId = admin.UserId,
+                        Message = $"There is a new Join Request in {admin.Club.ClubName} club",
+                        Location = "Join Request"
+                    };
+                    await _sender.Notify(noti, noti.UserId);
+                }
             }
             return RedirectToAction("Index","Clubs");
         }

@@ -9,12 +9,14 @@
             <h4 class="fw-bold">📅 @Model.EventTitle</h4>
         </div>
         <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="text-secondary">📌 Assigned Tasks</h5>
-                <button class="btn btn-success btn-sm" onclick="showCreateModal(@Model.EventId)">
-                    <i class="bi bi-plus-lg"></i> Create Task
-                </button>
-            </div>
+            @if(Model.Status != "Cancelled" && Model.Status != "Finished"){
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="text-secondary">📌 Assigned Tasks</h5>
+                    <button class="btn btn-success btn-sm" onclick="showCreateModal(@Model.EventId)">
+                        <i class="bi bi-plus-lg"></i> Create Task
+                    </button>
+                </div>
+            }
             <hr />
 
             @if (Model.Tasks != null && Model.Tasks.Any())

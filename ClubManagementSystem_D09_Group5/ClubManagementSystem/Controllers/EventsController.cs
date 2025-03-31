@@ -122,7 +122,7 @@ namespace ClubManagementSystem.Controllers
             var clubMem = await _clubMemberService.GetClubMemberAsync(clubID, Int32.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value));
             @event.CreatedBy = clubMem.MembershipId;
             @event.Status = "Not Yet";
-            var isOccupied = await _eventService.isOccupied(@event.EventDate, clubID);
+            var isOccupied = await _eventService.IsOccupied(@event.EventDate, clubID);
 
             if (!isOccupied)
             {
@@ -176,9 +176,10 @@ namespace ClubManagementSystem.Controllers
             {
                 @event.Status = "Cancelled";
                 await _eventService.UpdateEventAsync(@event);
+                await notifyAllMember(@event.CreatedByNavigation.ClubId);
+                return RedirectToAction("Index", "Events", new { clubID = @event.CreatedByNavigation.ClubId });
             }
-            await notifyAllMember(@event.CreatedByNavigation.ClubId);
-            return RedirectToAction("Index","Events", new { clubID = @event.CreatedByNavigation.ClubId });
+            return RedirectToAction("Index", "Events", new { clubID = @event.CreatedByNavigation.ClubId, error = "Cannot Delete Event due to happening or has happened!" });
         }
 
         private async Task notifyAllMember(int clubID)

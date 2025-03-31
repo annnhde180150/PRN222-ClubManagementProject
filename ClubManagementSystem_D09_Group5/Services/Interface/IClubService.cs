@@ -12,6 +12,7 @@ namespace Services.Interface
     {
         Task AddClubAsync(Club club);
         Task<IEnumerable<Club>> GetAllClubsAsync();       
+        Task<IEnumerable<Club>> GetAllClubsApprovedAsync();       
         Task<ClubDetailsViewDto> GetClubDetailsAsync(int clubId, int postNumber, int postSize);
         Task<(bool success, string message)> UpdateClubAsync(ClubEditDto clubEditDto);
         Task<Club> GetClubByClubIdAsync(int clubId);

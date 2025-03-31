@@ -9,6 +9,7 @@ namespace Services.Interface
     public interface IImageHelperService
     {
         string ConvertToBase64(byte[]? imageData, string? fileExtension);
+        byte[]? ConvertToByte(string? base64String);
     }
 
 }

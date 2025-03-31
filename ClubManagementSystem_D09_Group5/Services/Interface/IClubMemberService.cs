@@ -16,6 +16,7 @@ namespace Services.Interface
         Task<ClubMember> GetClubMemberAsync(int clubID, int userId);
         Task<bool> IsClubMember(int clubID, int userId);
         Task<IEnumerable<ClubMember>> GetClubMembersAsync(int clubId);
+        Task<IEnumerable<ClubMember>> GetClubMembersAsync(int clubId, int roleID);
         Task<IEnumerable<ClubMember>> GetClubMembersByClubIdAsync(int id);
         Task<(bool success, string message)> UpdateClubMemberAsync(ClubMember clubMember);
         Task<IEnumerable<ClubMember>> GetClubMembersAsync(int clubId, bool status);

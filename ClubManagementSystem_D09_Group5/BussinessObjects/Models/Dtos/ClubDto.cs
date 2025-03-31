@@ -14,6 +14,8 @@ namespace BussinessObjects.Models.Dtos
         public string CoverBase64 { get; set; } = string.Empty;
         public string? Description { get; set; }
         public DateTime? CreatedAt { get; set; }
+        public Event? OngoingEvent { get; set; }
+        public List<Event> IncomingEvents { get; set; } = new List<Event>();
         public List<ClubMemberDto> ClubMembers { get; set; } = new List<ClubMemberDto>();
         public List<PostDetailsDto> Posts { get; set; } = new List<PostDetailsDto>();
 

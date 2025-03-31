@@ -1,5 +1,6 @@
 ﻿using BussinessObjects.Models;
 using BussinessObjects.Models.Dtos;
+using Repositories.Implementation;
 using Repositories.Interface;
 using Services.Interface;
 using System;
@@ -42,6 +43,7 @@ namespace Services.Implementation
 
             var postsQuery = club.ClubMembers
                 .SelectMany(member => member.Posts)
+                .Where(post => post.Status == "Approved")
                 .OrderByDescending(post => post.CreatedAt); 
 
             var totalPosts = postsQuery.Count();
@@ -89,6 +91,11 @@ namespace Services.Implementation
         public async Task<IEnumerable<Club>> GetAllClubsAsync()
         {
             return await _clubRepository.GetAllClubAsync();
+        } 
+        public async Task<IEnumerable<Club>> GetAllClubsApprovedAsync()
+        {
+            var club = await _clubRepository.GetAllClubAsync();
+            return club.Where(p => p.Status == true);
         }
 
         public async Task<(bool success, string message)> UpdateClubAsync(ClubEditDto clubEditDto)

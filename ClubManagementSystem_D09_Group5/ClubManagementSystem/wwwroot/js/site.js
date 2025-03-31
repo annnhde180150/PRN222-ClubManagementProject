@@ -16,6 +16,10 @@ connection.on("notifyNews", function (noti) {
     LoadNotificationsIcon();
 })
 
+connection.on("NotifyPost", function (comment, post) {
+    console.log("notify Post");
+})
+
 function LoadNotificationsIcon(){
     document.getElementById("notiDot").style.display = "block";
 };
@@ -23,7 +27,7 @@ function LoadNotificationsIcon(){
 function LoadNotifications(noti) {
     var newNoti = `<div id="gridRow-${noti.notificationId}" class="row py-3 border-bottom notification-item unread-notification"">
                         <div class="col-1 d-flex align-items-center justify-content-center">
-                            <input type="checkbox" class="form-check-input" value="${noti.isRead}" disabled>
+                            <input type="checkbox" class="form-check-input" value="${noti.isRead}">
                         </div>
                         <div class="col-3 text-center d-flex align-items-center"><span>${noti.createdAt}</span></div>
                         <div class="col-3 d-flex align-items-center"><span>${noti.location}</span></div>
@@ -33,4 +37,12 @@ function LoadNotifications(noti) {
     if (div != null) {
         div.insertAdjacentHTML('afterbegin', newNoti);
     }
+}
+
+function LoadComment(comment) {
+    console.log(comment)
+}
+
+function LoadReaction(reaction) {
+    console.log(reaction)
 }
