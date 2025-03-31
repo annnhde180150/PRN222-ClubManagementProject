@@ -102,6 +102,7 @@ namespace ClubManagementSystem.Controllers
                 TempData["Error"] = "Failed to delete comment.";
                 return RedirectToAction("Details", "Posts", new { id = postId });
             }
+            await _sender.NotifyDeletePost(comment, null);
 
             return RedirectToAction("Details", "Posts", new { id = postId });
         }

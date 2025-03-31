@@ -22,6 +22,12 @@ connection.on("NotifyPost", function (comment, reaction) {
     LoadReaction(reaction);
 })
 
+connection.on("notifyDeletePost", function (comment, reaction) {
+    console.log("notify Post");
+    DeleteComment(comment);
+    DeleteReaction(reaction);
+})
+
 function LoadNotificationsIcon(){
     document.getElementById("notiDot").style.display = "block";
 };
@@ -80,7 +86,20 @@ function LoadComment(comment) {
     }
 }
 
-
 function LoadReaction(reaction) {
     console.log(reaction)
+}
+
+function DeleteComment(comment) {
+    var commentContainer = document.getElementById(`CommentOnPost-${comment.postId}`);
+    if (commentContainer) {
+        var oldComment = document.getElementById(`comment-${comment.commentId}`);
+        if (oldComment) {
+            oldComment.remove(); // Remove old comment
+        }
+    }
+}
+
+function DeleteReaction(reaction) {
+
 }
