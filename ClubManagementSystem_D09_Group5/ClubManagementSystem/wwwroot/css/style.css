@@ -109,7 +109,7 @@ h6,
 .h6 {
   color: #1c1c1c;
   font-weight: 600;
-  font-family: "Unna", serif;
+  font-family: "Lora", serif;
 }
 
 h1,
@@ -1679,4 +1679,8 @@ footer
 }
 .liked {
     color: red;
+}
+
+.text-header{
+    font-family: "Lora";
 }

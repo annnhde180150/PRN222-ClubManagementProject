@@ -26,7 +26,7 @@
 					@* <div class="meta-cat"> *@
 					@* 	<span class="text-capitalize letter-spacing-1 cat-name font-extra text-color">Travel</span> *@
 					@* </div> *@
-					<div class="post-title">
+					<div >
 						<h2>@Model.ClubName</h2>
 					</div>
 
@@ -69,50 +69,53 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
-				@if (Model.OngoingEvent != null)
-				{
-					<h4 class="mt-4 fw-bold text-primary">Ongoing Event</h4>
-					<div class="card border-primary shadow-lg">
-						<div class="card-header bg-primary text-white d-flex align-items-center">
-							<i class="fas fa-calendar-alt me-2"></i>
-							<span class="fw-bold">Live Now</span>
-						</div>
-						<div class="card-body">
-							<h4 class="card-title text-primary fw-bold">@Model.OngoingEvent.EventTitle</h4>
-							<h6 class="card-subtitle mb-2 text-muted">
-								<i class="far fa-clock"></i>
-								<span id="eventTime">@Model.OngoingEvent.EventDate.ToString("MMM dd, yyyy hh:mm tt")</span>
-							</h6>
-							<p class="card-text">@Model.OngoingEvent.EventDescription</p>
-						</div>
-					</div>
-				}
-
-				@if (Model.IncomingEvents?.Count > 0)
-				{
-					<h4 class="mt-4 fw-bold text-secondary">Incoming Events</h4>
-					<div class="d-flex overflow-auto pb-2 incoming-events">
-						@foreach (var item in Model.IncomingEvents)
-						{
-							<div class="card shadow-sm border-0 rounded event-card">
-								<div class="card-body text-center">
-									<h6 class="card-title text-primary fw-bold">@item.EventTitle</h6>
-									<p class="card-subtitle text-muted small">
-										<i class="far fa-calendar"></i> @item.EventDate.ToString("MMM dd, yyyy hh:mm tt")
-									</p>
-									<p class="card-text small">@item.EventDescription</p>
-									<a href="#" class="btn btn-outline-secondary btn-sm">
-										<i class="fas fa-eye"></i> View Details
-									</a>
-								</div>
+				<div class="mb-5">
+					@if (Model.OngoingEvent != null)
+					{
+						<h4 class="mt-4 fw-bold text-primary">Ongoing Event</h4>
+						<div class="card border-primary shadow-lg">
+							<div class="card-header bg-primary text-white d-flex align-items-center">
+								<i class="fas fa-calendar-alt me-2"></i>
+								<span class="fw-bold">Live Now</span>
 							</div>
-						}
-					</div>
-				}
+							<div class="card-body">
+								<h4 class="card-title text-primary fw-bold">@Model.OngoingEvent.EventTitle</h4>
+								<h6 class="card-subtitle mb-2 text-muted">
+									<i class="far fa-clock"></i>
+									<span id="eventTime">@Model.OngoingEvent.EventDate.ToString("MMM dd, yyyy hh:mm tt")</span>
+								</h6>
+								<p class="card-text">@Model.OngoingEvent.EventDescription</p>
+							</div>
+						</div>
+					}
 
+					@if (Model.IncomingEvents?.Count > 0)
+					{
+						<h4 class="mt-4 fw-bold text-secondary">Incoming Events</h4>
+						<div class="d-flex pb-2 incoming-events overflow-auto">
+							@foreach (var item in Model.IncomingEvents)
+							{
+								<div class="card event-card rounded border-0 shadow-sm">
+									<div class="card-body text-center">
+										<h6 class="card-title text-primary fw-bold">@item.EventTitle</h6>
+										<p class="card-subtitle text-muted small">
+											<i class="far fa-calendar"></i> @item.EventDate.ToString("MMM dd, yyyy hh:mm tt")
+										</p>
+										<p class="card-text small">@item.EventDescription</p>
+										<a href="#" class="btn btn-outline-secondary btn-sm">
+											<i class="fas fa-eye"></i> View Details
+										</a>
+									</div>
+								</div>
+							}
+						</div>
+					}
 
+				</div>
 
-				@await Html.PartialAsync("~/Views/Posts/Index.cshtml", Model)
+				<div>
+					@await Html.PartialAsync("~/Views/Posts/Index.cshtml", Model)
+				</div>
 				
 			</div>
 			<div class="col-lg-4 col-md-8 col-sm-12 col-xs-12">
