@@ -23,7 +23,7 @@ namespace Repositories.Implementation
             await _context.SaveChangesAsync();
             return post;
         }
-        public async Task<IEnumerable<Post>> GetAllPostsByClubIdAsync(int clubId)
+        public async Task<IEnumerable<Post>> GetPostsAsync(int clubId)
         {
             return await _context.Posts
                         .Include(p => p.ClubMember.User)
@@ -31,7 +31,7 @@ namespace Repositories.Implementation
                         .Where(p => p.ClubMember.ClubId == clubId).ToListAsync();
         }
 
-        public async Task<IEnumerable<Post>> GetAllPostsAsync()
+        public async Task<IEnumerable<Post>> GetPostsAsync()
         {
             return await _context.Posts
                         .Include(p => p.ClubMember.User)
@@ -39,7 +39,7 @@ namespace Repositories.Implementation
                         .ToListAsync();
         }
 
-        public async Task<Post> GetPostByIdAsync(int postId)
+        public async Task<Post?> GetPostAsync(int postId)
         {
             return await _context.Posts
                         .Include(p => p.ClubMember.User)
@@ -64,7 +64,7 @@ namespace Repositories.Implementation
 
         public async Task DeletePostAsync(int id)
         {
-            var post = await GetPostByIdAsync(id);
+            var post = await GetPostAsync(id);
             if (post != null)
             {
                 _context.Remove(post);

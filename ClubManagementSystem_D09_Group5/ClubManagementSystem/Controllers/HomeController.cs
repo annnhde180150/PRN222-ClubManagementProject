@@ -26,7 +26,7 @@ namespace ClubManagementSystem.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var posts = (await _postService.GetAllPostsApprovedAsync())
+            var posts = (await _postService.GetPostsAsync("Approved"))
               .OrderByDescending(p => p.CreatedAt)
               .Select(p => new PostDetailsDto
               {

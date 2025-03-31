@@ -36,7 +36,7 @@ namespace ClubManagementSystem.Controllers
             {
                 NotFound();
             }
-            var clubMembers = await _clubMemberService.GetClubMembersByClubIdAsync(clubId);
+            var clubMembers = await _clubMemberService.GetClubMembersAsync(clubId);
 
             var clubmemberView = clubMembers.Select(member =>
             {
@@ -66,7 +66,7 @@ namespace ClubManagementSystem.Controllers
             {
                 NotFound();
             }
-            var clubMember = await _clubMemberService.GetClubMemberByIdAsync(membershipId);
+            var clubMember = await _clubMemberService.GetClubMemberAsync(membershipId);
             int roleCheck = 0;
             //Check role Admin
             if (role.Equals("Admin"))
@@ -102,7 +102,7 @@ namespace ClubManagementSystem.Controllers
                 NotFound();
             }
             Notification notification;
-            var clubMember = await _clubMemberService.GetClubMemberByIdAsync(membershipId);
+            var clubMember = await _clubMemberService.GetClubMemberAsync(membershipId);
             if(clubMember.Role.RoleName.Equals("Admin"))
             {
                 TempData["ErrorMessage"] = "Can not kick club admin!";

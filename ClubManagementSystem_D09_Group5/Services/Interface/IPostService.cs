@@ -12,15 +12,15 @@ namespace Services.Interface
     public interface IPostService
     {
         Task<Post> CreatePostAsync(Post model, IFormFile? imageFile, int userId, int clubId);
-        Task<IEnumerable<Post>> GetAllPostsAsync(int clubId);
-        Task<IEnumerable<Post>> GetAllPostsAsync();
-        Task<PostDetailsDto?> GetPostDetailsByIdAsync(int postId, int userId);
+        Task<IEnumerable<Post>> GetPostsAsync(int clubId);
+        Task<IEnumerable<Post>> GetPostsAsync(int clubId, string status);
+        Task<IEnumerable<Post>> GetPostsAsync(string status);
+        Task<IEnumerable<Post>> GetPostsAsync();
+        Task<PostDetailsDto?> GetPostDetailsAsync(int postId);
         Task UpdatePostAsync(PostUpdateDto postDto);
         Task UpdatePostAsync(Post post);
-        Task<Post> GetPostByIdAsync(int postId);
+        Task<Post> GetPostAsync(int postId);
         Task DeletePostAsync(int postId);
-        Task<IEnumerable<Post>> GetAllPostsPendingAsync(int clubId);
-        Task<IEnumerable<Post>> GetAllPostsApprovedAsync();
 
     }
 }

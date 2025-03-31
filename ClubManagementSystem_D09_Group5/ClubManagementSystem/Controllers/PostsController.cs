@@ -40,7 +40,7 @@ namespace ClubManagementSystem.Controllers
                 return NotFound();
             }
 
-            var postDetails = await _postService.GetPostDetailsByIdAsync(id.Value, userId);
+            var postDetails = await _postService.GetPostDetailsAsync(id.Value);
 
             if (postDetails == null)
             {
@@ -83,7 +83,7 @@ namespace ClubManagementSystem.Controllers
             {
                 return NotFound();
             }
-            var posts = await  _postService.GetAllPostsPendingAsync(clubIdCheck);
+            var posts = await  _postService.GetPostsAsync(clubIdCheck, "Pending");
             var postViews = posts.Select(post =>
             {
                 string imgBase64 = "";
@@ -114,7 +114,7 @@ namespace ClubManagementSystem.Controllers
         public async Task<IActionResult> CensoringPost (int postId,string status)
         {
             Notification notification;
-            var post = await _postService.GetPostByIdAsync(postId);
+            var post = await _postService.GetPostAsync(postId);
             if (post == null)
             {
                 return NotFound();
@@ -145,7 +145,7 @@ namespace ClubManagementSystem.Controllers
                 return Unauthorized();
             }
 
-            var post = await _postService.GetPostByIdAsync(postDto.PostId);
+            var post = await _postService.GetPostAsync(postDto.PostId);
             if (post == null || post.ClubMember.UserId != userId)
             {
                 return Forbid();
@@ -180,7 +180,7 @@ namespace ClubManagementSystem.Controllers
                 return Unauthorized();
             }
 
-            var post = await _postService.GetPostByIdAsync(postId);
+            var post = await _postService.GetPostAsync(postId);
             if (post == null || post.ClubMember.User.UserId != userId)
             {
                 return Forbid(); 

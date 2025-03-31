@@ -29,25 +29,24 @@ namespace Services.Implementation
             _postReactionService = postReactionService;
         }
 
-        public async Task<IEnumerable<Post>> GetAllPostsApprovedAsync()
+        public async Task<IEnumerable<Post>> GetPostsAsync(int clubId, string status)
         {
-            var post = await _postRepository.GetAllPostsAsync();
-            return post.Where(p => p.Status == "Approved");
+            var post = await _postRepository.GetPostsAsync(clubId);
+            return post.Where(p => p.Status == status);
+        }  
+        public async Task<IEnumerable<Post>> GetPostsAsync(string status)
+        {
+            var post = await _postRepository.GetPostsAsync();
+            return post.Where(p => p.Status == status);
         }
 
-        public async Task<IEnumerable<Post>> GetAllPostsPendingAsync(int clubId)
+        public async Task<IEnumerable<Post>> GetPostsAsync(int clubId)
         {
-            var post = await _postRepository.GetAllPostsByClubIdAsync(clubId);
-            return post.Where(p => p.Status == "Pending");
+            return await _postRepository.GetPostsAsync(clubId);
         }
-
-        public async Task<IEnumerable<Post>> GetAllPostsAsync(int clubId)
+        public async Task<IEnumerable<Post>> GetPostsAsync()
         {
-            return await _postRepository.GetAllPostsByClubIdAsync(clubId);
-        }
-        public async Task<IEnumerable<Post>> GetAllPostsAsync()
-        {
-            return await _postRepository.GetAllPostsAsync();
+            return await _postRepository.GetPostsAsync();
         }
         public async Task<Post> CreatePostAsync(Post model, IFormFile? imageFile, int userId, int clubId)
         {
@@ -76,9 +75,9 @@ namespace Services.Implementation
             return await _postRepository.AddAsync(post);
         }
 
-        public async Task<PostDetailsDto?> GetPostDetailsByIdAsync(int postId, int userId)
+        public async Task<PostDetailsDto?> GetPostDetailsAsync(int postId)
         {
-            var post = await _postRepository.GetPostByIdAsync(postId);
+            var post = await _postRepository.GetPostAsync(postId);
 
             if (post == null)
             {
@@ -140,7 +139,7 @@ namespace Services.Implementation
 
         public async Task UpdatePostAsync(PostUpdateDto postDto)
         {
-            var post = await _postRepository.GetPostByIdAsync(postDto.PostId);
+            var post = await _postRepository.GetPostAsync(postDto.PostId);
             if (post == null) 
             {
                 throw new DbUpdateConcurrencyException();
@@ -156,14 +155,14 @@ namespace Services.Implementation
 
             await _postRepository.UpdatePostAsync(post);
         }
-        public async Task<Post> GetPostByIdAsync(int postId)
+        public async Task<Post> GetPostAsync(int postId)
         {
-            return await _postRepository.GetPostByIdAsync(postId);
+            return await _postRepository.GetPostAsync(postId);
         }
 
         public async Task DeletePostAsync(int id)
         {
-            var post = await _postRepository.GetPostByIdAsync(id);
+            var post = await _postRepository.GetPostAsync(id);
             post.Status = "Deleted";
             await _postRepository.UpdatePostAsync(post);
 

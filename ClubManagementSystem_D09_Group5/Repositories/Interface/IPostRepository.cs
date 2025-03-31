@@ -11,9 +11,9 @@ namespace Repositories.Interface
     public interface IPostRepository
     {
         Task<Post> AddAsync(Post post);
-        Task<IEnumerable<Post>> GetAllPostsByClubIdAsync(int clubId);
-        Task<IEnumerable<Post>> GetAllPostsAsync();
-        Task<Post> GetPostByIdAsync(int postId);
+        Task<IEnumerable<Post>> GetPostsAsync(int clubId);
+        Task<IEnumerable<Post>> GetPostsAsync();
+        Task<Post?> GetPostAsync(int postId);
         Task<IEnumerable<Post>> GetRelatedPostsAsync(int clubId, int excludePostId, int count);
         Task UpdatePostAsync(Post post);
         Task DeletePostAsync(int id);

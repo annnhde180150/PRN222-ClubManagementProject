@@ -10,15 +10,13 @@ namespace Services.Interface
     public interface IClubMemberService
     {
         Task<ClubMember> AddClubMemberAsync(ClubMember clubMember);
-        Task<ClubMember?> GetClubMemberByIdAsync(int id);
+        Task<ClubMember?> GetClubMemberAsync(int id);
         Task<IEnumerable<ClubMember>> GetClubMemberByUserId(int id);
-        Task<bool> IsUserInClubAsync(int userId, int clubId);
-        Task<ClubMember> GetClubMemberAsync(int clubID, int userId);
+        Task<ClubMember?> GetClubMemberAsync(int clubID, int userId);
         Task<bool> IsClubMember(int clubID, int userId);
         Task<IEnumerable<ClubMember>> GetClubMembersAsync(int clubId);
         Task<IEnumerable<ClubMember>> GetClubMembersAsync(int clubId, int roleID);
-        Task<IEnumerable<ClubMember>> GetClubMembersByClubIdAsync(int id);
-        Task<(bool success, string message)> UpdateClubMemberAsync(ClubMember clubMember);
         Task<IEnumerable<ClubMember>> GetClubMembersAsync(int clubId, bool status);
+        Task<(bool success, string message)> UpdateClubMemberAsync(ClubMember clubMember);
     }
 }

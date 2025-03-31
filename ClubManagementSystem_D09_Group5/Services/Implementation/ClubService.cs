@@ -17,12 +17,14 @@ namespace Services.Implementation
         private readonly IAccountService _accountService;
         private readonly IImageHelperService _imageHelperService;
         private readonly IClubMemberService _clubMemberService;
-        public ClubService(IClubRepository clubRepository, IAccountService accountService, IImageHelperService imageHelperService, IClubMemberService clubMemberService)
+        private readonly IPostService _postService;
+        public ClubService(IClubRepository clubRepository, IAccountService accountService, IImageHelperService imageHelperService, IClubMemberService clubMemberService, IPostService postService)
         {
             _clubRepository = clubRepository;
             _accountService = accountService;
             _imageHelperService = imageHelperService;
             _clubMemberService = clubMemberService;
+            _postService = postService;
         }
 
         public async Task<ClubDetailsViewDto> GetClubDetailsAsync(int clubId, int postNumber, int postSize)
@@ -41,10 +43,9 @@ namespace Services.Implementation
                 .ToList();
 
 
-            var postsQuery = club.ClubMembers
-                .SelectMany(member => member.Posts)
-                .Where(post => post.Status == "Approved")
-                .OrderByDescending(post => post.CreatedAt); 
+            var postsQuery = (await _postService.GetPostsAsync(club.ClubId, "Approved"))
+                    .OrderByDescending(post => post.CreatedAt);
+
 
             var totalPosts = postsQuery.Count();
             var posts = postsQuery.Skip((postNumber - 1) * postSize).Take(postSize).ToList();

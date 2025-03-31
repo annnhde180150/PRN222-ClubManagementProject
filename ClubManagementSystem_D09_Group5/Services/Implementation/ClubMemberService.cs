@@ -26,7 +26,7 @@ namespace Services.Implementation
             return await _clubMemberRepository.AddClubMemberAsync(clubMember);
         }
 
-        public async Task<ClubMember?> GetClubMemberByIdAsync(int id)
+        public async Task<ClubMember?> GetClubMemberAsync(int id)
         {
             return await _clubMemberRepository.GetClubMemberAsync(id);
         }
@@ -37,19 +37,7 @@ namespace Services.Implementation
             var clubMembers = allClubMembers.Where(m => m.UserId == id).ToList(); ;
             return clubMembers;
         }
-        public async Task<IEnumerable<ClubMember>> GetClubMembersByClubIdAsync(int id)
-        {
-            var allClubMembers = await _clubMemberRepository.GetClubMembersAsync();
-            var clubMembers = allClubMembers.Where(m => m.ClubId == id).ToList(); ;
-            return clubMembers;
-        }
-
-        public async Task<bool> IsUserInClubAsync(int userId, int clubId)
-        {
-            var clubMember = await _clubMemberRepository.GetClubMemberAsync(userId, clubId);
-            return clubMember != null;
-        }
-        public async Task<ClubMember> GetClubMemberAsync(int clubID, int userId)
+        public async Task<ClubMember?> GetClubMemberAsync(int clubID, int userId)
         {
             return (await _clubMemberRepository.GetClubMembersAsync())
                 .Where(m => m.ClubId == clubID && m.UserId == userId)
