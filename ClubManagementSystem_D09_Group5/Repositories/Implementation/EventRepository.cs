@@ -36,8 +36,10 @@ namespace Repositories.Implementation
             return await _context.Events
                 .Include(e => e.CreatedByNavigation)
                 .ThenInclude(e => e.User)
+                .Include(e => e.CreatedByNavigation)
+                    .ThenInclude(e => e.Club)
                 .Include(e => e.Tasks)
-                .ThenInclude(e => e.TaskAssignments)
+                    .ThenInclude(e => e.TaskAssignments)
                 .FirstOrDefaultAsync(noti => noti.EventId == EventId);
         }
 
@@ -46,7 +48,9 @@ namespace Repositories.Implementation
             return await _context.Events
                 .OrderBy(e => e.EventDate)
                 .Include(e => e.CreatedByNavigation)
-                .ThenInclude(e => e.User)
+                    .ThenInclude(e => e.User)
+                .Include(e => e.CreatedByNavigation)
+                    .ThenInclude(e => e.Club)
                 .Include(e => e.Tasks)
                 .ToListAsync();
         }

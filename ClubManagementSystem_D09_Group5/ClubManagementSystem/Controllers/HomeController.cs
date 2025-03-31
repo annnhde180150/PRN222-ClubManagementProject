@@ -14,14 +14,16 @@ namespace ClubManagementSystem.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IPostService _postService;
         private readonly IClubService _clubService;
+        private readonly IEventService _eventService;
         private readonly IImageHelperService _imageHelperService;
 
-        public HomeController(ILogger<HomeController> logger, SignalRSender sender, IPostService postService, IClubService clubService, IImageHelperService imageHelperService)
+        public HomeController(ILogger<HomeController> logger, SignalRSender sender, IPostService postService, IClubService clubService, IImageHelperService imageHelperService, IEventService eventService)
         {
             _logger = logger;
             _postService = postService;
             _clubService = clubService;
             _imageHelperService = imageHelperService;
+            _eventService = eventService;
         }
 
         public async Task<IActionResult> Index()
@@ -58,10 +60,13 @@ namespace ClubManagementSystem.Controllers
                  })
                  .ToList();
 
+            var events = await _eventService.GetOnGoingEvents();
+
             var viewModel = new HomeDto
             {
                 Posts = posts,
-                Clubs = clubs
+                Clubs = clubs,
+                Events = events
             };
 
             return View(viewModel);

@@ -36,9 +36,9 @@ namespace Repositories.Implementation
             return await _context.Notifications.FirstOrDefaultAsync(noti => noti.NotificationId == notificationId)?? new Notification() {Message = "null" };
         }
 
-        public async Task<IEnumerable<Notification>> GetNotificationsAsync(int userId)
+        public async Task<IEnumerable<Notification>> GetNotificationsAsync()
         {
-            return await _context.Notifications.Where(n => n.UserId == userId).OrderByDescending(n => n.CreatedAt).ToListAsync();
+            return await _context.Notifications.OrderByDescending(n => n.CreatedAt).ToListAsync();
         }
 
         public async Task<Boolean> UpdateNotificationAsync(Notification notification)

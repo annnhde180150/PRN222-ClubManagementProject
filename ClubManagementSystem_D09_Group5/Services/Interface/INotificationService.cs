@@ -16,5 +16,6 @@ namespace Services.Interface
         Task<Boolean> UpdateNotificationAsync(Notification notification);
         Task<Boolean> DeleteNotificationAsync(int notificationId);
         Task<Boolean> UpdateAllNotificationsAsync(int userId);
+        Task<IEnumerable<Notification>> GetExpiredNotificationsAsync(int days);
     }
 }

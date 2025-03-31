@@ -118,5 +118,37 @@ namespace Services.Implementation
                 .OrderByDescending(e => e.EventDate)
                 .FirstOrDefault();
         }
+
+        public async Task<IEnumerable<Event>> GetFinishedEvent()
+        {
+            return (await _eventRepository.GetEventsAsync())
+                .Where(e => e.EventDate.Date < DateTime.Now.Date);
+        }
+
+        public async Task<IEnumerable<Event>> GetOnGoingEvents()
+        {
+            var endTime = TimeSpan.FromHours(23).Add(TimeSpan.FromMinutes(59)).Add(TimeSpan.FromSeconds(59));
+            var startTime = TimeSpan.FromHours(17).Add(TimeSpan.FromSeconds(01));
+            if (DateTime.Now.TimeOfDay < TimeSpan.FromHours(11))
+            {
+                startTime = TimeSpan.FromHours(0);
+                endTime = TimeSpan.FromHours(11);
+            }
+            else if (DateTime.Now.TimeOfDay < TimeSpan.FromHours(14))
+            {
+                startTime = TimeSpan.FromHours(11).Add(TimeSpan.FromSeconds(1));
+                endTime = TimeSpan.FromHours(14);
+            }
+            else if (DateTime.Now.TimeOfDay < TimeSpan.FromHours(17))
+            {
+                startTime = TimeSpan.FromHours(14).Add(TimeSpan.FromSeconds(1));
+                endTime = TimeSpan.FromHours(17);
+            }
+
+            return (await _eventRepository.GetEventsAsync())
+                .Where(e => e.Status != "Cancelled")
+                .Where(e => e.EventDate.Date == DateTime.Now.Date && e.EventDate.TimeOfDay < endTime && e.EventDate.TimeOfDay > startTime)
+                .OrderByDescending(e => e.EventDate);
+        }
     }
 }

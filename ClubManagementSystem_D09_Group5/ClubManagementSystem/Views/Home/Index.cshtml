@@ -3,6 +3,29 @@
 	ViewData["Title"] = "Home Page";
 }
 
+	<section>
+		<h4 class="mt-4 fw-bold text-primary">Ongoing Events</h4>
+		<div class="d-flex overflow-auto gap-3 p-2" style="white-space: nowrap;">
+			@foreach (var item in Model.Events)
+			{
+				<div class="card border-primary shadow-sm flex-shrink-0" style="width: 300px;">
+					<div class="card-header bg-primary text-white d-flex align-items-center">
+						<i class="fas fa-calendar-alt me-2"></i>
+						<span class="fw-bold">Live Now</span>
+					</div>
+					<div class="card-body">
+						<h5 class="card-title text-primary fw-bold">@item.EventTitle</h5>
+						<h6 class="card-subtitle mb-2 text-muted">
+							<i class="far fa-clock"></i>
+							<span>@item.EventDate.ToString("MMM dd, yyyy hh:mm tt")</span>
+						</h6>
+						<p class="card-text text-truncate" style="max-width: 250px;">@item.EventDescription</p>
+						<p class="card-text fw-bold">@item.CreatedByNavigation.Club.ClubName</p>
+					</div>
+				</div>
+			}
+		</div>
+	</section>
 
 	<section class="slider mt-4">
 		<div class="container-fluid">
