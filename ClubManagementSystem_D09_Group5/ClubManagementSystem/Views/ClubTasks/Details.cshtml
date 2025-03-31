@@ -61,7 +61,7 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <a asp-action="Delete" asp-route-id="@Model?.TaskId" class="btn btn-danger d-flex align-items-center">
+                                    <a asp-action="Delete" asp-controller="TaskAssignments" asp-route-id="@item.AssignmentId" class="btn btn-danger d-flex align-items-center">
                                         <i class="bi bi-trash3 me-1"></i> UnAssigned
                                     </a>
                                 </td>

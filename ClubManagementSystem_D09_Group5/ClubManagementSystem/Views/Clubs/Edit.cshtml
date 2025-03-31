@@ -29,12 +29,18 @@
 				</form>
 
 			</div>
-			<div class=" start-0 bottom-1 m-3">
-				<a asp-action="Index" asp-controller="ClubMembers" asp-route-clubId="@Model.ClubId" class="btn btn-secondary">Club members</a>
+			<div class="d-flex gap-2 mt-3">
+				<a asp-action="Index" asp-controller="JoinRequests" asp-route-clubId="@Model.ClubId" class="btn btn-outline-primary d-flex align-items-center">
+					<i class="bi bi-person-plus me-2"></i> Join Requests
+				</a>
+				<a asp-action="Index" asp-controller="ClubMembers" asp-route-clubId="@Model.ClubId" class="btn btn-outline-success d-flex align-items-center">
+					<i class="bi bi-people me-2"></i> Club Members
+				</a>
+				<a data-bs-toggle="modal" data-bs-target="#DeleteClubModal" onclick="setClubId('@Model.ClubId')" class="btn btn-outline-danger d-flex align-items-center">
+					<i class="bi bi-trash me-2"></i> Delete Club
+				</a>
 			</div>
-			<div class=" start-0 bottom-2 m-3">
-				<a data-bs-toggle="modal" data-bs-target="#DeleteClubModal" onclick="setClubId('@Model.ClubId')" class="btn btn-secondary">Delete Club</a>
-			</div>
+
 		</div>
 
 		<!-- Delete club Modal -->
