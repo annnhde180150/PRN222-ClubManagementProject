@@ -78,7 +78,7 @@ namespace ClubManagementSystem.Controllers
                 TempData["Error"] = "Failed to update comment.";
                 return RedirectToAction("Details", "Posts", new { id = commentDto.PostId });
             }
-
+            await _sender.NotifyPost(commentDto, null);
             return RedirectToAction("Details", "Posts", new { id = commentDto.PostId });
         }
 
