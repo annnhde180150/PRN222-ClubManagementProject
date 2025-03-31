@@ -23,7 +23,9 @@ namespace Repositories.Implementation
         }
         public async Task<Comment?> GetCommentAsync(int id)
         {
-            return await _context.Comments.FindAsync(id) ?? null; 
+            return await _context.Comments
+                .Include(c => c.User)
+                .FirstOrDefaultAsync(c => c.CommentId == id); 
         }
         public async Task<IEnumerable<Comment>> GetCommentsByPostIdAsync(int postId)
         {

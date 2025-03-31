@@ -16,8 +16,10 @@ connection.on("notifyNews", function (noti) {
     LoadNotificationsIcon();
 })
 
-connection.on("NotifyPost", function (comment, post) {
+connection.on("NotifyPost", function (comment, reaction) {
     console.log("notify Post");
+    LoadComment(comment);
+    LoadReaction(reaction);
 })
 
 function LoadNotificationsIcon(){
@@ -40,8 +42,44 @@ function LoadNotifications(noti) {
 }
 
 function LoadComment(comment) {
-    console.log(comment)
+    console.log(comment);
+
+    // Create a new div element for the comment
+    var element = document.createElement("div");
+    element.id = `comment-${comment.commentId}`;
+    element.classList.add("comment-area-box", "media", "mt-4", "d-flex");
+
+    // Set innerHTML with the comment's content
+    element.innerHTML = `
+        <img src="${comment.user.profilePicture}"
+            class="img-fluid"
+            style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;"
+            alt="Profile image">
+
+        <div class="d-flex flex-column w-100">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h4 class="mb-0">${comment.user.username}</h4>
+                    <span class="date-comm font-sm text-capitalize text-color">
+                        <i class="ti-time mr-2"></i> ${comment.createdAt}
+                    </span>
+                </div>
+            </div>
+            <div id="comment-text-${comment.commentId}" class="comment-content mt-2">
+                <p>${comment.commentText}</p>
+            </div>
+        </div>`;
+
+    var commentContainer = document.getElementById(`CommentOnPost-${comment.postId}`);
+    if (commentContainer) {
+        var oldComment = document.getElementById(`comment-${comment.commentId}`);
+        if (oldComment) {
+            oldComment.remove(); // Remove old comment
+        }
+        commentContainer.appendChild(element); // Add the new comment
+    }
 }
+
 
 function LoadReaction(reaction) {
     console.log(reaction)
