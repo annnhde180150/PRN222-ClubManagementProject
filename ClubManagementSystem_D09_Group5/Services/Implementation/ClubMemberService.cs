@@ -75,5 +75,10 @@ namespace Services.Implementation
               .Where(m => m.ClubId == clubId && m.Status == status);
         }
 
+        public async Task<IEnumerable<ClubMember>> GetAllClubMembersByClubIdWithAnyStatusAsync(int clubId)
+        {
+
+            return await _clubMemberRepository.GetAllClubMembersByClubIdWithAnyStatusAsync(clubId);
+        }
     }
 }

@@ -76,7 +76,7 @@ namespace ClubManagementSystem.Controllers
             clubTask.CreatedBy = memberID;
             await _taskService.AddClubTaskAsync(clubTask);
             
-            return RedirectToAction("Tasks", "Events", new { id = clubTask.EventId });
+            return RedirectToAction("Tasks", "Events", new { EventId = clubTask.EventId, id = clubID });
         }
 
         [ClubAdminAuthorize("Admin,Moderator")]

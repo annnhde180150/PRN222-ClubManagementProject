@@ -43,6 +43,17 @@ namespace Repositories.Implementation
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<ClubMember>> GetAllClubMembersByClubIdWithAnyStatusAsync(int clubId)
+        {
+            return await _context.ClubMembers
+                .Include(m => m.TaskAssignments)
+                .Include(m => m.User)
+                .Include(m => m.Club)
+                .Include(m => m.Role)
+                .Where(m => m.ClubId == clubId)
+                .ToListAsync();
+        }
+
         public async Task<ClubMember?> GetClubMemberAsync(int id)
         {
             return await _context.ClubMembers.Include(m => m.TaskAssignments)
@@ -62,7 +73,5 @@ namespace Repositories.Implementation
             _context.Entry(clubMember).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
-    
-       
     }
 }

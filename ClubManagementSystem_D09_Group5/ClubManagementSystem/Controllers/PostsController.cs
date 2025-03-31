@@ -12,6 +12,7 @@ using BussinessObjects.Models.Dtos;
 using Services.Implementation;
 using Microsoft.AspNetCore.Authorization;
 using ClubManagementSystem.Controllers.SignalR;
+using ClubManagementSystem.Controllers.Filter;
 
 namespace ClubManagementSystem.Controllers
 {
@@ -75,10 +76,10 @@ namespace ClubManagementSystem.Controllers
             return RedirectToAction("Details", "Clubs", new { id = clubId });
         }
 
-        [Authorize(Roles =("SystemAdmin,Admin,Moderator"))]
-        public async Task<IActionResult> ApprovePost(string clubId)
+        [ClubAdminAuthorize("Admin,Moderator")]
+        public async Task<IActionResult> ApprovePost(int id)
         {
-            int clubIdCheck = int.Parse(clubId);
+            int clubIdCheck = id;
             if (clubIdCheck == 0)
             {
                 return NotFound();
@@ -108,7 +109,6 @@ namespace ClubManagementSystem.Controllers
             return View(postViews.ToList());
         }
 
-        [Authorize(Roles = ("SystemAdmin,Admin,Moderator"))]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CensoringPost (int postId,string status)
@@ -129,7 +129,7 @@ namespace ClubManagementSystem.Controllers
                 Location = "Post Censoring"
             };
             await _signalRSender.Notify(notification, notification.UserId);
-            return RedirectToAction("ApprovePost", new { clubId = post.ClubMember.ClubId });
+            return RedirectToAction("ApprovePost", new { id = post.ClubMember.ClubId });
         }
 
         // POST: Posts/Edit/5

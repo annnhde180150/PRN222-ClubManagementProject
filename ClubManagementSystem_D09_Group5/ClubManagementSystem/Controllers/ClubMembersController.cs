@@ -90,13 +90,12 @@ namespace ClubManagementSystem.Controllers
             var (success ,message) = await _clubMemberService.UpdateClubMemberAsync(clubMember);
 
             TempData[success ? "SuccessMessage" : "ErrorMessage"] = message;
-            return RedirectToAction("Index", new { clubId = clubMember.ClubId });
+            return RedirectToAction("Index", new { id = clubMember.ClubId });
         }
 
 
         //Kick member
         [Authorize]
-        [ClubAdminAuthorize("Admin")]
         [HttpPost]
         public async Task<IActionResult> KickMember(int membershipId, string? reason,int clubId)
         {
@@ -110,7 +109,7 @@ namespace ClubManagementSystem.Controllers
             if(clubMember.Role.RoleName.Equals("Admin"))
             {
                 TempData["ErrorMessage"] = "Can not kick club admin!";
-                return RedirectToAction("Index", new { clubId = clubMember.ClubId });
+                return RedirectToAction("Index", new { id = clubMember.ClubId });
             }
             clubMember.Status = false;
             var (success, message) = await _clubMemberService.UpdateClubMemberAsync(clubMember);
@@ -124,13 +123,13 @@ namespace ClubManagementSystem.Controllers
                 notification = new Notification
                 {
                     UserId = clubMember.UserId,
-                    Message = reason,
+                    Message = reason ?? "Nothing",
                     Location = "you have been kick out by club admin"
                 };
 
                 await _signalRSender.Notify(notification, notification.UserId);
             }
-            return RedirectToAction("Index", new { clubId = clubMember.ClubId });
+            return RedirectToAction("Index", new { id = clubMember.ClubId });
         }                     
     }
 }

@@ -132,13 +132,13 @@ namespace ClubManagementSystem.Controllers
         [Authorize]
         [ClubAdminAuthorize("Admin")]
         [HttpPost]
-        public async Task<IActionResult> DeleteClub(int? clubId)
+        public async Task<IActionResult> DeleteClub(int? id)
         {
-            if (clubId == 0)
+            if (id == 0)
             {
                 NotFound();
             }
-            var club = await _clubService.GetClubByClubIdAsync(clubId.Value);
+            var club = await _clubService.GetClubByClubIdAsync(id.Value);
             club.Status = false;
             var (success, message) = await _clubService.DeleteClub(club);
             TempData[success ? "SuccessMessage" : "ErrorMessage"] = message;

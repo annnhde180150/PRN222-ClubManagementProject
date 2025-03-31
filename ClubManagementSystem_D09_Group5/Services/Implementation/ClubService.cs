@@ -128,6 +128,12 @@ namespace Services.Implementation
         public async Task<(bool success, string message)> DeleteClub(Club club)
         {
             await _clubRepository.UpdateClubAsync(club);
+            var clubmembers = await _clubMemberService.GetAllClubMembersByClubIdWithAnyStatusAsync(club.ClubId);
+            foreach(var member in clubmembers)
+            {
+                member.Status = false;
+                await _clubMemberService.UpdateClubMemberAsync(member);
+            }
             return (true, "Club delete successfully!");
         }
 

@@ -34,11 +34,11 @@ namespace ClubManagementSystem.Controllers
         // GET: JoinRequests
         //[ServiceFilter(typeof(ClubAuthorization))]
         [ClubAdminAuthorize("Admin")]
-        public async Task<IActionResult> Index(int? clubID)
+        public async Task<IActionResult> Index(int? id)
         {
             Console.WriteLine("Join Request");
-            var requests = await _joinRequestService.GetJoinRequestsAsync(clubID.Value);
-            ViewBag.ClubID = clubID;
+            var requests = await _joinRequestService.GetJoinRequestsAsync(id.Value);
+            ViewBag.ClubID = id;
             return View(requests);
         }
 
@@ -67,7 +67,7 @@ namespace ClubManagementSystem.Controllers
                 await _sender.Notify(noti, noti.UserId);
             }
             await _joinRequestService.UpdateJoinRequestAsync(request);
-            return RedirectToAction("Index", new { clubID = request.ClubId });
+            return RedirectToAction("Index", new { id = request.ClubId });
         }
 
         public async Task<IActionResult> Create(int? clubID)

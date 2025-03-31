@@ -137,9 +137,10 @@
 
 							string clubRoleClaim = $"ClubRole_{@Model.ClubId}";
                             bool isClubAdmin = User.Claims.Any(c => c.Type == clubRoleClaim && c.Value == "Admin");
-								if (isClubAdmin  || User.IsInRole("SystemAdmin"))
+							bool isModerator = User.Claims.Any(c => c.Type == clubRoleClaim && c.Value == "Moderator");
+							if (isClubAdmin || isModerator || User.IsInRole("SystemAdmin"))
 								{
-									<a asp-controller="Posts" asp-action="ApprovePost" asp-route-clubId="@Model.ClubId" class="btn btn-primary btn-lg" style="margin-top:20px">
+									<a asp-controller="Posts" asp-action="ApprovePost" asp-route-id="@Model.ClubId" class="btn btn-primary btn-lg" style="margin-top:20px">
 										<i class="fa-solid fa-check"></i> Approve post
 									</a>
 								}                                   							
