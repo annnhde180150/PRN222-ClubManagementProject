@@ -9,6 +9,7 @@ using BussinessObjects.Models;
 using Services.Interface;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using ClubManagementSystem.Controllers.SignalR;
 
 namespace ClubManagementSystem.Controllers
 {
@@ -17,10 +18,12 @@ namespace ClubManagementSystem.Controllers
     {
         private readonly IPostReactionService _reactionService;
         private readonly IPostService _postService;
-        public PostReactionsController(IPostReactionService postReactionService, IPostService postService)
+        private readonly SignalRSender _sender;
+        public PostReactionsController(IPostReactionService postReactionService, IPostService postService, SignalRSender sender)
         {
             _reactionService = postReactionService;
             _postService = postService;
+            _sender = sender;
         }
 
         [HttpPost]
@@ -29,6 +32,7 @@ namespace ClubManagementSystem.Controllers
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
 
             int likeCount = await _reactionService.ToggleReactionAsync(postId, userId);
+            //_sender.NotifyPost(null, postId)
 
             return Json(new { success = true, likeCount });
         }

@@ -110,7 +110,7 @@
                 }
                 <div class="comment-area my-5" style="max-height: 500px; overflow-y: auto;">
                     <h3 class="mb-4 sticky-top bg-white p-2 text-center">@Model.Comments.Count Comments</h3>
-                    <div class="comments-container">
+                    <div class="comments-container" id="CommentOnPost-@Model.PostId">
                         @foreach (var comment in Model.Comments)
                         {
                             @await Html.PartialAsync("~/Views/Comments/Index.cshtml", comment)

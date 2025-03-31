@@ -10,15 +10,21 @@ using Services.Interface;
 using BussinessObjects.Models.Dtos;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using ClubManagementSystem.Controllers.SignalR;
 
 namespace ClubManagementSystem.Controllers
 {
     public class CommentsController : Controller
     {
         private readonly ICommentService _commentService;
-        public CommentsController(ICommentService commentService)
+        private readonly IImageHelperService _imageService;
+        private readonly SignalRSender _sender;
+
+        public CommentsController(ICommentService commentService, SignalRSender sender, IImageHelperService imageService)
         {
             _commentService = commentService;
+            _sender = sender;
+            _imageService = imageService;
         }
 
  
@@ -47,8 +53,10 @@ namespace ClubManagementSystem.Controllers
                 CommentText = commentDto.CommentText,
                 CreatedAt = DateTime.Now
             };
-
             await _commentService.AddCommentAsync(comment);
+
+            var newComment = await _commentService.GetCommentAsync(comment.CommentId);
+            await _sender.NotifyPost(newComment, null);
             return RedirectToAction("Details", "Posts", new { id = commentDto.PostId });
         }
 
