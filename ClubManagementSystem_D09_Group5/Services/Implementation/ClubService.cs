@@ -15,12 +15,13 @@ namespace Services.Implementation
         private readonly IClubRepository _clubRepository;
         private readonly IAccountService _accountService;
         private readonly IImageHelperService _imageHelperService;
-
-        public ClubService(IClubRepository clubRepository, IAccountService accountService, IImageHelperService imageHelperService)
+        private readonly IClubMemberService _clubMemberService;
+        public ClubService(IClubRepository clubRepository, IAccountService accountService, IImageHelperService imageHelperService, IClubMemberService clubMemberService)
         {
             _clubRepository = clubRepository;
             _accountService = accountService;
             _imageHelperService = imageHelperService;
+            _clubMemberService = clubMemberService;
         }
 
         public async Task<ClubDetailsViewDto> GetClubDetailsAsync(int clubId, int postNumber, int postSize)
@@ -29,7 +30,7 @@ namespace Services.Implementation
 
             if (club == null) return null;
 
-            var clubMemberDtos = club.ClubMembers
+            var clubMemberDtos = (await _clubMemberService.GetClubMembersAsync(club.ClubId, true)) 
                 .Select(member => new ClubMemberDto
                 {
                     UserId = member.UserId,
@@ -37,6 +38,7 @@ namespace Services.Implementation
                     ProfilePictureBase64 = _imageHelperService.ConvertToBase64(member.User.ProfilePicture, "png")
                 })
                 .ToList();
+
 
             var postsQuery = club.ClubMembers
                 .SelectMany(member => member.Posts)

@@ -74,5 +74,18 @@ namespace Services.Implementation
             await _clubMemberRepository.UpdateClubMemberAsync(clubMember);
             return (true, "Update successfully!");
         }
+
+        public async Task<IEnumerable<ClubMember>> GetClubMembersAsync(int clubId, int roleID)
+        {
+            return (await _clubMemberRepository.GetClubMembersAsync())
+                .Where(m => m.ClubId == clubId && m.RoleId == roleID);
+        }
+
+        public async Task<IEnumerable<ClubMember>> GetClubMembersAsync(int clubId, bool status)
+        {
+            return (await _clubMemberRepository.GetClubMembersAsync())
+              .Where(m => m.ClubId == clubId && m.Status == status);
+        }
+
     }
 }
