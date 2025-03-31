@@ -9,6 +9,7 @@ using BussinessObjects.Models;
 using Services.Interface;
 using System.Security.Claims;
 using ClubManagementSystem.Controllers.Filter;
+using ClubManagementSystem.Controllers.SignalR;
 
 namespace ClubManagementSystem.Controllers
 {
@@ -16,10 +17,14 @@ namespace ClubManagementSystem.Controllers
     {
         private readonly FptclubsContext _context;
         private readonly ITaskAssignmentService _taskAssignmentService;
+        private readonly IClubMemberService _memberService;
+        private readonly SignalRSender _sender;
 
-        public TaskAssignmentsController(ITaskAssignmentService taskAssignmentService)
+        public TaskAssignmentsController(ITaskAssignmentService taskAssignmentService, SignalRSender sender, IClubMemberService memberService)
         {
             _taskAssignmentService = taskAssignmentService;
+            _sender = sender;
+            _memberService = memberService;
         }
 
         //[ClubAdminAuthorize("Admin,Moderator")]
@@ -34,6 +39,14 @@ namespace ClubManagementSystem.Controllers
                 MembershipId = memberID
             };
             await _taskAssignmentService.AddTaskAssignmentAsync(assign);
+            var member = await _memberService.GetClubMemberAsync(memberID);
+            Notification newNoti = new Notification()
+            {
+                Message = $"You have been assigned with a new task in {member.Club.ClubName} event",
+                Location = "Tasks",
+                UserId = member.UserId
+            };
+            await _sender.Notify(newNoti, newNoti.UserId);
             return RedirectToAction("Details", "ClubTasks", new { id = taskID });
         }
 
@@ -50,6 +63,13 @@ namespace ClubManagementSystem.Controllers
             var assign = await _taskAssignmentService.GetTaskAssignmentAsync(assignID);
             assign.Status = "Unassigned";
             await _taskAssignmentService.UpdateTaskAssignmentAsync(assign);
+            Notification newNoti = new Notification()
+            {
+                Message = $"You have been unassigned from a task",
+                Location = "Tasks",
+                UserId = assign.Membership.UserId
+            };
+            await _sender.Notify(newNoti, newNoti.UserId);
             return RedirectToAction("Details", "ClubTasks", new { id = assign.TaskId});
         }
 

@@ -37,6 +37,7 @@ namespace ClubManagementSystem.Controllers.Worker
                         var eventService = scopeServices.ServiceProvider.GetRequiredService<IEventService>();
                         var notiService = scopeServices.ServiceProvider.GetRequiredService<INotificationService>();
                         var memberService = scopeServices.ServiceProvider.GetRequiredService<IClubMemberService>();
+                        var taskService = scopeServices.ServiceProvider.GetRequiredService<IClubTaskService>();
                         var sender = scopeServices.ServiceProvider.GetRequiredService<SignalRSender>();
 
                         var clubs = await clubService.GetAllClubsAsync();
@@ -84,6 +85,16 @@ namespace ClubManagementSystem.Controllers.Worker
                             else
                             {
                                 _logger.LogWarning("Invalid NotiExpirationLimit value in configuration.");
+                            }
+                        }
+
+                        var tasks = await taskService.GetClubTasksAsync();
+                        foreach (var task in tasks)
+                        {
+                            if(task.Status != "Completed")
+                            {
+                                task.Status = (await taskService.IsCompleted(task.TaskId)) ? "Completed" : "End";
+                                await taskService.UpdateClubTaskAsync(task);
                             }
                         }
                     }

@@ -64,5 +64,17 @@ namespace Services.Implementation
                 .Where(a => a.Status != "Cancelled")
                 .Any();
         }
+
+        public Task<IEnumerable<ClubTask>> GetClubTasksAsync()
+        {
+            return _repository.GetClubTasksAsync();
+        }
+
+        public async Task<bool> IsCompleted(int taskID)
+        {
+            var task = (await _repository.GetClubTaskAsync(taskID)).TaskAssignments
+                .Select(t => t.Status).ToList();
+            return !task.Contains("On Going");
+        }
     }
 }
