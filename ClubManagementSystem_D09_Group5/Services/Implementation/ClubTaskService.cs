@@ -64,5 +64,10 @@ namespace Services.Implementation
                 .Where(a => a.Status != "Cancelled")
                 .Any();
         }
+
+        public Task<IEnumerable<ClubTask>> GetClubTasksAsync()
+        {
+            return _repository.GetClubTasksAsync();
+        }
     }
 }
