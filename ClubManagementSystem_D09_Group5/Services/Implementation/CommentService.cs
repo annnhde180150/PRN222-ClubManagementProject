@@ -32,7 +32,27 @@ namespace Services.Implementation
         {
             return await _commentRepository.GetCommentAsync(id);
         }
-       
+        public async Task<CommentDto?> GetCommentDtoAsync(int commentId)
+        {
+            var comment = await _commentRepository.GetCommentAsync(commentId);
+            if (comment == null) return null;
+
+            return new CommentDto
+            {
+                CommentId = comment.CommentId,
+                PostId = comment.PostId,
+                CommentText = comment.CommentText,
+                CreatedAt = comment.CreatedAt,
+                User = new UserDto
+                {
+                    UserId = comment.User.UserId,
+                    Username = comment.User.Username,
+                    ProfilePictureBase64 = _imageHelperService.ConvertToBase64(comment.User.ProfilePicture, "png")
+                }
+            };
+        }
+
+
         public async Task<Comment> AddCommentAsync(Comment comment)
         {
             return await _commentRepository.AddCommentAsync(comment);

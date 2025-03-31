@@ -1,4 +1,5 @@
 ﻿using BussinessObjects.Models;
+using BussinessObjects.Models.Dtos;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Azure;
 using Services.Interface;
@@ -29,7 +30,7 @@ namespace ClubManagementSystem.Controllers.SignalR
             //await _hubContext.Clients.All.SendAsync("notifyNews", noti);
         }
 
-        public async Task NotifyPost(Comment? comment, PostReaction? reaction)
+        public async Task NotifyPost(CommentDto? comment, PostReaction? reaction)
         {
             await _hubContext.Clients.All.SendAsync("notifyPost", comment, reaction);
         }

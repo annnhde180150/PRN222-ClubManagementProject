@@ -12,6 +12,7 @@ namespace Services.Interface
     {
         Task<IEnumerable<Comment>> GetAllCommentsAsync();
         Task<Comment?> GetCommentAsync(int id);
+        Task<CommentDto?> GetCommentDtoAsync(int id);
         Task<IEnumerable<CommentDto>> GetCommentsByPostIdAsync(int postId);
         Task<Comment> AddCommentAsync(Comment comment);
         Task<bool> UpdateCommentAsync(int commentId, string newText, int userId);

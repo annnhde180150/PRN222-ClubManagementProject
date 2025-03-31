@@ -51,7 +51,7 @@ function LoadComment(comment) {
 
     // Set innerHTML with the comment's content
     element.innerHTML = `
-        <img src="${comment.user.profilePicture}"
+        <img src="${comment.user.profilePictureBase64}"
             class="img-fluid"
             style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;"
             alt="Profile image">
@@ -61,7 +61,7 @@ function LoadComment(comment) {
                 <div>
                     <h4 class="mb-0">${comment.user.username}</h4>
                     <span class="date-comm font-sm text-capitalize text-color">
-                        <i class="ti-time mr-2"></i> ${comment.createdAt}
+                       <i class="ti-time mr-2"></i> ${new Date(comment.createdAt).toLocaleString('en-GB').replace(',', '')}
                     </span>
                 </div>
             </div>

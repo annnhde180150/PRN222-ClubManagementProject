@@ -55,7 +55,7 @@ namespace ClubManagementSystem.Controllers
             };
             await _commentService.AddCommentAsync(comment);
 
-            var newComment = await _commentService.GetCommentAsync(comment.CommentId);
+            var newComment = await _commentService.GetCommentDtoAsync(comment.CommentId);
             await _sender.NotifyPost(newComment, null);
             return RedirectToAction("Details", "Posts", new { id = commentDto.PostId });
         }
