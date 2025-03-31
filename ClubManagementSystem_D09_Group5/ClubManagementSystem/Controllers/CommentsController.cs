@@ -79,6 +79,8 @@ namespace ClubManagementSystem.Controllers
                 return RedirectToAction("Details", "Posts", new { id = commentDto.PostId });
             }
 
+            var newComment = await _commentService.GetCommentDtoAsync(commentDto.CommentId);
+            await _sender.NotifyPost(newComment, null);
             return RedirectToAction("Details", "Posts", new { id = commentDto.PostId });
         }
 

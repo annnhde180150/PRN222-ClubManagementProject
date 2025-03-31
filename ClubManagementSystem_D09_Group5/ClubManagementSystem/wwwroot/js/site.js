@@ -82,7 +82,7 @@ function LoadComment(comment) {
         if (oldComment) {
             oldComment.remove(); // Remove old comment
         }
-        commentContainer.appendChild(element); // Add the new comment
+        commentContainer.insertAdjacentElement('afterbegin', element); // Add the new comment
     }
 }
 
