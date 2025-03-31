@@ -33,5 +33,10 @@ namespace ClubManagementSystem.Controllers.SignalR
         {
             await _hubContext.Clients.All.SendAsync("notifyPost", comment, reaction);
         }
+
+        public async Task NotifyDeletePost(Comment? comment, PostReaction? reaction)
+        {
+            await _hubContext.Clients.All.SendAsync("notifyDeletePost", comment, reaction);
+        }
     }
 }
