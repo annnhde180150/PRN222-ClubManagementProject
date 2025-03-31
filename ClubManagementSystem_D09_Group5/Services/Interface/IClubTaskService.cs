@@ -17,5 +17,6 @@ namespace Services.Interface
         Task<ClubTask> GetClubTask(int taskID);
         Task<bool> UpdateClubTaskAsync(ClubTask task);
         Task<bool> IsAssigned(int taskID);
+        Task<bool> IsCompleted(int taskID);
     }
 }

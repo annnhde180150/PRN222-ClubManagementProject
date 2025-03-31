@@ -93,14 +93,7 @@ namespace ClubManagementSystem.Controllers.Worker
                         {
                             if(task.Status != "Completed")
                             {
-                                var isCompleted = true;
-                                foreach (var assign in task.TaskAssignments)
-                                {
-                                    if (assign.Status != "Done" && assign.Status != "Cancelled")
-                                        isCompleted = false;
-                                }
-                                if (isCompleted) task.Status = "End";
-                                else task.Status = "Completed";
+                                task.Status = (await taskService.IsCompleted(task.TaskId)) ? "Completed" : "End";
                                 await taskService.UpdateClubTaskAsync(task);
                             }
                         }
