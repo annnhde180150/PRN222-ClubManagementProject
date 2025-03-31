@@ -43,7 +43,8 @@ namespace ClubManagementSystem.Controllers.Worker
                 }
 
                 // Wait for 5 minutes before running again
-                await Task.Delay(TimeSpan.FromMinutes(5), stoppingToken);
+                await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+
             }
         }
     }

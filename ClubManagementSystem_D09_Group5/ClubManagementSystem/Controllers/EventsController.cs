@@ -176,9 +176,10 @@ namespace ClubManagementSystem.Controllers
             {
                 @event.Status = "Cancelled";
                 await _eventService.UpdateEventAsync(@event);
+                await notifyAllMember(@event.CreatedByNavigation.ClubId);
+                return RedirectToAction("Index", "Events", new { clubID = @event.CreatedByNavigation.ClubId });
             }
-            await notifyAllMember(@event.CreatedByNavigation.ClubId);
-            return RedirectToAction("Index","Events", new { clubID = @event.CreatedByNavigation.ClubId });
+            return RedirectToAction("Index", "Events", new { clubID = @event.CreatedByNavigation.ClubId, error = "Cannot Delete Event due to happening or has happened!" });
         }
 
         private async Task notifyAllMember(int clubID)
