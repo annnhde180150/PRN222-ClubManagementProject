@@ -1,10 +1,7 @@
 ﻿@model BussinessObjects.Models.Dtos.PostDetailsDto
 @{
-    var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "0");
 }
 
-@if (Model.User.UserId == userId)
-{
     <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editPostModal">
         <i class="fa fa-edit"></i> Update Post
     </button>
@@ -53,7 +50,6 @@
             </div>
         </div>
     </div>
-}
 
 
 <script>

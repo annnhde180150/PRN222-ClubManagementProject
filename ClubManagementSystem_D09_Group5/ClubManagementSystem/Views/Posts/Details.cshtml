@@ -28,8 +28,11 @@
                             <span class="text-uppercase font-sm letter-spacing-1 mr-3">by @Model.User.Username</span>
                             <span class="text-uppercase font-sm letter-spacing-1">@Model.CreatedAt</span>
                         </div>
-
-                        @await Html.PartialAsync("~/Views/Posts/EditDelete.cshtml", Model)
+                        
+                        @if (Model.User.UserId == userId)
+                        {
+                            @await Html.PartialAsync("~/Views/Posts/EditDelete.cshtml", Model)
+                        }
 
 
                         <div class="post-featured-image mt-5">
