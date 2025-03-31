@@ -23,7 +23,7 @@ public partial class Post
     public byte[]? Image { get; set; }
 
     [DataType(DataType.DateTime)]
-    public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime? CreatedAt { get; set; } = DateTime.Now;
 
     [StringLength(50)]
     public string? Status { get; set; }
