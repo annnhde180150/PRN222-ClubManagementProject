@@ -18,5 +18,7 @@ namespace Services.Interface
         public Task<bool> IsOccupied(DateTime eventDate, int clubID);
         public Task<IEnumerable<Event>> GetIncomingEvent(int clubID);
         public Task<Event> GetOnGoingEvent(int clubID);
+        public Task<IEnumerable<Event>> GetFinishedEvent();
+        public Task<IEnumerable<Event>> GetOnGoingEvents();
     }
 }

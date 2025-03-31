@@ -9,7 +9,7 @@ namespace Repositories.Interface
 {
     public interface INotificationRepository
     {
-        Task<IEnumerable<Notification>> GetNotificationsAsync(int userId);
+        Task<IEnumerable<Notification>> GetNotificationsAsync();
         Task<Notification> GetNotificationAsync(int notificationId);
         Task<Notification> AddNotificationAsync(Notification notification);
         Task<Boolean> UpdateNotificationAsync(Notification notification);

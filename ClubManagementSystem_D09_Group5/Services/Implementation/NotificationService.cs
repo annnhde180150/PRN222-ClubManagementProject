@@ -49,7 +49,8 @@ namespace Services.Implementation
 
         public async Task<IEnumerable<Notification>> GetNotificationsAsync(int userId)
         {
-            return await _notificationRepository.GetNotificationsAsync(userId);
+            return (await _notificationRepository.GetNotificationsAsync())
+                .Where(n => n.UserId == userId);
         }
 
         public async Task<bool> UpdateNotificationAsync(Notification notification)
@@ -60,13 +61,19 @@ namespace Services.Implementation
         public async Task<bool> UpdateAllNotificationsAsync(int userId)
         {
             var isUpdated = true;
-            var notis = await _notificationRepository.GetNotificationsAsync(userId);
+            var notis = await GetNotificationsAsync(userId);
             foreach (var notification in notis)
             {
                 notification.IsRead = true;
                 isUpdated = await _notificationRepository.UpdateNotificationAsync(notification)? isUpdated : false;
             }
             return isUpdated;
+        }
+
+        public async Task<IEnumerable<Notification>> GetExpiredNotificationsAsync(int days)
+        {
+            return (await _notificationRepository.GetNotificationsAsync())
+                .Where(n => n.CreatedAt <= DateTime.Now.Date.AddDays(days*(-1)));
         }
     }
 }
