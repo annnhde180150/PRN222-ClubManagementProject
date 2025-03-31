@@ -52,16 +52,17 @@ namespace ClubManagementSystem.Controllers
                 ? _imageService.ConvertToBase64(user.ProfilePicture, "png")
                 : string.Empty;
             //Check role
-            string role;
+            string role;           
             if (user.Email == adminEmail && user.Password == adminPassword)
             {
-                role = "SystemAdmin";
+                role = "SystemAdmin"; // Special System Admin
             }
             else
             {
-                var clubMember = await _accountService.CheckRole(user.UserId);
-                role = clubMember?.Role.RoleName ?? "User";
+                role = "User"; // Default role if no club role found
             }
+
+            var clubMember = await _accountService.CheckRole(user.UserId);
 
             var claims = new List<Claim>
             {
@@ -70,6 +71,13 @@ namespace ClubManagementSystem.Controllers
                 new(ClaimTypes.Email, user.Email),
                 new(ClaimTypes.Role, role)
             };
+
+            // Add claims for club-specific roles
+            foreach (var clubRole in clubMember)
+            {
+                claims.Add(new Claim($"ClubRole_{clubRole.ClubId}", clubRole.Role.RoleName));
+            }
+
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
             HttpContext.Session.SetString("userPicture", profilePicture);
@@ -111,17 +119,24 @@ namespace ClubManagementSystem.Controllers
 
             if (user != null)
             {
-                var clubMember = await _accountService.CheckRole(user.UserId);
+                
                 profilePicture = _imageService.ConvertToBase64(user.ProfilePicture, "png");
-                string role = clubMember?.Role.RoleName ?? "User";
-
+                string role= "User";
+                var clubMember = await _accountService.CheckRole(user.UserId);
                 var claims = new List<Claim>
+                    {
+                        new(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                        new(ClaimTypes.Name, user.Username ?? "Admin"),
+                        new(ClaimTypes.Email, user.Email),
+                        new(ClaimTypes.Role, role)
+                    };
+
+                // Add claims for club-specific roles
+                foreach (var clubRole in clubMember)
                 {
-                    new(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                    new(ClaimTypes.Name, user.Username),
-                    new(ClaimTypes.Email, user.Email),
-                    new(ClaimTypes.Role, role)
-                };
+                    claims.Add(new Claim($"ClubRole_{clubRole.ClubId}", clubRole.Role.RoleName));
+                }
+
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
                 HttpContext.Session.SetString("userPicture", profilePicture);

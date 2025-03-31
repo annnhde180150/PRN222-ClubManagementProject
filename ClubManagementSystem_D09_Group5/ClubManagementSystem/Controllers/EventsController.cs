@@ -86,9 +86,10 @@ namespace ClubManagementSystem.Controllers
             return View(events);
         }
 
-        public async Task<IActionResult> Tasks(int? id, string? error)
+        [ClubAdminAuthorize("Admin,Moderator")]
+        public async Task<IActionResult> Tasks(int? EventId, string? error, int id)
         {
-            var currentEvent = await _eventService.GetEventAsync(id.Value);
+            var currentEvent = await _eventService.GetEventAsync(EventId.Value);
             ViewBag.Error = error;
             return View(currentEvent);
         }
@@ -102,7 +103,7 @@ namespace ClubManagementSystem.Controllers
         }
 
         [AjaxOnly]
-        //GET: Events/Create
+        [ClubAdminAuthorize("Admin,Moderator")]
         public IActionResult Create(string? error, int id)
         {
             ViewBag.ClubID = id;

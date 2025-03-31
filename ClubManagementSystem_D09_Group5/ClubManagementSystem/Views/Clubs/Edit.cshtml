@@ -29,13 +29,11 @@
 				</form>
 
 			</div>
-			<div class="d-flex gap-3 mt-3">
-				<a asp-action="Index" asp-controller="JoinRequests" asp-route-clubId="@Model.ClubId"
-				   class="btn btn-primary btn-lg fw-bold px-4 d-flex align-items-center">
+			<div class="d-flex gap-2 mt-3">
+				<a asp-action="Index" asp-controller="JoinRequests" asp-route-id="@Model.ClubId" asp-route-clubId="@Model.ClubId" class="btn btn-outline-primary d-flex align-items-center">
 					<i class="bi bi-person-plus me-2"></i> Join Requests
 				</a>
-				<a asp-action="Index" asp-controller="ClubMembers" asp-route-clubId="@Model.ClubId"
-				   class="btn btn-success btn-lg fw-bold px-4 d-flex align-items-center">
+				<a asp-action="Index" asp-controller="ClubMembers" asp-route-id="@Model.ClubId" class="btn btn-outline-success d-flex align-items-center">
 					<i class="bi bi-people me-2"></i> Club Members
 				</a>
 				<a data-bs-toggle="modal" data-bs-target="#DeleteClubModal" onclick="setClubId('@Model.ClubId')"
@@ -55,9 +53,9 @@
 						<h5 class="modal-title" id="DeleteClubModalLabel">Delete club</h5>
 						<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
-					<form id="deleteClubForm" method="post" asp-action="DeleteClub">
-						<div class="modal-body">
-							<input type="hidden" id="deleteClubIdInput" name="clubId" asp-for="ClubId">
+					<form id="deleteClubForm" method="post" asp-action="DeleteClub" asp-route-id="@Model.ClubId">
+						<div class="modal-body">						
+							<input type="hidden" id="deleteClubIdInput" name="id" asp-for="ClubId">
 							<p>Are you sure to delete this club?</p>
 							<div class="alert alert-warning">
 								<i class="bi bi-exclamation-triangle-fill"></i> This action cannot be undone!
@@ -84,8 +82,8 @@
 						 style="width: 150px; height: 150px; object-fit: cover;">
 				</div>
 				<div class="small text-muted mb-3">JPG, JPEG, PNG - max 5MB</div>
-				<form asp-action="UploadLogoPicture" method="post" enctype="multipart/form-data">
-					<input type="hidden" name="clubId" value="@Model.ClubId" />
+				<form asp-action="UploadLogoPicture" method="post" enctype="multipart/form-data" asp-route-id="@Model.ClubId">
+					<input type="hidden" name="id" value="@Model.ClubId" />
 					<input type="file" name="logoPicture" class="form-control d-none" id="fileLogoImage"
 						   onchange="fileLogoSelected(), previewLogoImage()" accept=".jpg, .jpeg, .png">
 					<button type="button" class="btn btn-primary mt-2" onclick="document.getElementById('fileLogoImage').click()">Upload New</button>
@@ -105,7 +103,7 @@
 						 style="width: 100%; max-width: 400px; height: auto; object-fit: cover;">
 				</div>
 				<div class="small text-muted mb-3">JPG, JPEG, PNG - max 5MB</div>
-				<form asp-action="UploadCoverPicture" method="post" enctype="multipart/form-data">
+				<form asp-action="UploadCoverPicture" method="post" enctype="multipart/form-data" asp-route-id="@Model.ClubId">
 					<input type="hidden" name="clubId" value="@Model.ClubId" />
 					<input type="file" name="coverPicture" class="form-control d-none" id="fileCoverImage"
 						   onchange="fileCoverSelected(), previewCoverImage()" accept=".jpg, .jpeg, .png">

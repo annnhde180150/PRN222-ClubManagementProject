@@ -15,6 +15,7 @@ using Repositories.Interface;
 using Services.Implementation;
 using Azure.Core;
 using Microsoft.Extensions.Hosting;
+using ClubManagementSystem.Controllers.Filter;
 
 namespace ClubManagementSystem.Controllers
 {
@@ -128,6 +129,9 @@ namespace ClubManagementSystem.Controllers
             return View(viewModel);
         }
 
+        [Authorize]
+        [ClubAdminAuthorize("Admin")]
+        [HttpPost]
         public async Task<IActionResult> DeleteClub(int? clubId)
         {
             if (clubId == 0)
@@ -148,9 +152,7 @@ namespace ClubManagementSystem.Controllers
             return View();
         }
 
-        // POST: Clubs/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -201,8 +203,9 @@ namespace ClubManagementSystem.Controllers
             return View();
         }
 
-        [Authorize(Roles = ("Admin,SystemAdmin"))]
-        public async Task<IActionResult> Edit(int? id)
+        [Authorize]
+        [ClubAdminAuthorize("Admin,Moderator")]
+        public async Task<IActionResult> Edit(int Id)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null)
@@ -214,7 +217,7 @@ namespace ClubManagementSystem.Controllers
 
             //}
             ////var clubmember = await _clubMemberService.GetClubMemberByUserId(int.Parse(userId));
-            var club = await _clubService.GetClubByClubIdAsync(id.Value);
+            var club = await _clubService.GetClubByClubIdAsync(Id);
             var logoPicture = _imageService.ConvertToBase64(club.Logo, "png");
             var coverPicture = _imageService.ConvertToBase64(club.Cover, "png");
             var clubView = new ClubEditViewDto
@@ -228,9 +231,10 @@ namespace ClubManagementSystem.Controllers
             return View(clubView);
         }
 
-        [Authorize(Roles = ("Admin,SystemAdmin"))]
+        [Authorize]
+        [ClubAdminAuthorize("Admin,Moderator")]
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]       
         public async Task<IActionResult> Edit(ClubEditViewDto clubViewEditDto)
         {
             var clubEditDto = new ClubEditDto
@@ -255,10 +259,11 @@ namespace ClubManagementSystem.Controllers
             return View(clubView);
         }
 
-        [Authorize(Roles = ("Admin,SystemAdmin"))]
+        [Authorize]
+        [ClubAdminAuthorize("Admin,Moderator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UploadLogoPicture(IFormFile logoPicture, int? clubId)
+        public async Task<IActionResult> UploadLogoPicture(IFormFile logoPicture,int? id)
         {
             if (logoPicture != null && logoPicture.Length > 0)
             {
@@ -270,25 +275,26 @@ namespace ClubManagementSystem.Controllers
                     logoPictureBytes = memoryStream.ToArray();
                 }
 
-                var club = await _clubService.GetClubByClubIdAsync(clubId.Value);
+                var club = await _clubService.GetClubByClubIdAsync(id.Value);
 
                 if (club != null)
                 {
                     var clubEditDto = new ClubEditDto
                     {
-                        ClubId = clubId.Value,
+                        ClubId = id.Value,
                         Logo = logoPictureBytes
                     };
                     var (success, message) = await _clubService.UpdateClubAsync(clubEditDto);
                     TempData[success ? "SuccessMessage" : "ErrorMessage"] = message;
-                    return RedirectToAction("Edit", new { id = clubId });
+                    return RedirectToAction("Edit", new { id = id });
                 }
             }
             ModelState.AddModelError("logoPicture", "No file selected.");
-            return RedirectToAction("Edit", new { id = clubId });
+            return RedirectToAction("Edit", new { id = id });
         }
 
-        [Authorize(Roles = ("Admin,SystemAdmin"))]
+        [Authorize]
+        [ClubAdminAuthorize("Admin,Moderator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UploadCoverPicture(IFormFile coverPicture, int? clubId)
@@ -319,46 +325,6 @@ namespace ClubManagementSystem.Controllers
             }
             ModelState.AddModelError("CoverPicture", "No file selected.");
             return RedirectToAction("Edit", new { id = clubId });
-        }
-
-        // GET: Clubs/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var club = await _context.Clubs
-                .FirstOrDefaultAsync(m => m.ClubId == id);
-            if (club == null)
-            {
-                return NotFound();
-            }
-
-            return View(club);
-        }
-
-
-
-        // POST: Clubs/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var club = await _context.Clubs.FindAsync(id);
-            if (club != null)
-            {
-                _context.Clubs.Remove(club);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool ClubExists(int id)
-        {
-            return _context.Clubs.Any(e => e.ClubId == id);
-        }
+        }      
     }
 }

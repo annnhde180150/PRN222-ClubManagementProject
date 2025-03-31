@@ -132,11 +132,17 @@
 							</a>
 						}
 
-						@if (User.IsInRole("Admin") && ViewBag.IsMember)
+						@if (ViewBag.IsMember)
 						{
-							<a asp-controller="Posts" asp-action="ApprovePost" asp-route-clubId="@Model.ClubId" class="btn btn-primary btn-lg" style="margin-top:20px">
-								<i class="fa-solid fa-check"></i> Approve post
-							</a>
+
+							string clubRoleClaim = $"ClubRole_{@Model.ClubId}";
+                            bool isClubAdmin = User.Claims.Any(c => c.Type == clubRoleClaim && c.Value == "Admin");
+								if (isClubAdmin  || User.IsInRole("SystemAdmin"))
+								{
+									<a asp-controller="Posts" asp-action="ApprovePost" asp-route-clubId="@Model.ClubId" class="btn btn-primary btn-lg" style="margin-top:20px">
+										<i class="fa-solid fa-check"></i> Approve post
+									</a>
+								}                                   							
 						}
 					</div>
 

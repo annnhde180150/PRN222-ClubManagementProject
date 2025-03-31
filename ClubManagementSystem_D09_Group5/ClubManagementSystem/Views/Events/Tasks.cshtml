@@ -12,7 +12,7 @@
             @if(Model.Status != "Cancelled" && Model.Status != "Finished"){
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="text-secondary">📌 Assigned Tasks</h5>
-                    <button class="btn btn-success btn-sm" onclick="showCreateModal(@Model.EventId)">
+                    <button class="btn btn-success btn-sm" onclick="showCreateModal('@Model.EventId','@Model.CreatedByNavigation.ClubId')">
                         <i class="bi bi-plus-lg"></i> Create Task
                     </button>
                 </div>
@@ -66,8 +66,8 @@
 
 @section Scripts {
     <script>
-        function showCreateModal(eventId) {
-            $.get('/ClubTasks/Create?eventID=' + eventId, function (data) {
+        function showCreateModal(eventId,ClubId) {
+            $.get('/ClubTasks/Create/'+ClubId+'?eventID=' + eventId, function (data) {
                 $('#createModalContent').html(data);
                 $('#createModal').modal('show');
             });

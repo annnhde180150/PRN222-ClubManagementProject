@@ -22,7 +22,7 @@ namespace Services.Implementation
         {
             return _accountRepository.CheckLogin(gmail, password);
         }
-        public Task<ClubMember?> CheckRole(int userId)
+        public Task<IEnumerable<ClubMember>> CheckRole(int userId)
         {
             return _accountRepository.CheckRole(userId);
         }

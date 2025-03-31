@@ -11,7 +11,7 @@ namespace Services.Interface
     public interface IAccountService
     {
         Task<User?> CheckLogin(string username, string password);
-        Task<ClubMember?> CheckRole(int userId);
+        Task<IEnumerable<ClubMember>> CheckRole(int userId);
         Task<User?> CheckEmailExist(string email);
         Task<User> AddGmailUser(User user);
         Task<User> AddUser(User user);
