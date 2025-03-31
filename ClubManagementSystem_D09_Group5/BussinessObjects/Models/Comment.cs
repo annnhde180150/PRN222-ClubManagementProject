@@ -20,7 +20,7 @@ namespace BussinessObjects.Models
         public string CommentText { get; set; } = null!;
 
         [DataType(DataType.DateTime)]
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         // Navigation properties
         [ForeignKey("PostId")]
