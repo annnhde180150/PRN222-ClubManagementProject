@@ -11,5 +11,6 @@ namespace Services.Interface
     {
         Task<int> GetLikeCountAsync(int postId);
         Task<int> ToggleReactionAsync(int postId, int userId);
+        Task<bool> IsLiked(int postId, int userId);
     }
 }

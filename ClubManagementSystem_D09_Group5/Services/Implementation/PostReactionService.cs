@@ -22,6 +22,12 @@ namespace Services.Implementation
         {
             return await _reactionRepository.GetLikeCountAsync(postId);
         }
+
+        public async Task<bool> IsLiked(int postId, int userId)
+        {
+            return (await _reactionRepository.GetReactionAsync(postId, userId)).IsLiked;
+        }
+
         public async Task<int> ToggleReactionAsync(int postId, int userId)
         {
             var reaction = await _reactionRepository.GetReactionAsync(postId, userId);
@@ -44,7 +50,5 @@ namespace Services.Implementation
 
             return await GetLikeCountAsync(postId);
         }
-
-
     }
 }

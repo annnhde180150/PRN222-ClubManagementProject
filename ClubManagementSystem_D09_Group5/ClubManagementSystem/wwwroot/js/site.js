@@ -88,6 +88,9 @@ function LoadComment(comment) {
 
 function LoadReaction(reaction) {
     console.log(reaction)
+    var likeCountElement = document.getElementById(`like-count-${reaction.postId}`);
+    let currentCount = parseInt(likeCountElement.textContent) || 0; // Get current count
+    likeCountElement.textContent = currentCount + 1; // Increment by 1
 }
 
 function DeleteComment(comment) {
@@ -101,5 +104,8 @@ function DeleteComment(comment) {
 }
 
 function DeleteReaction(reaction) {
-
+    console.log(reaction)
+    var likeCountElement = document.getElementById(`like-count-${reaction.postId}`);
+    let currentCount = parseInt(likeCountElement.textContent) || 0; // Get current count
+    likeCountElement.textContent = currentCount - 1; // Increment by 1
 }

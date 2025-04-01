@@ -34,6 +34,15 @@ namespace ClubManagementSystem.Controllers
             int likeCount = await _reactionService.ToggleReactionAsync(postId, userId);
             //_sender.NotifyPost(null, postId)
 
+            var liked = await _reactionService.IsLiked(postId, userId);
+            var react = new PostReaction
+            {
+                PostId = postId,
+                UserId = userId,
+            };
+            if(liked) await _sender.NotifyPost(null, react);
+            else await _sender.NotifyDeletePost(null, react);
+
             return Json(new { success = true, likeCount });
         }
 
