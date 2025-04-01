@@ -71,7 +71,7 @@ namespace ClubManagementSystem.Controllers
         [Authorize]
         public async Task<IActionResult> YourClubs(string? searchString, int? pageNumber)
         {
-            int pageSize = 5;
+            int pageSize = 20;
             int currentPage = pageNumber ?? 1;
             int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var clubsMember = await _clubMemberService.GetClubMemberByUserId(userId);

@@ -109,7 +109,7 @@
                 @for (int i = 1; i <= ViewBag.TotalPages; i++)
                 {
                     <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
-                        <a class="page-link" asp-action="Index" asp-route-pageNumber="@i" asp-route-searchString="@ViewBag.SearchString">@i</a>
+                        <a class="page-link" asp-action="YourClubs" asp-route-pageNumber="@i" asp-route-searchString="@ViewBag.SearchString">@i</a>
                     </li>
                 }
             </ul>
