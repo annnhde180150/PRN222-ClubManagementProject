@@ -94,12 +94,12 @@ namespace ClubManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("TaskId,TaskDescription,DueDate")] ClubTask clubTask)
         {
-            var task = await _taskService.GetClubTask(id);
+            var task = await _taskService.GetClubTask(clubTask.TaskId);
             task.TaskDescription = clubTask.TaskDescription;
             task.DueDate = clubTask.DueDate;
             await _taskService.UpdateClubTaskAsync(task);
 
-            var assigns = await _assignervice.GetTaskAssignmentsAsync(id);
+            var assigns = await _assignervice.GetTaskAssignmentsAsync(clubTask.TaskId);
             foreach (var assign in assigns)
             {
                 Notification noti = new Notification()
